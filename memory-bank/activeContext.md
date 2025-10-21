@@ -3,18 +3,18 @@
 **Last reviewed:** 2025-10-21
 
 ## Current Focus
-- Stage 0 (Environment Prep) from `ynab-lite-pwa-plan.md`: initialize Nuxt 3 project with Tailwind, Pinia, Dexie, and PWA module configured.
-- Establish baseline project structure and linting to support subsequent feature work.
+- Stage 1 (Data Layer) — build Dexie schema and Pinia stores for accounts, categories, and transactions.
+- Ensure money utility helpers (`toMinor`, `fromMinor`) are implemented with accompanying tests.
 
 ## Near-Term Tasks
-- Scaffold IndexedDB layer with Dexie schema for accounts, categories, transactions.
-- Implement core money utility helpers (`toMinor`, `fromMinor`) with unit tests.
-- Draft Tailwind-based layout shell for dashboard and transaction form.
+- Create Dexie database module defining tables, indexes, and lightweight repository helpers.
+- Establish Pinia stores/selectors that wrap Dexie and expose derived balance calculations.
+- Add unit tests covering money helpers and selectors.
 
 ## Pending Decisions / Questions
-- Confirm whether to adopt full TypeScript strict mode or Zod-based validation for the initial iteration (default assumption: use TypeScript with runtime checks where necessary).
-- Validate device-specific PWA install flow on iPhone SE once the scaffold is ready.
+- Confirm depth of runtime validation: Zod schemas at API boundaries vs. relying on TypeScript inference in stores.
+- Plan validation of PWA install/onboarding copy once primary flows render.
 
 ## Coordination Notes
-- Update `progress.md` after each milestone (e.g., data layer ready, UI shell complete).
-- Record any deviations from the published plan directly in this file and mirror the change in the relevant memory bank sections.
+- Stage 0 scaffold completed (Nuxt + Tailwind + Pinia + PWA) and recorded in `progress.md`.
+- Update `progress.md` after data layer implementation and whenever plan stages shift.
