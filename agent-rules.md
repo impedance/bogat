@@ -12,9 +12,9 @@ You are an AI coding assistant with **persistent memory** across sessions. Use s
 **Format:** `[comment] AICODE-WHY: [concise business rationale] [YYYY-MM-DD]`
 
 ```javascript
-// AICODE-WHY: Payments >$10k require dual approval per SOX compliance [2025-08]
-# AICODE-WHY: UTC timestamps prevent timezone bugs in distributed systems [2025-08]
-<!-- AICODE-WHY: Custom sort needed for real-time priority queue [2025-08] -->
+// AICODE-WHY: Payments >$10k require dual approval per SOX compliance [2025-08-15]
+# AICODE-WHY: UTC timestamps prevent timezone bugs in distributed systems [2025-08-15]
+<!-- AICODE-WHY: Custom sort needed for real-time priority queue [2025-08-15] -->
 ```
 
 ### AICODE-TRAP
@@ -23,9 +23,9 @@ You are an AI coding assistant with **persistent memory** across sessions. Use s
 **Format:** `[comment] AICODE-TRAP: [specific warning] [YYYY-MM-DD]`
 
 ```python
-# AICODE-TRAP: Stripe webhooks arrive out of order - check event_id [2025-08]
-// AICODE-TRAP: UserID is UUID in DB but string in API - cast carefully [2025-08]
-/* AICODE-TRAP: Rate limit resets at UTC midnight, not local time [2025-08] */
+# AICODE-TRAP: Stripe webhooks arrive out of order - check event_id [2025-08-15]
+// AICODE-TRAP: UserID is UUID in DB but string in API - cast carefully [2025-08-15]
+/* AICODE-TRAP: Rate limit resets at UTC midnight, not local time [2025-08-15] */
 ```
 
 ### AICODE-LINK
@@ -110,24 +110,24 @@ rg 'AICODE-TODO.*priority:high'
 
 ### File-Level (Top of file after imports)
 ```python
-# AICODE-WHY: Handles async payment processing for enterprise tier [2025-08]
-# AICODE-TRAP: Must init Stripe before any operations or silent fail [2025-08]
+# AICODE-WHY: Handles async payment processing for enterprise tier [2025-08-15]
+# AICODE-TRAP: Must init Stripe before any operations or silent fail [2025-08-15]
 # AICODE-LINK: ./config/payment_providers.py#StripeConfig
 ```
 
 ### Function-Level (Directly above declaration)
 ```javascript
-// AICODE-WHY: Custom validator required by PCI DSS v4.0 [2025-08]
-// AICODE-TRAP: Legacy OAuth returns null userId - handle gracefully [2025-08]
+// AICODE-WHY: Custom validator required by PCI DSS v4.0 [2025-08-15]
+// AICODE-TRAP: Legacy OAuth returns null userId - handle gracefully [2025-08-15]
 // AICODE-TODO: Add comprehensive input sanitization [priority:high]
 async function validatePayment(userId, amount) {
 ```
 
 ### Inline (Before complex logic blocks)
 ```typescript
-// AICODE-TRAP: Array.sort() mutates in place - clone first [2025-08]
+// AICODE-TRAP: Array.sort() mutates in place - clone first [2025-08-15]
 const sorted = [...payments].sort((a, b) => {
-  // AICODE-WHY: Priority determines batch processing order [2025-08]
+  // AICODE-WHY: Priority determines batch processing order [2025-08-15]
   return b.priority - a.priority;
 });
 ```
@@ -247,7 +247,7 @@ rg 'AICODE-LINK.*payment' ../
 
 ### Debugging Production Issue
 ```python
-# AICODE-TRAP: Webhook can fire multiple times - idempotency key required [2025-08]
+# AICODE-TRAP: Webhook can fire multiple times - idempotency key required [2025-08-15]
 # AICODE-LINK: ./utils/idempotency.py#generate_key
 if not idempotency_key:
     # AICODE-TODO: Add monitoring alert for missing keys [priority:high]
@@ -256,8 +256,8 @@ if not idempotency_key:
 
 ### Complex Refactor Planning
 ```javascript
-// AICODE-WHY: Legacy system requires XML - migration planned Q3 [2025-08]
-// AICODE-TRAP: XML parser fails silently on malformed input [2025-08]
+// AICODE-WHY: Legacy system requires XML - migration planned Q3 [2025-08-15]
+// AICODE-TRAP: XML parser fails silently on malformed input [2025-08-15]
 // AICODE-LINK: ./migrations/xml_to_json_plan.md
 // AICODE-TODO: Phase 1 - Add JSON parallel processing [priority:high]
 // AICODE-TODO: Phase 2 - Migrate 10% traffic to JSON [priority:med]
@@ -295,8 +295,8 @@ if not idempotency_key:
 
 ### Versioned Traps
 ```python
-# AICODE-TRAP: [v3.2.1] Memory leak in cursor.fetchall() [2025-08]
-# AICODE-TRAP: [Fixed v3.3.0] Use cursor.fetchmany(1000) instead [2025-08]
+# AICODE-TRAP: [v3.2.1] Memory leak in cursor.fetchall() [2025-08-15]
+# AICODE-TRAP: [Fixed v3.3.0] Use cursor.fetchmany(1000) instead [2025-08-15]
 ```
 
 ### Conditional TODOs
