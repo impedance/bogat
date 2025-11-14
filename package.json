@@ -7,7 +7,9 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "npm run lint:aicode",
+    "lint:aicode": "bash scripts/validate-aicode.sh"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.11.2",
