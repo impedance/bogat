@@ -19,10 +19,12 @@
 - `amountMinor` fields always represent minor units (`number` storing kopecks).
 - All timestamps and dates stored as ISO strings; UI can present localized formats.
 - Exported JSON payload matches plan specification (`version`, `exportedAt`, `accounts`, `categories`, `transactions`).
+- Validation strategy: define entities/types in TypeScript, run all user/input surfaces (forms, actions) through Zod schemas, and validate import/export JSON with versioned Zod definitions before touching Dexie.
 
 ## Testing & Quality Expectations
-- Unit tests for money utilities (`useMoney`) and balance selectors.
-- E2E smoke flow: add transaction → filter/search → export → import.
+- **Tier 1 (unit):** `useMoney` helpers, date/format normalizers, and other pure utilities protecting money math edge cases.
+- **Tier 2 (store/validators):** Pinia selectors (балансы, фильтры, поиск) плюс Zod-схемы для форм и JSON импорта, проверяющие happy+error paths.
+- **Tier 3 (smoke E2E):** один сценарий add → filter/search → export → import, подтверждающий связку Nuxt + Dexie + сервис-воркера.
 - Lighthouse PWA audit must pass for installability and offline/fast metrics.
 
 ## Platform Constraints

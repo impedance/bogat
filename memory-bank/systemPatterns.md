@@ -13,6 +13,7 @@
 - Dexie таблицы: `accounts` (cash/card/bank, currency=RUB), `categories` (income/expense, `isDefault`), `transactions` (accountId, categoryId, type, amountMinor, note, date). Все таблицы используют `nanoid` как primary key.
 - Индексы: `transactions.accountId`, `transactions.categoryId`, `transactions.date`, `transactions.type` — обеспечивают фильтры/поиск; дополнительные compound индексы добавим по мере роста.
 - Экспорт/импорт: версионный JSON `{ version, exportedAt, accounts, categories, transactions }`; импорт валидирует данные, обновляет записи по `id` и оставляет конфликтное разрешение пользователю.
+- Валидация на трёх уровнях: модели Dexie/Pinia описаны через TypeScript интерфейсы, каждый UI/форма/экшен прогоняет данные через Zod перед записью, а импорт/экспорт JSON использует строгую Zod-схему с проверкой версии.
 - Сид данных: при первой миграции в `categories` добавляется набор дефолтов (еда, транспорт, жильё, доход и т.п.); пользователь может добавлять/архивировать категории и счета.
 
 ## UI/UX Patterns

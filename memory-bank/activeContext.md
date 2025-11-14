@@ -1,10 +1,12 @@
 # Active Context — YNAB-lite PWA
 
-**Last reviewed:** 2025-10-21
+**Last reviewed:** 2025-11-14
 
 ## Current Focus
 - Browser MVP (Stages 0–2): finish Dexie schema + Pinia stores, forms, and transaction list with фильтры/поиск.
 - Ensure money utility helpers (`toMinor`, `fromMinor`) are implemented with accompanying tests.
+- Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
+- Keep the minimal-effective test pyramid: unit tests for money helpers, store/validator coverage, and a single smoke E2E flow for export/import.
 
 ## Near-Term Tasks
 - Create Dexie database module defining tables, индексы, сид дефолтных категорий, и lightweight repository helpers.
@@ -12,7 +14,6 @@
 - Build transaction/account/category forms + transaction list UI for browser; добавлять unit tests covering money helpers and selectors.
 
 ## Pending Decisions / Questions
-- Confirm depth of runtime validation: Zod schemas at API boundaries vs. relying on TypeScript inference in stores.
 - Plan validation of PWA install/onboarding copy once primary flows render.
 
 ## Coordination Notes
