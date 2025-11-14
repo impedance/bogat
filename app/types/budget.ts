@@ -1,50 +1,123 @@
-export type MoneyMinor = number
+import { z } from 'zod'
 
-export type AccountType = 'cash' | 'card' | 'bank'
+const BUDGET_ID_SCHEMA = z.string().min(1)
+const DATE_ONLY_REGEX = /^\d{4}-\d{2}-\d{2}$/
 
-export interface Account {
-  id: string
-  name: string
-  type: AccountType
-  currency: 'RUB'
-  createdAt: string
-  updatedAt: string
-  archived?: boolean
-}
+export const accountTypeSchema = z.enum(['cash', 'card', 'bank'])
+export const categoryTypeSchema = z.enum(['income', 'expense'])
 
-export type CategoryType = 'income' | 'expense'
+export const moneyMinorSchema = z
+  .number()
+  .int('Amount must be represented in minor units (integer).')
+  .finite()
 
-export interface Category {
-  id: string
-  name: string
-  type: CategoryType
-  isDefault?: boolean
-  createdAt: string
-  updatedAt: string
-  archived?: boolean
-}
+const isoDateTimeSchema = z
+  .string()
+  .datetime({ offset: true })
 
-export interface Transaction {
-  id: string
-  accountId: Account['id']
-  categoryId: Category['id']
-  type: CategoryType
-  amountMinor: MoneyMinor
-  note?: string
-  date: string
-  createdAt: string
-  updatedAt: string
-}
+const dateOnlySchema = z
+  .string()
+  .regex(DATE_ONLY_REGEX, 'Expected YYYY-MM-DD date string.')
 
-export interface DateRangeFilter {
-  from?: string | null
-  to?: string | null
-}
+const baseTimestampsSchema = z.object({
+  createdAt: isoDateTimeSchema,
+  updatedAt: isoDateTimeSchema
+})
 
-export interface TransactionFilters {
-  accountId?: Account['id'] | null
-  categoryId?: Category['id'] | null
-  type?: CategoryType | null
-  dateRange?: DateRangeFilter
-  search?: string
-}
+const accountNameSchema = z
+  .string()
+  .trim()
+  .min(1, 'Account name is required.')
+  .max(64, 'Account name must be at most 64 characters.')
+
+const categoryNameSchema = z
+  .string()
+  .trim()
+  .min(1, 'Category name is required.')
+  .max(64, 'Category name must be at most 64 characters.')
+
+const noteSchema = z
+  .string()
+  .trim()
+  .max(280, 'Note must be at most 280 characters.')
+
+export const accountSchema = z
+  .object({
+    id: BUDGET_ID_SCHEMA,
+    name: accountNameSchema,
+    type: accountTypeSchema,
+    currency: z.literal('RUB'),
+    archived: z.boolean().optional()
+  })
+  .and(baseTimestampsSchema)
+
+export const categorySchema = z
+  .object({
+    id: BUDGET_ID_SCHEMA,
+    name: categoryNameSchema,
+    type: categoryTypeSchema,
+    isDefault: z.boolean().optional(),
+    archived: z.boolean().optional()
+  })
+  .and(baseTimestampsSchema)
+
+export const transactionSchema = z
+  .object({
+    id: BUDGET_ID_SCHEMA,
+    accountId: BUDGET_ID_SCHEMA,
+    categoryId: BUDGET_ID_SCHEMA,
+    type: categoryTypeSchema,
+    amountMinor: moneyMinorSchema,
+    note: noteSchema.optional(),
+    date: dateOnlySchema
+  })
+  .and(baseTimestampsSchema)
+
+export const accountPayloadSchema = z.object({
+  name: accountNameSchema,
+  type: accountTypeSchema,
+  currency: z.literal('RUB')
+})
+
+export const categoryPayloadSchema = z.object({
+  name: categoryNameSchema,
+  type: categoryTypeSchema
+})
+
+export const transactionPayloadSchema = z.object({
+  accountId: BUDGET_ID_SCHEMA,
+  categoryId: BUDGET_ID_SCHEMA,
+  type: categoryTypeSchema,
+  amountMinor: moneyMinorSchema,
+  note: noteSchema.optional(),
+  date: dateOnlySchema
+})
+
+export const dateRangeFilterSchema = z.object({
+  from: dateOnlySchema.nullable().optional(),
+  to: dateOnlySchema.nullable().optional()
+})
+
+export const transactionFiltersSchema = z.object({
+  accountId: BUDGET_ID_SCHEMA.nullable().optional(),
+  categoryId: BUDGET_ID_SCHEMA.nullable().optional(),
+  type: categoryTypeSchema.nullable().optional(),
+  dateRange: dateRangeFilterSchema.optional(),
+  search: z
+    .string()
+    .trim()
+    .max(120, 'Search input is capped to 120 characters.')
+    .optional()
+})
+
+export type MoneyMinor = z.infer<typeof moneyMinorSchema>
+export type AccountType = z.infer<typeof accountTypeSchema>
+export type CategoryType = z.infer<typeof categoryTypeSchema>
+export type Account = z.infer<typeof accountSchema>
+export type Category = z.infer<typeof categorySchema>
+export type Transaction = z.infer<typeof transactionSchema>
+export type AccountPayload = z.infer<typeof accountPayloadSchema>
+export type CategoryPayload = z.infer<typeof categoryPayloadSchema>
+export type TransactionPayload = z.infer<typeof transactionPayloadSchema>
+export type DateRangeFilter = z.infer<typeof dateRangeFilterSchema>
+export type TransactionFilters = z.infer<typeof transactionFiltersSchema>

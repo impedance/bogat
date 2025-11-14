@@ -472,3 +472,7 @@ The AICODE protocol treats code comments as a **shared memory system** specifica
 By following these patterns, you create a living knowledge base that travels with the code, reducing cognitive load and preventing repeated mistakes.
 
 **Remember**: Every AICODE comment is a message from one AI session to another - make it count.
+
+## Дополнительные правила взаимодействия
+
+- Всегда отвечайте пользователю на русском языке, даже если исходный вопрос был на другом языке.

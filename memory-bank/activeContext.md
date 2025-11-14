@@ -3,8 +3,8 @@
 **Last reviewed:** 2025-11-15
 
 ## Current Focus
-- Browser MVP (Stages 0–2): finish Dexie schema + Pinia stores, forms, and transaction list with фильтры/поиск.
-- Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) are live with Vitest coverage—reuse them across forms and validation flows.
+- Browser MVP (Stages 0–2): Dexie schema + repo layer landed, next priority is wiring Pinia stores/selectors and UI forms (фильтры/поиск still pending).
+- Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) + entity Zod schemas live with Vitest coverage—reuse them across forms and validation flows.
 - Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
 - Keep the minimal-effective test pyramid: unit tests for money helpers, store/validator coverage, and a single smoke E2E flow for export/import.
 - Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
@@ -15,17 +15,9 @@
 - Build transaction/account/category forms + transaction list UI for browser; добавлять unit tests covering money helpers and selectors.
 
 ## Stage 1 — Detailed Backlog (assignable slices)
-1. **Domain primitives & validation ready**
-   - Finalize shared budget types (`app/types/budget.ts`) and export Money/Entity helpers.
-   - `useMoney.ts` composable with conversion + formatting helpers implemented and covered by Vitest (threads pool). Continue extending only when new UX needs appear.
-   - Draft Zod schemas for Accounts/Categories/Transactions payloads so repositories/actions have typed validation gates.
-2. **Dexie database foundation**
-   - Create `app/db/client.ts` that instantiates Dexie, defines tables/indices per plan, and wires versioned migrations.
-   - Add `app/db/seed.ts` with default categories + optional sample account bootstrap, invoked on first run.
-   - Document migration/version strategy inside the module (AICODE-WHY for repo separation).
-3. **Repository layer (Ports & Adapters)**
-   - Implement `repositories/accounts.ts`, `repositories/categories.ts`, `repositories/transactions.ts` with CRUD helpers returning typed entities.
-   - Ensure repositories encapsulate Dexie queries/filters (account/category lookups, transaction filters by date/type/search) so Pinia never speaks Dexie APIs directly.
+1. **Domain primitives & validation ready** — ✅ `app/types/budget.ts` now exports Zod schemas + derived TS types; `useMoney` helpers stay the single source of money conversions/tests.
+2. **Dexie database foundation** — ✅ `app/db/client.ts` defines v1 schema/indexes + `app/db/seed.ts` seeds default categories and a starter cash account via the populate hook (documented with AICODE-WHY).
+3. **Repository layer (Ports & Adapters)** — ✅ Accounts, categories, and transactions repositories wrap Dexie, enforce Zod payload validation, and expose CRUD/filter helpers.
 4. **Pinia stores & selectors**
    - `stores/accounts.ts`: load/seed accounts, expose balances per account, actions for create/update/archive.
    - `stores/categories.ts`: manage visible categories (respecting archived/default flags) and provide type-filtered lists for forms.
@@ -39,5 +31,5 @@
 
 ## Coordination Notes
 - Stage 0 scaffold completed (Nuxt + Tailwind + Pinia + PWA) and recorded in `progress.md`.
-- Vitest (`npm run test`) is configured via `vitest.config.ts` to run in the `threads` pool because the sandbox blocks forked workers. Keep this setting when adding more suites.
-- Update `progress.md` after data layer implementation and whenever plan stages shift.
+- Vitest (`npm run test`) is configured via `vitest.config.ts` to run in the `threads` pool because the sandbox blocks forked workers. Keep this setting when adding more suites (recent run covers money helpers; add store/repo cases next).
+- Update `progress.md` after data layer implementation and whenever plan stages shift (accounts/categories/transactions repositories exist; next write Pinia wrappers & selector tests).
