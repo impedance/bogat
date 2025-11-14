@@ -21,6 +21,16 @@
 - Exported JSON payload matches plan specification (`version`, `exportedAt`, `accounts`, `categories`, `transactions`).
 - Validation strategy: define entities/types in TypeScript, run all user/input surfaces (forms, actions) through Zod schemas, and validate import/export JSON with versioned Zod definitions before touching Dexie.
 
+## Engineering Practices
+- Clean Architecture (Uncle Bob) адаптирован под Nuxt: слои данных (Dexie repositories), домена (Pinia/composables) и UI отделены.
+- SOLID применяется выборочно: SRP для composables, Open/Closed через композицию валидаторов/форм, Liskov/Interface Segregation соблюдаем при объявлении DTO.
+- Hexagonal/Ports & Adapters: Dexie и потенциальный backend спрятаны за интерфейсами, чтобы легко связать синк или тестовые драйверы.
+- Functional Core / Imperative Shell: чистые функции (`useMoney`, selectors) отделены от компонентов, что упрощает тесты.
+- CQRS-lite: разделяем команды (actions) и запросы (getters/selectors) для читаемости и упрощения тестов.
+- Repository pattern + Command helpers защищают Dexie от прямых обращений и дают точку для логирования/отката.
+- Tailwind utility discipline + небольшие base-компоненты: избегаем CSS-спагетти, обеспечиваем переиспользуемые шаблоны.
+- Accessibility и PWA guidelines: aria, фокус, доступный ввод сумм; сервис-воркер настроен по рекомендациям Google Web DevRel.
+
 ## Testing & Quality Expectations
 - **Tier 1 (unit):** `useMoney` helpers, date/format normalizers, and other pure utilities protecting money math edge cases.
 - **Tier 2 (store/validators):** Pinia selectors (балансы, фильтры, поиск) плюс Zod-схемы для форм и JSON импорта, проверяющие happy+error paths.

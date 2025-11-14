@@ -16,6 +16,16 @@
 - Валидация на трёх уровнях: модели Dexie/Pinia описаны через TypeScript интерфейсы, каждый UI/форма/экшен прогоняет данные через Zod перед записью, а импорт/экспорт JSON использует строгую Zod-схему с проверкой версии.
 - Сид данных: при первой миграции в `categories` добавляется набор дефолтов (еда, транспорт, жильё, доход и т.п.); пользователь может добавлять/архивировать категории и счета.
 
+## Architecture & Coding Practices
+- **Clean Architecture-lite (Robert C. Martin)**: разделяем слой данных (Dexie + repositories), домен (Pinia селекторы/бизнес-логика) и представление (Nuxt компоненты). Компоненты остаются тонкими orchestrators.
+- **SOLID / GRASP** применяются избирательно: SRP для composables, Command/Controller роли концентрируются в Pinia actions, UI-компоненты не принимают инфраструктурных решений.
+- **Ports & Adapters / Hexagonal**: репозитории Dexie выступают портом, Pinia и UI — адаптерами. Это позволяет позже заменить IndexedDB или добавить синк без переписывания UI.
+- **Functional Core, Imperative Shell (Gary Bernhardt)**: расчёты и форматирование — чистые функции/composables, shell (Vue) лишь вызывает их.
+- **CQRS-lite**: store actions выступают командами, мемоизированные селекторы — запросами; это делает данные предсказуемыми и тестируемыми.
+- **Repository Pattern (Fowler)**: все CRUD/фильтры изолированы в `repositories/`, Pinia не обращается к Dexie напрямую.
+- **PWA best practices (Jake Archibald и Google Web DevRel)**: простые стратегии кеширования (cache-first shell, network-first данные), предсказуемые offline fallback.
+- **Accessibility-first (Marcy Sutton, Sara Soueidan)**: компоненты ввода денег/дат и модалки снабжены aria-атрибутами, фокус-ловушками и поддержкой клавиатуры.
+
 ## UI/UX Patterns
 - Tailwind utility classes; верстка оптимизирована под iPhone SE и десктоп.
 - **Dashboard**: показывает общий баланс, список счетов с балансами, быстрый фильтр по счёту.

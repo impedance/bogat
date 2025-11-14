@@ -9,6 +9,10 @@
 
 ## In Progress
 - Stage 1 (Data Layer): implementing Dexie schema and Pinia data access layer.
+  - Domain primitives + `useMoney` helper with tests.
+  - Dexie client + seed routines per plan.
+  - Repository modules (accounts/categories/transactions) encapsulating Dexie queries.
+  - Pinia stores/selectors providing balances, filters, and CRUD orchestration.
 
 ## Next Up
 1. Finish Dexie schema, repositories, and Pinia stores for accounts/categories/transactions.
