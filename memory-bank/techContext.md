@@ -14,6 +14,7 @@
 - Initialize project via `npx nuxi init ynab-lite`, install dependencies with `pnpm`.
 - Enable Nuxt modules: `@vite-pwa/nuxt`, `@nuxtjs/tailwind`.
 - Optional TypeScript setup: `pnpm dlx tsc --init` plus `vue-tsc` for type checking.
+- Unit tests run with Vitest (`npm run test`), configured in `vitest.config.ts` to use the `threads` pool since the sandbox rejects forked workers.
 
 ## Data Handling Standards
 - `amountMinor` fields always represent minor units (`number` storing kopecks).

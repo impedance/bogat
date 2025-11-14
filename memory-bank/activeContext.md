@@ -1,10 +1,10 @@
 # Active Context — YNAB-lite PWA
 
-**Last reviewed:** 2025-11-14
+**Last reviewed:** 2025-11-15
 
 ## Current Focus
 - Browser MVP (Stages 0–2): finish Dexie schema + Pinia stores, forms, and transaction list with фильтры/поиск.
-- Ensure money utility helpers (`toMinor`, `fromMinor`) are implemented with accompanying tests.
+- Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) are live with Vitest coverage—reuse them across forms and validation flows.
 - Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
 - Keep the minimal-effective test pyramid: unit tests for money helpers, store/validator coverage, and a single smoke E2E flow for export/import.
 - Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
@@ -17,7 +17,7 @@
 ## Stage 1 — Detailed Backlog (assignable slices)
 1. **Domain primitives & validation ready**
    - Finalize shared budget types (`app/types/budget.ts`) and export Money/Entity helpers.
-   - Implement `useMoney.ts` composable (`toMinor`, `fromMinor`, formatting helpers) + unit tests guarding edge cases (negative values, localized decimal separators).
+   - `useMoney.ts` composable with conversion + formatting helpers implemented and covered by Vitest (threads pool). Continue extending only when new UX needs appear.
    - Draft Zod schemas for Accounts/Categories/Transactions payloads so repositories/actions have typed validation gates.
 2. **Dexie database foundation**
    - Create `app/db/client.ts` that instantiates Dexie, defines tables/indices per plan, and wires versioned migrations.
@@ -39,4 +39,5 @@
 
 ## Coordination Notes
 - Stage 0 scaffold completed (Nuxt + Tailwind + Pinia + PWA) and recorded in `progress.md`.
+- Vitest (`npm run test`) is configured via `vitest.config.ts` to run in the `threads` pool because the sandbox blocks forked workers. Keep this setting when adding more suites.
 - Update `progress.md` after data layer implementation and whenever plan stages shift.
