@@ -1,17 +1,18 @@
 # Active Context — YNAB-lite PWA
 
-**Last reviewed:** 2025-11-15
+**Last reviewed:** 2025-11-17
 
 ## Current Focus
-- Browser MVP (Stages 0–2): data layer (Dexie + repositories + Pinia stores/selectors) is complete, now shift to Stage 2 UI work—transaction forms, list, фильтры/поиск.
+- Browser MVP (Stages 0–2): data layer (Dexie + repositories + Pinia stores/selectors) is complete. Stage 2 UI work now starts—transaction forms, list, фильтры/поиск.
+- Базовая страница транзакций собрана: форма создания, фильтры (счёт/категория/тип/даты/поиск) и лента с форматированием сумм через `useMoney`.
 - Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) + entity Zod schemas live with Vitest coverage—reuse them across forms and validation flows.
 - Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
 - Keep the minimal-effective test pyramid: unit tests for money helpers, store/validator coverage (transactions selectors already covered via Vitest), and a single smoke E2E flow for export/import.
 - Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
 
 ## Near-Term Tasks
-- Build transaction/account/category forms + transaction list UI wiring into the new Pinia stores; поддержать фильтры/поиск в UI.
-- Surface derived balances (per account + общий) on the dashboard using the transactions store getters.
+- Завершить UI для аккаунтов/категорий (создание/редактирование/архивация) и подключить их страницы.
+- Усилить транзакции: добавить редактирование/удаление, маску MoneyInput/быстрые суммы и вывести агрегаты на дашборд.
 - Add high-level selector/validator tests for remaining store logic as UI flows harden, then prepare for Stage 2 feature work (MoneyInput mask, filters, list interactions).
 
 ## Stage 1 — Detailed Backlog (assignable slices)
