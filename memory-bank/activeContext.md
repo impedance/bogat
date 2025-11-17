@@ -3,16 +3,17 @@
 **Last reviewed:** 2025-11-17
 
 ## Current Focus
-- Browser MVP (Stages 0–2): data layer (Dexie + repositories + Pinia stores/selectors) is complete. Stage 2 UI work now starts—transaction forms, list, фильтры/поиск.
-- Базовая страница транзакций собрана: форма создания, фильтры (счёт/категория/тип/даты/поиск) и лента с форматированием сумм через `useMoney`.
+- Browser MVP (Stages 0–2): data layer (Dexie + repositories + Pinia stores/selectors) is complete. Stage 2 UI marches forward—транзакции готовы, добавлены экраны счетов/категорий.
+- Базовая страница транзакций собрана: форма создания, фильтры (счёт/категория/тип/даты/поиск) и лента с форматированием сумм через `useMoney`. Навбар ведёт на дашборд, транзакции, счета, категории.
+- Страницы `accounts.vue` и `categories.vue` реализуют создание/редактирование, архивирование/восстановление и отображают балансы по данным транзакций.
 - Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) + entity Zod schemas live with Vitest coverage—reuse them across forms and validation flows.
 - Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
 - Keep the minimal-effective test pyramid: unit tests for money helpers, store/validator coverage (transactions selectors already covered via Vitest), and a single smoke E2E flow for export/import.
 - Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
 
 ## Near-Term Tasks
-- Завершить UI для аккаунтов/категорий (создание/редактирование/архивация) и подключить их страницы.
 - Усилить транзакции: добавить редактирование/удаление, маску MoneyInput/быстрые суммы и вывести агрегаты на дашборд.
+- Привести дашборд к селекторам балансов (общий/по счетам) и пустым состояниям.
 - Add high-level selector/validator tests for remaining store logic as UI flows harden, then prepare for Stage 2 feature work (MoneyInput mask, filters, list interactions).
 
 ## Stage 1 — Detailed Backlog (assignable slices)

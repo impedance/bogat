@@ -7,6 +7,8 @@
           <nav class="flex items-center gap-3 text-sm text-slate-300">
             <NuxtLink to="/" class="hover:text-white">Дашборд</NuxtLink>
             <NuxtLink to="/transactions" class="hover:text-white">Транзакции</NuxtLink>
+            <NuxtLink to="/accounts" class="hover:text-white">Счета</NuxtLink>
+            <NuxtLink to="/categories" class="hover:text-white">Категории</NuxtLink>
           </nav>
         </div>
         <p class="text-xs text-slate-400">Local-first budgeting MVP</p>

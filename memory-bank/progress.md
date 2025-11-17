@@ -9,13 +9,14 @@
 - Money helper layer shipped: `useMoney.ts` with conversion/formatting helpers plus Vitest unit tests (`npm run test` uses the threads pool to satisfy sandbox limits).
 - Stage 1 groundwork: entity Zod schemas live in `app/types/budget.ts`, Dexie client/seed modules (`app/db`) define schema + default data, and repositories for accounts/categories/transactions enforce validation and encapsulate all IndexedDB access.
 - Stage 1 completion: Pinia stores for accounts, categories, and transactions wrap the repositories, refresh after mutations, and expose derived balance selectors (overall/per account/per category) with Vitest coverage targeting the critical calculations.
+- Stage 2 UI: собраны страницы `accounts.vue` и `categories.vue` (создание/редактирование, архивирование/восстановление, балансы из стора транзакций) и обновлена навигация.
 
 ## In Progress
-- Stage 2 (Transactions & calculations UI): страница транзакций уже реализует создание, фильтры (счёт/категория/тип/даты/поиск) и ленту; впереди формы аккаунтов/категорий, MoneyInput и дашборд.
+- Stage 2 (Transactions & calculations UI): страница транзакций реализует создание, фильтры (счёт/категория/тип/даты/поиск) и ленту; впереди редактирование/удаление, MoneyInput, быстрые суммы и полноценный дашборд.
 
 ## Next Up
-1. Добавить UI для аккаунтов/категорий (создание/архивация/редактирование) с переиспользованием Zod + money helpers.
-2. Улучшить транзакции: редактирование/удаление, маска MoneyInput, быстрые суммы и отображение балансов на дашборде.
+1. Улучшить транзакции: редактирование/удаление, маска MoneyInput, быстрые суммы и отображение балансов на дашборде.
+2. Прокачать дашборд под селекторы балансов и пустые состояния перед PWA/бэкап-этапами.
 3. Подготовить экспорт/импорт JSON и офлайн/PWA проверки после стабилизации основных форм.
 
 ## Known Risks / Blockers
