@@ -3,25 +3,22 @@
 **Last reviewed:** 2025-11-15
 
 ## Current Focus
-- Browser MVP (Stages 0–2): Dexie schema + repo layer landed, next priority is wiring Pinia stores/selectors and UI forms (фильтры/поиск still pending).
+- Browser MVP (Stages 0–2): data layer (Dexie + repositories + Pinia stores/selectors) is complete, now shift to Stage 2 UI work—transaction forms, list, фильтры/поиск.
 - Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) + entity Zod schemas live with Vitest coverage—reuse them across forms and validation flows.
 - Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
-- Keep the minimal-effective test pyramid: unit tests for money helpers, store/validator coverage, and a single smoke E2E flow for export/import.
+- Keep the minimal-effective test pyramid: unit tests for money helpers, store/validator coverage (transactions selectors already covered via Vitest), and a single smoke E2E flow for export/import.
 - Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
 
 ## Near-Term Tasks
-- Create Dexie database module defining tables, индексы, сид дефолтных категорий, и lightweight repository helpers.
-- Establish Pinia stores/selectors that wrap Dexie, expose derived balance calculations, и поддерживают фильтры/поиск.
-- Build transaction/account/category forms + transaction list UI for browser; добавлять unit tests covering money helpers and selectors.
+- Build transaction/account/category forms + transaction list UI wiring into the new Pinia stores; поддержать фильтры/поиск в UI.
+- Surface derived balances (per account + общий) on the dashboard using the transactions store getters.
+- Add high-level selector/validator tests for remaining store logic as UI flows harden, then prepare for Stage 2 feature work (MoneyInput mask, filters, list interactions).
 
 ## Stage 1 — Detailed Backlog (assignable slices)
 1. **Domain primitives & validation ready** — ✅ `app/types/budget.ts` now exports Zod schemas + derived TS types; `useMoney` helpers stay the single source of money conversions/tests.
 2. **Dexie database foundation** — ✅ `app/db/client.ts` defines v1 schema/indexes + `app/db/seed.ts` seeds default categories and a starter cash account via the populate hook (documented with AICODE-WHY).
 3. **Repository layer (Ports & Adapters)** — ✅ Accounts, categories, and transactions repositories wrap Dexie, enforce Zod payload validation, and expose CRUD/filter helpers.
-4. **Pinia stores & selectors**
-   - `stores/accounts.ts`: load/seed accounts, expose balances per account, actions for create/update/archive.
-   - `stores/categories.ts`: manage visible categories (respecting archived/default flags) and provide type-filtered lists for forms.
-   - `stores/transactions.ts`: CRUD actions wired to repositories, derived getters for overall balance, filtered lists, and search; include tests for selectors.
+4. **Pinia stores & selectors** — ✅ `stores/accounts.ts`, `stores/categories.ts`, `stores/transactions.ts` wrap repositories, refresh data after mutations, expose derived getters (active lists, balance per account/category, totals) and have Vitest coverage for the transaction selectors.
 5. **Validation & testing harness**
    - Hook repositories/stores into the Zod schemas, surfacing friendly errors.
    - Add unit tests for selectors and repositories (mocks/in-memory Dexie) plus keep instructions for E2E smoke ready for Stage 2.
