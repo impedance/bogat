@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import { useMoney } from '~/app/composables/useMoney'
-import { transactionPayloadSchema, type CategoryType } from '~/app/types/budget'
+import { transactionPayloadSchema, type CategoryType, type Transaction } from '~/app/types/budget'
 import { useAccountsStore } from '~/stores/accounts'
 import { useCategoriesStore } from '~/stores/categories'
 import { useTransactionsStore } from '~/stores/transactions'
@@ -25,16 +25,23 @@ const {
 
 const money = useMoney({ currency: 'RUB' })
 
+function todayISODate() {
+  return new Date().toISOString().slice(0, 10)
+}
+
 const form = reactive({
   type: 'expense' as CategoryType,
   accountId: '',
   categoryId: '',
   amount: '',
-  date: new Date().toISOString().slice(0, 10),
+  date: todayISODate(),
   note: ''
 })
 const formError = ref<string | null>(null)
 const isSubmitting = ref(false)
+const editingId = ref<Transaction['id'] | null>(null)
+const busyTransactionId = ref<Transaction['id'] | null>(null)
+const listError = ref<string | null>(null)
 
 const filterForm = reactive({
   accountId: '',
@@ -45,6 +52,7 @@ const filterForm = reactive({
   search: ''
 })
 const isApplyingFilters = ref(false)
+const isEditing = computed(() => Boolean(editingId.value))
 
 const availableCategories = computed(() =>
   activeCategories.value.filter((category) => category.type === form.type)
@@ -61,6 +69,17 @@ function ensureDefaults() {
   if (!currentCategory && availableCategories.value.length > 0) {
     form.categoryId = availableCategories.value[0].id
   }
+}
+
+function resetForm() {
+  editingId.value = null
+  form.type = 'expense'
+  form.accountId = ''
+  form.categoryId = ''
+  form.amount = ''
+  form.date = todayISODate()
+  form.note = ''
+  ensureDefaults()
 }
 
 function syncFiltersFromStore() {
@@ -110,16 +129,54 @@ async function submitTransaction() {
       throw new Error(issue?.message ?? 'Проверьте корректность полей.')
     }
 
-    await transactionsStore.createTransaction(parsed.data)
-    form.amount = ''
-    form.note = ''
-    form.date = new Date().toISOString().slice(0, 10)
-    ensureDefaults()
+    if (editingId.value) {
+      await transactionsStore.updateTransaction(editingId.value, parsed.data)
+    } else {
+      await transactionsStore.createTransaction(parsed.data)
+    }
+
+    resetForm()
   } catch (error) {
     formError.value =
       error instanceof Error ? error.message : 'Не удалось сохранить транзакцию.'
   } finally {
     isSubmitting.value = false
+  }
+}
+
+function startEdit(transaction: Transaction) {
+  listError.value = null
+  editingId.value = transaction.id
+  form.type = transaction.type
+  form.accountId = transaction.accountId
+  form.categoryId = transaction.categoryId
+  form.amount = money.fromMinor(transaction.amountMinor)
+  form.date = transaction.date
+  form.note = transaction.note ?? ''
+}
+
+function cancelEdit() {
+  resetForm()
+}
+
+async function deleteTransaction(transaction: Transaction) {
+  if (busyTransactionId.value) return
+  const confirmed = confirm('Удалить транзакцию?')
+  if (!confirmed) return
+
+  listError.value = null
+  busyTransactionId.value = transaction.id
+
+  try {
+    await transactionsStore.deleteTransaction(transaction.id)
+    if (editingId.value === transaction.id) {
+      resetForm()
+    }
+  } catch (error) {
+    listError.value =
+      error instanceof Error ? error.message : 'Не удалось удалить транзакцию.'
+  } finally {
+    busyTransactionId.value = null
   }
 }
 
@@ -226,13 +283,29 @@ onMounted(() => {
     <section class="grid gap-6 lg:grid-cols-[360px,1fr]">
       <div class="space-y-6">
         <div class="rounded-lg border border-slate-800 bg-surface-subtle/50 p-5">
-          <h3 class="text-lg font-semibold">Новая транзакция</h3>
+          <h3 class="text-lg font-semibold">
+            {{ isEditing ? 'Редактирование транзакции' : 'Новая транзакция' }}
+          </h3>
           <p class="mt-1 text-sm text-slate-400">
             Все поля валидируются, суммы проходят через `toMinor`.
           </p>
 
           <div v-if="!hasEntities" class="mt-3 rounded border border-amber-500/60 bg-amber-500/10 p-3 text-sm text-amber-200">
             Нет доступных счетов или категорий. Добавьте их перед созданием транзакции.
+          </div>
+
+          <div
+            v-if="isEditing"
+            class="mt-3 flex items-center justify-between gap-2 rounded border border-indigo-500/50 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-100"
+          >
+            <span>Редактирование записи — сохраните изменения или отмените.</span>
+            <button
+              type="button"
+              class="rounded border border-indigo-400 px-2 py-1 font-semibold hover:border-indigo-300"
+              @click="cancelEdit"
+            >
+              Отмена
+            </button>
           </div>
 
           <form class="mt-4 space-y-3" @submit.prevent="submitTransaction">
@@ -315,14 +388,24 @@ onMounted(() => {
               {{ formError }}
             </div>
 
-            <button
-              type="submit"
-              class="flex w-full items-center justify-center rounded bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-slate-700"
-              :disabled="isSubmitting || !hasEntities"
-            >
-              <span v-if="isSubmitting">Сохраняем...</span>
-              <span v-else>Сохранить</span>
-            </button>
+            <div class="flex gap-2">
+              <button
+                type="submit"
+                class="flex-1 rounded bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-slate-700"
+                :disabled="isSubmitting || !hasEntities"
+              >
+                <span v-if="isSubmitting">Сохраняем...</span>
+                <span v-else>{{ isEditing ? 'Обновить' : 'Сохранить' }}</span>
+              </button>
+              <button
+                v-if="isEditing"
+                type="button"
+                class="flex-1 rounded border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500"
+                @click="cancelEdit"
+              >
+                Сбросить
+              </button>
+            </div>
           </form>
         </div>
 
@@ -434,12 +517,26 @@ onMounted(() => {
           <div v-if="isTransactionsLoading" class="text-xs text-slate-500">Обновление…</div>
         </div>
 
+        <div
+          v-if="listError"
+          class="mb-3 rounded border border-rose-500/60 bg-rose-500/10 px-3 py-2 text-xs text-rose-100"
+        >
+          {{ listError }}
+        </div>
+
         <div v-if="!transactions.length && !isTransactionsLoading" class="rounded border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300">
           Пока нет записей. Добавьте первую транзакцию.
         </div>
 
         <ul v-else class="divide-y divide-slate-800">
-          <li v-for="transaction in transactions" :key="transaction.id" class="py-3">
+          <li
+            v-for="transaction in transactions"
+            :key="transaction.id"
+            class="py-3"
+            :class="{
+              'bg-indigo-500/5': editingId === transaction.id
+            }"
+          >
             <div class="flex items-start justify-between gap-4">
               <div class="space-y-1">
                 <p class="text-sm font-semibold text-slate-100">
@@ -452,11 +549,32 @@ onMounted(() => {
                   {{ transaction.note }}
                 </p>
               </div>
-              <div
-                class="shrink-0 rounded-full px-3 py-1 text-sm font-semibold"
-                :class="transaction.type === 'income' ? 'bg-green-900/40 text-green-200' : 'bg-rose-900/40 text-rose-200'"
-              >
-                {{ formatAmount(transaction.amountMinor, transaction.type) }}
+              <div class="flex flex-col items-end gap-2">
+                <div
+                  class="rounded-full px-3 py-1 text-sm font-semibold"
+                  :class="transaction.type === 'income' ? 'bg-green-900/40 text-green-200' : 'bg-rose-900/40 text-rose-200'"
+                >
+                  {{ formatAmount(transaction.amountMinor, transaction.type) }}
+                </div>
+                <div class="flex gap-2">
+                  <button
+                    type="button"
+                    class="rounded border border-slate-700 px-2 py-1 text-xs font-semibold text-slate-200 transition hover:border-slate-500 disabled:cursor-not-allowed disabled:opacity-60"
+                    :disabled="busyTransactionId === transaction.id"
+                    @click="startEdit(transaction)"
+                  >
+                    Редактировать
+                  </button>
+                  <button
+                    type="button"
+                    class="rounded border border-rose-900 px-2 py-1 text-xs font-semibold text-rose-200 transition hover:border-rose-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    :disabled="busyTransactionId === transaction.id"
+                    @click="deleteTransaction(transaction)"
+                  >
+                    <span v-if="busyTransactionId === transaction.id">Удаляем…</span>
+                    <span v-else>Удалить</span>
+                  </button>
+                </div>
               </div>
             </div>
           </li>

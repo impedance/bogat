@@ -9,15 +9,15 @@
 - Money helper layer shipped: `useMoney.ts` with conversion/formatting helpers plus Vitest unit tests (`npm run test` uses the threads pool to satisfy sandbox limits).
 - Stage 1 groundwork: entity Zod schemas live in `app/types/budget.ts`, Dexie client/seed modules (`app/db`) define schema + default data, and repositories for accounts/categories/transactions enforce validation and encapsulate all IndexedDB access.
 - Stage 1 completion: Pinia stores for accounts, categories, and transactions wrap the repositories, refresh after mutations, and expose derived balance selectors (overall/per account/per category) with Vitest coverage targeting the critical calculations.
-- Stage 2 UI: собраны страницы `accounts.vue` и `categories.vue` (создание/редактирование, архивирование/восстановление, балансы из стора транзакций) и обновлена навигация.
+- Stage 2 UI: собраны страницы `accounts.vue` и `categories.vue` (создание/редактирование, архивирование/восстановление, балансы из стора транзакций) и обновлена навигация. Страница `transactions.vue` поддерживает создание, фильтры/поиск, ленту и редактирование/удаление записей через стор.
 
 ## In Progress
-- Stage 2 (Transactions & calculations UI): страница транзакций реализует создание, фильтры (счёт/категория/тип/даты/поиск) и ленту; впереди редактирование/удаление, MoneyInput, быстрые суммы и полноценный дашборд.
+- Stage 2 (Transactions & calculations UI): осталось добавить MoneyInput/быстрые суммы и дашбордные агрегаты на базе селекторов стора.
 
 ## Next Up
-1. Улучшить транзакции: редактирование/удаление, маска MoneyInput, быстрые суммы и отображение балансов на дашборде.
-2. Прокачать дашборд под селекторы балансов и пустые состояния перед PWA/бэкап-этапами.
-3. Подготовить экспорт/импорт JSON и офлайн/PWA проверки после стабилизации основных форм.
+- 1. Улучшить транзакции: маска MoneyInput, быстрые суммы и отображение балансов на дашборде.
+ 2. Прокачать дашборд под селекторы балансов и пустые состояния перед PWA/бэкап-этапами.
+ 3. Подготовить экспорт/импорт JSON и офлайн/PWA проверки после стабилизации основных форм.
 
 ## Known Risks / Blockers
 - iOS PWA install and storage limits must be verified on-device once a build is available.

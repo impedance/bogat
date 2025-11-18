@@ -3,8 +3,8 @@
 **Last reviewed:** 2025-11-17
 
 ## Current Focus
-- Browser MVP (Stages 0–2): data layer (Dexie + repositories + Pinia stores/selectors) is complete. Stage 2 UI marches forward—транзакции готовы, добавлены экраны счетов/категорий.
-- Базовая страница транзакций собрана: форма создания, фильтры (счёт/категория/тип/даты/поиск) и лента с форматированием сумм через `useMoney`. Навбар ведёт на дашборд, транзакции, счета, категории.
+- Browser MVP (Stages 0–2): data layer (Dexie + repositories + Pinia stores/selectors) is complete. Stage 2 UI marches forward — транзакции готовы, добавлены экраны счетов/категорий.
+- Страница транзакций теперь поддерживает создание, фильтры (счёт/категория/тип/даты/поиск), ленту и редактирование/удаление записей. Навбар ведёт на дашборд, транзакции, счета, категории.
 - Страницы `accounts.vue` и `categories.vue` реализуют создание/редактирование, архивирование/восстановление и отображают балансы по данным транзакций.
 - Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) + entity Zod schemas live with Vitest coverage—reuse them across forms and validation flows.
 - Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
@@ -12,9 +12,16 @@
 - Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
 
 ## Near-Term Tasks
-- Усилить транзакции: добавить редактирование/удаление, маску MoneyInput/быстрые суммы и вывести агрегаты на дашборд.
+- Усилить транзакции: добавить маску MoneyInput/быстрые суммы и вывести агрегаты на дашборд.
 - Привести дашборд к селекторам балансов (общий/по счетам) и пустым состояниям.
 - Add high-level selector/validator tests for remaining store logic as UI flows harden, then prepare for Stage 2 feature work (MoneyInput mask, filters, list interactions).
+
+### Параллельные дорожки (готовы к распределению)
+- MoneyInput + транзакции: `components/MoneyInput.vue` + интеграция в `pages/transactions.vue`.
+- Дашборд: пересборка `pages/index.vue` на селекторах балансов, пустые состояния/CTA.
+- PWA/offline: конфиг `nuxt.config.ts` + SW/манифест, offline-индикатор и баннер установки.
+- Бэкап/импорт: Zod-схема snapshot + экспорт/импорт в `pages/settings.vue` (композабл/репозиторий).
+- Тесты/полировка: покрытие стор/валидаторов/MoneyInput, smoke add→filter→export→import, UI пустые состояния и a11y.
 
 ## Stage 1 — Detailed Backlog (assignable slices)
 1. **Domain primitives & validation ready** — ✅ `app/types/budget.ts` now exports Zod schemas + derived TS types; `useMoney` helpers stay the single source of money conversions/tests.
