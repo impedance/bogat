@@ -1,10 +1,11 @@
 # Active Context — YNAB-lite PWA
 
-**Last reviewed:** 2025-11-17
+**Last reviewed:** 2025-11-18
 
 ## Current Focus
-- Browser MVP (Stages 0–2): data layer (Dexie + repositories + Pinia stores/selectors) is complete. Stage 2 UI marches forward — транзакции готовы, добавлены экраны счетов/категорий.
-- Страница транзакций теперь поддерживает создание, фильтры (счёт/категория/тип/даты/поиск), ленту и редактирование/удаление записей. Навбар ведёт на дашборд, транзакции, счета, категории.
+- Browser MVP (Stages 0–2) закрыт: данные (Dexie + repositories + Pinia stores/selectors) и UI (транзакции + дашборд) готовы. Дальше стартуем Stage 3 (PWA/offline) и Stage 4 (JSON backup/import).
+- Страница транзакций теперь использует `components/MoneyInput.vue` — маска денег, цифровая клавиатура и быстрые суммы позволяют вводить копейки без ошибок (`toMinor`/`fromMinor`). Быстрые суммы наращивают текущую сумму.
+- Дашборд (`pages/index.vue`) подключён к Pinia селекторам (`overallBalance`, `balanceByAccount`, `incomeTotal`, `expenseTotal`) и выводит KPI, список активных счетов, чек-лист готовности и CTA-пустые состояния.
 - Страницы `accounts.vue` и `categories.vue` реализуют создание/редактирование, архивирование/восстановление и отображают балансы по данным транзакций.
 - Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) + entity Zod schemas live with Vitest coverage—reuse them across forms and validation flows.
 - Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
@@ -12,14 +13,13 @@
 - Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
 
 ## Near-Term Tasks
-- Усилить транзакции: добавить маску MoneyInput/быстрые суммы и вывести агрегаты на дашборд.
-- Привести дашборд к селекторам балансов (общий/по счетам) и пустым состояниям.
-- Add high-level selector/validator tests for remaining store logic as UI flows harden, then prepare for Stage 2 feature work (MoneyInput mask, filters, list interactions).
+- **Stage 3 / PWA**: донастроить `@vite-pwa/nuxt` (manifest, workbox), добавить офлайн-индикатор и инструкцию «Добавить на Домой», провести ручной офлайн-тест.
+- **Stage 4 / Backup**: описать Zod-схему snapshot`а, собрать экспорт/импорт JSON на `pages/settings.vue`, завести композабл/репозиторий.
+- **Полировка/тесты**: дописать тесты для MoneyInput/сторов/валидаторов + smoke-сценарий add→filter→export→import.
+- Дашборд и новая MoneyInput заданы контракты: не ломать `components/MoneyInput.vue` API (v-model string, quick суммы добавляют значение) и помнить, что дашборд следует текущему состоянию фильтров стора транзакций.
 
 ### Параллельные дорожки (готовы к распределению)
-- MoneyInput + транзакции: `components/MoneyInput.vue` + интеграция в `pages/transactions.vue`.
-- Дашборд: пересборка `pages/index.vue` на селекторах балансов, пустые состояния/CTA.
-- PWA/offline: конфиг `nuxt.config.ts` + SW/манифест, offline-индикатор и баннер установки.
+- PWA/offline: конфиг `nuxt.config.ts` + SW/манифест, offline-индикатор/баннер установки.
 - Бэкап/импорт: Zod-схема snapshot + экспорт/импорт в `pages/settings.vue` (композабл/репозиторий).
 - Тесты/полировка: покрытие стор/валидаторов/MoneyInput, smoke add→filter→export→import, UI пустые состояния и a11y.
 
@@ -37,5 +37,5 @@
 
 ## Coordination Notes
 - Stage 0 scaffold completed (Nuxt + Tailwind + Pinia + PWA) and recorded in `progress.md`.
-- Vitest (`npm run test`) is configured via `vitest.config.ts` to run in the `threads` pool because the sandbox blocks forked workers. Keep this setting when adding more suites (recent run covers money helpers; add store/repo cases next).
-- Update `progress.md` after data layer implementation and whenever plan stages shift (accounts/categories/transactions repositories exist; next write Pinia wrappers & selector tests).
+- Vitest (`npm run test`) is configured via `vitest.config.ts` to run in the `threads` pool because the sandbox blocks forked workers. Keep this setting when adding more suites (покрытие есть для money helpers и selectors).
+- Stage 2 закрыт, поэтому следующий апдейт `progress.md` отражает переход к этапам PWA/backup/полировки.

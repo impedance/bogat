@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 
+import MoneyInput from '~/components/MoneyInput.vue'
 import { useMoney } from '~/app/composables/useMoney'
 import { transactionPayloadSchema, type CategoryType, type Transaction } from '~/app/types/budget'
 import { useAccountsStore } from '~/stores/accounts'
@@ -352,17 +353,7 @@ onMounted(() => {
             </label>
 
             <div class="grid grid-cols-2 gap-3">
-              <label class="space-y-1 text-sm">
-                <span class="text-slate-300">Сумма</span>
-                <input
-                  v-model="form.amount"
-                  type="text"
-                  inputmode="decimal"
-                  placeholder="0.00"
-                  class="w-full rounded border border-slate-800 bg-slate-900 px-3 py-2 text-sm"
-                  required
-                />
-              </label>
+              <MoneyInput v-model="form.amount" :disabled="!hasEntities" />
               <label class="space-y-1 text-sm">
                 <span class="text-slate-300">Дата</span>
                 <input
