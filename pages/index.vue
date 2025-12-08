@@ -126,6 +126,8 @@ onMounted(() => {
       </p>
     </header>
 
+    <AddToHomeBanner />
+
     <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div class="rounded-lg border border-slate-800 bg-surface-subtle/40 p-4">
         <p class="text-xs uppercase tracking-wide text-slate-500">Общий баланс</p>

@@ -3,7 +3,7 @@
 **Last reviewed:** 2025-11-18
 
 ## Current Focus
-- Browser MVP (Stages 0–2) закрыт: данные (Dexie + repositories + Pinia stores/selectors) и UI (транзакции + дашборд) готовы. Дальше стартуем Stage 3 (PWA/offline) и Stage 4 (JSON backup/import).
+- Browser MVP (Stages 0–2) закрыт: данные (Dexie + repositories + Pinia stores/selectors) и UI (транзакции + дашборд) готовы. Stage 3 (PWA/offline) тоже закрыт: `nuxt.config.ts` содержит полный манифест/Workbox, иконки генерируются в `public/icons`, layout показывает офлайн-индикатор, а дашборд — баннер установки «Добавить на Домой». Следующий крупный блок — Stage 4 (JSON backup/import).
 - Страница транзакций теперь использует `components/MoneyInput.vue` — маска денег, цифровая клавиатура и быстрые суммы позволяют вводить копейки без ошибок (`toMinor`/`fromMinor`). Быстрые суммы наращивают текущую сумму.
 - Дашборд (`pages/index.vue`) подключён к Pinia селекторам (`overallBalance`, `balanceByAccount`, `incomeTotal`, `expenseTotal`) и выводит KPI, список активных счетов, чек-лист готовности и CTA-пустые состояния.
 - Страницы `accounts.vue` и `categories.vue` реализуют создание/редактирование, архивирование/восстановление и отображают балансы по данным транзакций.
@@ -13,13 +13,13 @@
 - Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
 
 ## Near-Term Tasks
-- **Stage 3 / PWA**: донастроить `@vite-pwa/nuxt` (manifest, workbox), добавить офлайн-индикатор и инструкцию «Добавить на Домой», провести ручной офлайн-тест.
 - **Stage 4 / Backup**: описать Zod-схему snapshot`а, собрать экспорт/импорт JSON на `pages/settings.vue`, завести композабл/репозиторий.
+- **PWA smoke**: прогнать офлайн смоук и установку на реальном устройстве (iPhone SE) теперь, когда манифест/иконки готовы.
 - **Полировка/тесты**: дописать тесты для MoneyInput/сторов/валидаторов + smoke-сценарий add→filter→export→import.
 - Дашборд и новая MoneyInput заданы контракты: не ломать `components/MoneyInput.vue` API (v-model string, quick суммы добавляют значение) и помнить, что дашборд следует текущему состоянию фильтров стора транзакций.
 
 ### Параллельные дорожки (готовы к распределению)
-- PWA/offline: конфиг `nuxt.config.ts` + SW/манифест, offline-индикатор/баннер установки.
+- PWA/offline: закрыто — текущая задача только в ручной валидации на устройстве.
 - Бэкап/импорт: Zod-схема snapshot + экспорт/импорт в `pages/settings.vue` (композабл/репозиторий).
 - Тесты/полировка: покрытие стор/валидаторов/MoneyInput, smoke add→filter→export→import, UI пустые состояния и a11y.
 
@@ -38,4 +38,4 @@
 ## Coordination Notes
 - Stage 0 scaffold completed (Nuxt + Tailwind + Pinia + PWA) and recorded in `progress.md`.
 - Vitest (`npm run test`) is configured via `vitest.config.ts` to run in the `threads` pool because the sandbox blocks forked workers. Keep this setting when adding more suites (покрытие есть для money helpers и selectors).
-- Stage 2 закрыт, поэтому следующий апдейт `progress.md` отражает переход к этапам PWA/backup/полировки.
+- Stage 3 закрыт; `progress.md` зафиксировал переход к Stage 4 (backup/import) и полировке.

@@ -15,6 +15,8 @@
       </div>
     </header>
 
+    <OfflineIndicator />
+
     <main class="flex-1">
       <div class="mx-auto w-full max-w-4xl px-4 py-6">
         <slot />
