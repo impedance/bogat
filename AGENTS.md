@@ -4,9 +4,9 @@ This file is the primary entry point for any AI agent working in this repository
 
 ## Required Reference Documents
 
-- `ai-proto-3.md` — Defines the AICODE tagging protocol for in-code memory notes (WHY/TRAP/LINK/TODO/ASK) and the expected session workflow around them. Follow it when adding, reading, or updating AICODE comments.
+- `memory-bank/ai-anchors.md` — Defines the AICODE-anchors protocol for in-code memory notes and the expected session workflow around them. Follow it when adding, reading, or updating AICODE comments.
 - `Agent's Memory Bank` — Explains how to use the Memory Bank (`memory-bank/` directory) as the persistent context layer between sessions. Read all memory bank files at task start and keep `activeContext.md` / `progress.md` current.
-- `ynab-lite-pwa-plan.md` — Project roadmap and functional specification for the YNAB-lite PWA. Treat it as the authoritative source for scope, stack, and delivery order.
+- `docs/ynab-lite-pwa-plan.md` — Project roadmap and functional specification for the YNAB-lite PWA. Treat it as the authoritative source for scope, stack, and delivery order.
 
 Always consult all three chapters and document before planning or executing work. They govern how context is captured, recalled, and maintained across sessions, and detail what “done” looks like for the product.
 
@@ -15,7 +15,7 @@ Always consult all three chapters and document before planning or executing work
 1. Read this `AGENTS.md` to refresh the workflow expectations.
 2. Read `Agent's Memory Bank`, then load every file under `memory-bank/` to recover persistent context.
 3. Review `ynab-lite-pwa-plan.md` to align on current priorities, milestones, and technical decisions.
-4. Follow `AICODE Agent Protocol` when scanning code for existing AICODE tags and when recording new knowledge.
+4. Follow `AICODE-anchors` when scanning code for existing AICODE tags and when recording new knowledge.
 
 ## Memory Bank Expectations
 

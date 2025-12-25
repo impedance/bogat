@@ -1,6 +1,6 @@
 # Progress — YNAB-lite PWA
 
-**Last updated:** 2025-11-19
+**Last updated:** 2025-12-25
 
 ## Completed
 - Project plan captured in `ynab-lite-pwa-plan.md` and mirrored across Memory Bank.
@@ -13,6 +13,7 @@
 - Stage 2 завершён: `components/MoneyInput.vue` с маской/цифровой клавиатурой/быстрыми суммами встроен в форму транзакций, а `pages/index.vue` пересобран на Pinia-селекторах (KPI, список счетов, чек-лист и CTA пустых состояний).
 - Stage 3 (PWA/offline): `nuxt.config.ts` содержит расширенный манифест/Workbox с генерацией иконок (`public/icons`), layout подключает офлайн-индикатор (`components/OfflineIndicator.vue`), а дашборд показывает баннер установки/инструкции (`components/AddToHomeBanner.vue`). Service worker работает и в dev (pwa.devOptions); остаётся ручное подтверждение установки/offline на iPhone SE.
 - Stage 4 (JSON backup/import): `backupSnapshotSchema` в `app/types/budget.ts`, репозиторий `app/repositories/backup.ts`, UI в `pages/settings.vue` (экспорт/предпросмотр/импорт) и unit-тест `tests/repositories/backup.test.ts` закрывают сценарий резервных копий. Импорт полностью очищает Dexie перед восстановлением.
+- Документы: `docs/envelope-budget-plan.md` (blueprint zero-based budgeting с TBB/assignments/страницей бюджета) и `docs/ynab-comparison.md` (сравнение с YNAB). Реализация плана не начата, потребует Dexie v2 + backup snapshot v2.
 
 ## In Progress
 - Stage 5 (полировка/тесты): расширение покрытия (MoneyInput/сторы/валидаторы), smoke add→filter→export→import, ручной Device smoke и empty states/a11y.
@@ -22,7 +23,9 @@
 2. Smoke add→filter→export→import (Vitest/ручной) с настоящим snapshot, фиксация результатов и проверка фильтров/балансов.
 3. Device verification: iOS Safari (iPhone SE) install/offline, `AddToHomeBanner` + service worker.
 4. JSON import preview: проверка предупреждения/результата import и согласованности данных в `/settings`.
+5. После Stage 5 — утвердить стратегию миграции для zero-based budgeting (docs/envelope-budget-plan.md): Dexie/backup v2, выбор поддержки импорта v1 или только v2, затем начать реализацию.
 
 ## Known Risks / Blockers
 - iOS PWA install/offline и storage limits must be verified on-device once a build is available.
 - Smoke add→filter→export→import (including JSON import preview) ещё не прогнан вручную/в тестах, поэтому пока сформален риск регрессии.
+- Zero-based budgeting потребует миграции Dexie/backup и может сломать импорт v1, если не договориться о стратегии совместимости заранее.
