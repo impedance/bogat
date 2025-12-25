@@ -4,6 +4,7 @@ import {
   BACKUP_SNAPSHOT_VERSION,
   type Account,
   type Category,
+  type CategoryAssignment,
   type Transaction
 } from '~/app/types/budget'
 import { createBackupSnapshot, importBackupSnapshot } from '~/app/repositories/backup'
@@ -45,6 +46,7 @@ const dexieMock = vi.hoisted(() => {
     accounts: createMockTable<Account>(),
     categories: createMockTable<Category>(),
     transactions: createMockTable<Transaction>(),
+    categoryAssignments: createMockTable<CategoryAssignment>(),
     transaction: vi.fn(async (...args: any[]) => {
       const callback = args[args.length - 1]
       await callback()
@@ -57,6 +59,7 @@ vi.mock('~/app/db/client', () => ({
     accounts: dexieMock.accounts.api,
     categories: dexieMock.categories.api,
     transactions: dexieMock.transactions.api,
+    categoryAssignments: dexieMock.categoryAssignments.api,
     transaction: dexieMock.transaction
   })
 }))
@@ -101,11 +104,23 @@ function createTransaction(override: Partial<Transaction> = {}): Transaction {
   }
 }
 
+function createCategoryAssignment(override: Partial<CategoryAssignment> = {}): CategoryAssignment {
+  return {
+    id: override.id ?? '2025-12:category-1',
+    month: override.month ?? '2025-12',
+    categoryId: override.categoryId ?? 'category-1',
+    assignedMinor: override.assignedMinor ?? 5_000,
+    createdAt: override.createdAt ?? BASE_TIMESTAMP,
+    updatedAt: override.updatedAt ?? BASE_TIMESTAMP
+  }
+}
+
 describe('backup repository', () => {
   beforeEach(() => {
     dexieMock.accounts.setRows([])
     dexieMock.categories.setRows([])
     dexieMock.transactions.setRows([])
+    dexieMock.categoryAssignments.setRows([])
     vi.clearAllMocks()
   })
 
@@ -124,19 +139,35 @@ describe('backup repository', () => {
     expect(snapshot.accounts).toEqual([account])
     expect(snapshot.categories).toEqual([category])
     expect(snapshot.transactions).toEqual([transaction])
+    expect(snapshot.categoryAssignments).toEqual([])
+  })
+
+  it('includes categoryAssignments in snapshot when present', async () => {
+    const account = createAccount()
+    const category = createCategory()
+    const assignment = createCategoryAssignment()
+    dexieMock.accounts.setRows([account])
+    dexieMock.categories.setRows([category])
+    dexieMock.categoryAssignments.setRows([assignment])
+
+    const snapshot = await createBackupSnapshot()
+
+    expect(snapshot.categoryAssignments).toEqual([assignment])
   })
 
   it('replaces Dexie data when importing a snapshot', async () => {
     dexieMock.accounts.setRows([createAccount({ id: 'stale-account' })])
     dexieMock.categories.setRows([createCategory({ id: 'stale-category' })])
     dexieMock.transactions.setRows([createTransaction({ id: 'stale-transaction' })])
+    dexieMock.categoryAssignments.setRows([createCategoryAssignment({ id: '2025-11:stale' })])
 
     const snapshotData = {
       version: BACKUP_SNAPSHOT_VERSION,
       exportedAt: '2025-11-18T12:00:00.000Z',
       accounts: [createAccount({ id: 'new-account', name: 'Депозит' })],
       categories: [createCategory({ id: 'new-category', name: 'Подарки' })],
-      transactions: [createTransaction({ id: 'new-transaction', note: 'Gift' })]
+      transactions: [createTransaction({ id: 'new-transaction', note: 'Gift' })],
+      categoryAssignments: []
     }
 
     await importBackupSnapshot(snapshotData)
@@ -144,9 +175,29 @@ describe('backup repository', () => {
     expect(dexieMock.accounts.api.clear).toHaveBeenCalledTimes(1)
     expect(dexieMock.categories.api.clear).toHaveBeenCalledTimes(1)
     expect(dexieMock.transactions.api.clear).toHaveBeenCalledTimes(1)
+    expect(dexieMock.categoryAssignments.api.clear).toHaveBeenCalledTimes(1)
     expect(dexieMock.accounts.getRows()).toEqual(snapshotData.accounts)
     expect(dexieMock.categories.getRows()).toEqual(snapshotData.categories)
     expect(dexieMock.transactions.getRows()).toEqual(snapshotData.transactions)
+    expect(dexieMock.categoryAssignments.getRows()).toEqual([])
+  })
+
+  it('restores categoryAssignments along with other entities', async () => {
+    const snapshotData = {
+      version: BACKUP_SNAPSHOT_VERSION,
+      exportedAt: '2025-12-25T12:00:00.000Z',
+      accounts: [createAccount()],
+      categories: [createCategory()],
+      transactions: [createTransaction()],
+      categoryAssignments: [
+        createCategoryAssignment({ id: '2025-12:category-1', assignedMinor: 10_000 }),
+        createCategoryAssignment({ id: '2025-12:category-2', categoryId: 'category-2', assignedMinor: 5_000 })
+      ]
+    }
+
+    await importBackupSnapshot(snapshotData)
+
+    expect(dexieMock.categoryAssignments.getRows()).toEqual(snapshotData.categoryAssignments)
   })
 
   it('validates snapshot shape before writing to Dexie', async () => {
@@ -155,6 +206,20 @@ describe('backup repository', () => {
         version: 999,
         exportedAt: 'invalid'
       })
+    ).rejects.toThrowError()
+  })
+
+  it('rejects import of version 1 snapshots (v2-only strategy)', async () => {
+    const v1Snapshot = {
+      version: 1,
+      exportedAt: '2025-12-25T12:00:00.000Z',
+      accounts: [createAccount()],
+      categories: [createCategory()],
+      transactions: [createTransaction()]
+    }
+
+    await expect(
+      importBackupSnapshot(v1Snapshot)
     ).rejects.toThrowError()
   })
 })

@@ -34,6 +34,8 @@ npm run preview
 # Run tests (unit + smoke)
 npm run test
 
+# Always run tests after any code changes
+
 # Validate AICODE anchor comments
 npm run lint:aicode
 ```
