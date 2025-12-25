@@ -2,6 +2,11 @@
 
 Цель: добавить в текущий YNAB‑lite PWA минимально‑достаточную версию zero‑based budgeting (“каждый рубль занят”), где **доходы увеличивают “К распределению”**, а пользователь **назначает** деньги по расходным категориям, получает **доступно/потрачено**, и может **перемещать** деньги между категориями.
 
+## todo tasks
+- [ ] T1 [Параллельно] Определить схемы бюджета и версию бэкапа v2. Контекст: §3/6 задают `monthKey`, `categoryAssignments`, `BACKUP_SNAPSHOT_VERSION = 2`. Действия: добавить в `app/types/budget.ts` `monthKeySchema` (regex `^\\d{4}-\\d{2}$`), `categoryAssignmentSchema` с `assignedMinor`, `createdAt/updatedAt`, экспорт типов; расширить `backupSnapshotSchema` полем `categoryAssignments` и поднять константу версии до 2. Минимальные тесты: Vitest в `tests/types/budget.test.ts` — happy/invalid кейсы для `monthKeySchema` (`2025-12` ок, `2025-1`/`2025-13` нет), `categoryAssignmentSchema` (отрицательные суммы/битые monthKey отклоняются), `backupSnapshotSchema` отвергает `version: 1` и принимает пустые назначения при `version: 2`.
+- [ ] T2 [Параллельно] Подготовить миграцию Dexie v2 под таблицу назначений. Контекст: §3 «Dexie миграция» требует таблицу `categoryAssignments` с индексами `id, month, categoryId`. Действия: обновить `app/db/client.ts` до `version(2)` с новой таблицей, сохранить старые схемы без изменений. Минимальные тесты: Vitest интеграционный кейс в `tests/db/client.test.ts` — БД инициализируется с версией 2, таблица `categoryAssignments` доступна, запись/чтение `id='2025-12:cat_1'` проходит, запрос `where('month').equals('2025-12')` работает.
+- [ ] T3 Поддержать назначения в репозитории бэкапов. Контекст: §6 «Backup/Import» — экспорт/импорт должен включать `categoryAssignments` в одной Dexie-транзакции (clear → bulkAdd). Действия: обновить `app/repositories/backup.ts` для сериализации/восстановления назначений с остальными таблицами. Минимальные тесты: расширить `tests/repositories/backup.test.ts` — снапшот содержит ключ `categoryAssignments` (в том числе пустой), импорт восстанавливает назначения вместе с остальными сущностями, импорт `version: 1` отдаёт ожидаемую ошибку (v2-only стратегия из §8).
+
 ## 1) Scope v1 (что делаем сейчас)
 
 ### Пользовательские возможности
