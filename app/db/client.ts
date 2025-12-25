@@ -1,6 +1,6 @@
 import Dexie, { type Table } from 'dexie'
 
-import type { Account, Category, Transaction } from '~/app/types/budget'
+import type { Account, Category, Transaction, CategoryAssignment } from '~/app/types/budget'
 import { seedDefaults } from './seed'
 
 const DATABASE_NAME = 'ynab-lite'
@@ -9,6 +9,7 @@ export class BudgetDatabase extends Dexie {
   accounts!: Table<Account>
   categories!: Table<Category>
   transactions!: Table<Transaction>
+  categoryAssignments!: Table<CategoryAssignment>
 
   constructor() {
     super(DATABASE_NAME)
@@ -19,6 +20,14 @@ export class BudgetDatabase extends Dexie {
         accounts: 'id, type, archived',
         categories: 'id, type, archived',
         transactions: 'id, accountId, categoryId, date, type'
+      })
+
+    this.version(2)
+      .stores({
+        accounts: 'id, type, archived',
+        categories: 'id, type, archived',
+        transactions: 'id, accountId, categoryId, date, type',
+        categoryAssignments: 'id, month, categoryId'
       })
 
     this.on('populate', (transaction) => {

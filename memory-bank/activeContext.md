@@ -10,6 +10,7 @@
 - Keep the guardrails: Clean Architecture-lite, SOLID, repository adapters и CQRS-lite при взаимодействии с Dexie/Pinia/UI.
 - Дашборд и MoneyInput контракты остаются: `MoneyInput` обещает `v-model string` и quick amounts, дашборд отражает текущие фильтры транзакций.
 - Новый план `docs/envelope-budget-plan.md` описывает упрощённый zero-based budgeting (TBB/assignments, страница бюджета, переносы). Реализация не начата; потребуется Dexie v2 + backup snapshot v2 с таблицей `categoryAssignments` и новым store `budget`. Выбрать стратегию совместимости бэкапов (v1-only vs v1→v2) перед стартом.
+- T1 zero-based budgeting завершён: `monthKeySchema`, `categoryAssignmentSchema`, `BACKUP_SNAPSHOT_VERSION = 2`, и тесты типов добавлены; `backupSnapshotSchema` принимает `categoryAssignments`.
 - В дереве есть новый unit-тест `tests/repositories/backup.test.ts` (пока не в git), подтверждающий полную замену Dexie при импорте snapshot.
 
 ### Параллельные дорожки

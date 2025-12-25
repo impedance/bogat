@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 const BUDGET_ID_SCHEMA = z.string().min(1)
 const DATE_ONLY_REGEX = /^\d{4}-\d{2}-\d{2}$/
+const MONTH_KEY_REGEX = /^\d{4}-\d{2}$/
 
 export const accountTypeSchema = z.enum(['cash', 'card', 'bank'])
 export const categoryTypeSchema = z.enum(['income', 'expense'])
@@ -18,6 +19,14 @@ const isoDateTimeSchema = z
 const dateOnlySchema = z
   .string()
   .regex(DATE_ONLY_REGEX, 'Expected YYYY-MM-DD date string.')
+
+export const monthKeySchema = z
+  .string()
+  .regex(MONTH_KEY_REGEX, 'Expected YYYY-MM month key.')
+  .refine((value) => {
+    const month = Number(value.slice(5))
+    return month >= 1 && month <= 12
+  }, 'Expected month between 01 and 12.')
 
 const baseTimestampsSchema = z.object({
   createdAt: isoDateTimeSchema,
@@ -41,7 +50,7 @@ const noteSchema = z
   .trim()
   .max(280, 'Note must be at most 280 characters.')
 
-export const BACKUP_SNAPSHOT_VERSION = 1 as const
+export const BACKUP_SNAPSHOT_VERSION = 2 as const
 
 export const accountSchema = z
   .object({
@@ -72,6 +81,18 @@ export const transactionSchema = z
     amountMinor: moneyMinorSchema,
     note: noteSchema.optional(),
     date: dateOnlySchema
+  })
+  .and(baseTimestampsSchema)
+
+export const categoryAssignmentSchema = z
+  .object({
+    id: BUDGET_ID_SCHEMA,
+    month: monthKeySchema,
+    categoryId: BUDGET_ID_SCHEMA,
+    assignedMinor: moneyMinorSchema.refine(
+      (value) => value >= 0,
+      'Assigned amount must be at least 0.'
+    )
   })
   .and(baseTimestampsSchema)
 
@@ -117,15 +138,18 @@ export const backupSnapshotSchema = z.object({
   exportedAt: isoDateTimeSchema,
   accounts: z.array(accountSchema),
   categories: z.array(categorySchema),
-  transactions: z.array(transactionSchema)
+  transactions: z.array(transactionSchema),
+  categoryAssignments: z.array(categoryAssignmentSchema).default([])
 })
 
 export type MoneyMinor = z.infer<typeof moneyMinorSchema>
 export type AccountType = z.infer<typeof accountTypeSchema>
 export type CategoryType = z.infer<typeof categoryTypeSchema>
+export type MonthKey = z.infer<typeof monthKeySchema>
 export type Account = z.infer<typeof accountSchema>
 export type Category = z.infer<typeof categorySchema>
 export type Transaction = z.infer<typeof transactionSchema>
+export type CategoryAssignment = z.infer<typeof categoryAssignmentSchema>
 export type AccountPayload = z.infer<typeof accountPayloadSchema>
 export type CategoryPayload = z.infer<typeof categoryPayloadSchema>
 export type TransactionPayload = z.infer<typeof transactionPayloadSchema>

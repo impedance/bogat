@@ -14,6 +14,7 @@
 - Stage 3 (PWA/offline): `nuxt.config.ts` содержит расширенный манифест/Workbox с генерацией иконок (`public/icons`), layout подключает офлайн-индикатор (`components/OfflineIndicator.vue`), а дашборд показывает баннер установки/инструкции (`components/AddToHomeBanner.vue`). Service worker работает и в dev (pwa.devOptions); остаётся ручное подтверждение установки/offline на iPhone SE.
 - Stage 4 (JSON backup/import): `backupSnapshotSchema` в `app/types/budget.ts`, репозиторий `app/repositories/backup.ts`, UI в `pages/settings.vue` (экспорт/предпросмотр/импорт) и unit-тест `tests/repositories/backup.test.ts` закрывают сценарий резервных копий. Импорт полностью очищает Dexie перед восстановлением.
 - Документы: `docs/envelope-budget-plan.md` (blueprint zero-based budgeting с TBB/assignments/страницей бюджета) и `docs/ynab-comparison.md` (сравнение с YNAB). Реализация плана не начата, потребует Dexie v2 + backup snapshot v2.
+- T1 zero-based budgeting: добавлены `monthKeySchema`, `categoryAssignmentSchema`, обновлён `BACKUP_SNAPSHOT_VERSION = 2`, `backupSnapshotSchema` принимает `categoryAssignments`, добавлены unit-тесты типов.
 
 ## In Progress
 - Stage 5 (полировка/тесты): расширение покрытия (MoneyInput/сторы/валидаторы), smoke add→filter→export→import, ручной Device smoke и empty states/a11y.
