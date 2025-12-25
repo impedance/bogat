@@ -9,6 +9,7 @@
             <NuxtLink to="/transactions" class="hover:text-white">Транзакции</NuxtLink>
             <NuxtLink to="/accounts" class="hover:text-white">Счета</NuxtLink>
             <NuxtLink to="/categories" class="hover:text-white">Категории</NuxtLink>
+            <NuxtLink to="/settings" class="hover:text-white">Настройки</NuxtLink>
           </nav>
         </div>
         <p class="text-xs text-slate-400">Local-first budgeting MVP</p>

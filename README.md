@@ -1,75 +1,63 @@
-# Nuxt Minimal Starter
+# YNAB-lite PWA
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Локальный PWA-бюджет, собранный на Nuxt 3 + Tailwind и ориентированный на iPhone SE 2022.  
+Приложение управляет счетами/категориями/транзакциями, показывает дашборд с балансами, работает офлайн и умеет экспортировать/импортировать весь набор данных в валидированный JSON. Dexie выступает системой записи, Pinia — реактивным слоем, а `@vite-pwa/nuxt` поддерживает установку и сервис-воркер.
 
-## Setup
+## Что уже сделано
 
-Make sure to install dependencies:
+- Stage 0–2: scaffold Nuxt+Pinia, модели/репозитории, формы транзакций/счетов/категорий и `MoneyInput` с маской и быстрыми суммами.
+- Stage 3: PWA manifest/Workbox, OfflineIndicator, AddToHomeBanner и конфигурация `nuxt.config.ts` для installable офлайн-режима.
+- Stage 4: JSON backup/import через `backupSnapshotSchema`, `app/repositories/backup.ts` и UI на `/settings` с предпросмотром и подтверждением полной замены Dexie данных.
+- Текущий фокус: Stage 5 — полировка (тесты, empty-states, a11y) + ручные смоуки add→filter→export→import и валидация на iOS-устройстве.
+
+## Стек
+
+- Nuxt 4 (Vite + Vue 3)  
+- Pinia + Dexie (IndexedDB)  
+- Tailwind CSS  
+- Zod для схем и формы  
+- date-fns для форматирования дат  
+- nanoid для id сущностей  
+- `@vite-pwa/nuxt` для манифеста + Workbox  
+- Vitest для unit/smoke тестов
+
+## Как запускать
 
 ```bash
-# npm
+# установить зависимости (npm или pnpm)
 npm install
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
+# режим разработки
 npm run dev
 
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
+# сборка и предпросмотр
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
 npm run preview
 
-# pnpm
-pnpm preview
+# локальные тесты (useMoney, Pinia selectors, backup repository)
+npm run test
 
-# yarn
-yarn preview
-
-# bun
-bun run preview
+# валидация AICODE-комментариев
+npm run lint:aicode
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Особенности
+
+- Денежные значения хранятся как `amountMinor` (копейки); `useMoney` предоставляет `toMinor`, `fromMinor`, `formatMoney` и валидатор.
+- `MoneyInput` предлагает цифровую клавиатуру, маску и кнопки быстрых сумм — его API нельзя ломать (v-model строка, quick amounts добавляют значение).
+- `transactions`, `accounts`, `categories` хранятся в Pinia и обновляются через репозитории (`app/repositories/*`) с Zod-валидацией.
+- JSON backup snapshot `{ version, exportedAt, accounts, categories, transactions }` валидируется схемой; импорт **перезаписывает** таблицы Dexie (см. `settings.vue` предупреждения и `app/repositories/backup.ts` контракт).
+- PWA-манифест хранится в `nuxt.config.ts`; service worker кеширует шрифт Google и прочие ассеты, а `AddToHomeBanner` подсказывает пользовательские действия на iOS.
+
+## Что проверить вручную
+
+1. Скриншоты/сценарии `add→filter→export→import` в браузере (Vitest smoke/ручной прогон).  
+2. Установка/офлайн на iPhone SE (Safari) — service worker должен работать, `AddToHomeBanner` исчезать, логика фильтров не ломаться.  
+3. JSON экспорт/импорт с полной заменой Dexie и предпросмотром перед импорта.  
+4. Lighthouse PWA (installable + offline ready + TTI < 2.5 с warm start).
+
+## Что дальше
+
+1. Полировка tests: добавить unit для `MoneyInput`, сторов/реп про `accounts` и `categories`, а также сценарий smoke add→filter→export→import.  
+2. Запомыть результаты ручных проверок (iOS install/offline, JSON import warning) в Memory Bank.  
+3. Улучшить пустые состояния и базовую a11y, чтобы формы транзакций/категорий были удобны на клавиатуре и для фокус-режима.

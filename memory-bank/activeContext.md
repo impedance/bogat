@@ -3,25 +3,17 @@
 **Last reviewed:** 2025-11-18
 
 ## Current Focus
-- Browser MVP (Stages 0–2) закрыт: данные (Dexie + repositories + Pinia stores/selectors) и UI (транзакции + дашборд) готовы. Stage 3 (PWA/offline) тоже закрыт: `nuxt.config.ts` содержит полный манифест/Workbox, иконки генерируются в `public/icons`, layout показывает офлайн-индикатор, а дашборд — баннер установки «Добавить на Домой». Следующий крупный блок — Stage 4 (JSON backup/import).
-- Страница транзакций теперь использует `components/MoneyInput.vue` — маска денег, цифровая клавиатура и быстрые суммы позволяют вводить копейки без ошибок (`toMinor`/`fromMinor`). Быстрые суммы наращивают текущую сумму.
-- Дашборд (`pages/index.vue`) подключён к Pinia селекторам (`overallBalance`, `balanceByAccount`, `incomeTotal`, `expenseTotal`) и выводит KPI, список активных счетов, чек-лист готовности и CTA-пустые состояния.
-- Страницы `accounts.vue` и `categories.vue` реализуют создание/редактирование, архивирование/восстановление и отображают балансы по данным транзакций.
-- Money utility helpers (`useMoney` with `toMinor`/`fromMinor`/formatting) + entity Zod schemas live with Vitest coverage—reuse them across forms and validation flows.
-- Enforce the agreed validation stack: TS-first models, Zod on all form submissions, and strict schemas for JSON import/export.
-- Keep the minimal-effective test pyramid: unit tests for money helpers, store/validator coverage (transactions selectors already covered via Vitest), and a single smoke E2E flow for export/import.
-- Apply the lightweight architecture guardrails (Clean Architecture-lite, SOLID responsibilities, repository adapters) when touching Dexie/Pinia/UI layers.
+- Браузерный MVP завершён (Stages 0–4): Dexie + repositories + Pinia, UI транзакций/счетов/категорий, MoneyInput, dashboard, PWA manifest/Workbox и JSON backup/import работают. `app/repositories/backup.ts` фиксирует контракт: импорт полностью заменяет таблицы Dexie, `/settings` показывает предпросмотр и предупреждение перед восстановлением.
+- Утилиты `useMoney`, Zod schemas, `MoneyInput` и Pinia selectors покрыты Vitest; текущая фокусная зона — Stage 5 (тесты/полировка).
+- **Stage 5 / Полировка & тесты:** добавить unit-coverage для `MoneyInput`, stores/репозитория `accounts` и `categories`, расширить валидации, собрать smoke add→filter→export→import, оптимизировать пустые состояния и ключевые a11y-подсказки (фокус, aria, клавиатура).
+- **Device smoke:** прогнать iOS install/offline на iPhone SE Safari (service worker + AddToHomeBanner), задокументировать TTI/Lighthouse и ручной JSON экспорт/импорт с предупреждением/предпросмотром.
+- Keep the guardrails: Clean Architecture-lite, SOLID, repository adapters и CQRS-lite при взаимодействии с Dexie/Pinia/UI.
+- Дашборд и MoneyInput контракты остаются: `MoneyInput` обещает `v-model string` и quick amounts, дашборд отражает текущие фильтры транзакций.
 
-## Near-Term Tasks
-- **Stage 4 / Backup**: описать Zod-схему snapshot`а, собрать экспорт/импорт JSON на `pages/settings.vue`, завести композабл/репозиторий.
-- **PWA smoke**: прогнать офлайн смоук и установку на реальном устройстве (iPhone SE) теперь, когда манифест/иконки готовы.
-- **Полировка/тесты**: дописать тесты для MoneyInput/сторов/валидаторов + smoke-сценарий add→filter→export→import.
-- Дашборд и новая MoneyInput заданы контракты: не ломать `components/MoneyInput.vue` API (v-model string, quick суммы добавляют значение) и помнить, что дашборд следует текущему состоянию фильтров стора транзакций.
-
-### Параллельные дорожки (готовы к распределению)
-- PWA/offline: закрыто — текущая задача только в ручной валидации на устройстве.
-- Бэкап/импорт: Zod-схема snapshot + экспорт/импорт в `pages/settings.vue` (композабл/репозиторий).
-- Тесты/полировка: покрытие стор/валидаторов/MoneyInput, smoke add→filter→export→import, UI пустые состояния и a11y.
+### Параллельные дорожки
+- Device smoke: вручную подтверждать offline/install на iPhone SE и фиксировать результаты в Memory Bank.
+- JSON backup/import: функциональность готова, но нужен smoke и отчет по предупреждению/предпросмотру.
+- Тесты/полировка: покрытие MoneyInput/store/репо, smoke add→filter→export→import, пустые состояния и a11y.
 
 ## Stage 1 — Detailed Backlog (assignable slices)
 1. **Domain primitives & validation ready** — ✅ `app/types/budget.ts` now exports Zod schemas + derived TS types; `useMoney` helpers stay the single source of money conversions/tests.

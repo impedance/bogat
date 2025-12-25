@@ -41,6 +41,8 @@ const noteSchema = z
   .trim()
   .max(280, 'Note must be at most 280 characters.')
 
+export const BACKUP_SNAPSHOT_VERSION = 1 as const
+
 export const accountSchema = z
   .object({
     id: BUDGET_ID_SCHEMA,
@@ -110,6 +112,14 @@ export const transactionFiltersSchema = z.object({
     .optional()
 })
 
+export const backupSnapshotSchema = z.object({
+  version: z.literal(BACKUP_SNAPSHOT_VERSION),
+  exportedAt: isoDateTimeSchema,
+  accounts: z.array(accountSchema),
+  categories: z.array(categorySchema),
+  transactions: z.array(transactionSchema)
+})
+
 export type MoneyMinor = z.infer<typeof moneyMinorSchema>
 export type AccountType = z.infer<typeof accountTypeSchema>
 export type CategoryType = z.infer<typeof categoryTypeSchema>
@@ -121,3 +131,4 @@ export type CategoryPayload = z.infer<typeof categoryPayloadSchema>
 export type TransactionPayload = z.infer<typeof transactionPayloadSchema>
 export type DateRangeFilter = z.infer<typeof dateRangeFilterSchema>
 export type TransactionFilters = z.infer<typeof transactionFiltersSchema>
+export type BackupSnapshot = z.infer<typeof backupSnapshotSchema>
