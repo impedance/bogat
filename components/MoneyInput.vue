@@ -3,8 +3,6 @@ import { computed, ref, watch } from 'vue'
 
 import { useMoney } from '~/app/composables/useMoney'
 
-const DEFAULT_QUICK_AMOUNTS = [500, 1000, 2500, 5000]
-
 interface Props {
   modelValue?: string
   label?: string
@@ -19,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   label: 'Сумма',
   placeholder: '0.00',
   disabled: false,
-  quickAmounts: () => DEFAULT_QUICK_AMOUNTS,
+  quickAmounts: () => [500, 1000, 2500, 5000],
   currencyLabel: '₽'
 })
 

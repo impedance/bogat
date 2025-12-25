@@ -2,14 +2,16 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  srcDir: '.',
+  ssr: false,
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
     '@vite-pwa/nuxt'
   ],
-  css: ['~/assets/css/main.css'],
+  css: ['~/app/assets/css/main.css'],
   pwa: {
-    // AICODE-WHY: Manifest и Workbox конфигурируются здесь, чтобы офлайн-шелл и установка через @vite-pwa/nuxt оставались воспроизводимыми между релизами. [2025-11-18]
+    // AICODE-NOTE: Manifest и Workbox задаются здесь, чтобы офлайн-шелл и установка через @vite-pwa/nuxt оставались воспроизводимыми между релизами. [2025-11-18]
     registerType: 'autoUpdate',
     includeAssets: [
       'favicon.ico',
