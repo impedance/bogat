@@ -1,0 +1,140 @@
+{
+  "version": 2,
+  "exportedAt": "2025-12-25T12:00:00.000Z",
+  "accounts": [
+    {
+      "id": "acc-cash-001",
+      "name": "Наличные",
+      "type": "cash",
+      "currency": "RUB",
+      "archived": false,
+      "createdAt": "2025-12-01T08:00:00.000Z",
+      "updatedAt": "2025-12-25T12:00:00.000Z"
+    },
+    {
+      "id": "acc-card-001",
+      "name": "Карта Сбербанк",
+      "type": "card",
+      "currency": "RUB",
+      "archived": false,
+      "createdAt": "2025-12-01T08:00:00.000Z",
+      "updatedAt": "2025-12-25T12:00:00.000Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-food-001",
+      "name": "Еда",
+      "type": "expense",
+      "isDefault": false,
+      "archived": false,
+      "createdAt": "2025-12-01T08:00:00.000Z",
+      "updatedAt": "2025-12-25T12:00:00.000Z"
+    },
+    {
+      "id": "cat-transport-001",
+      "name": "Транспорт",
+      "type": "expense",
+      "isDefault": false,
+      "archived": false,
+      "createdAt": "2025-12-01T08:00:00.000Z",
+      "updatedAt": "2025-12-25T12:00:00.000Z"
+    },
+    {
+      "id": "cat-entertainment-001",
+      "name": "Развлечения",
+      "type": "expense",
+      "isDefault": false,
+      "archived": false,
+      "createdAt": "2025-12-01T08:00:00.000Z",
+      "updatedAt": "2025-12-25T12:00:00.000Z"
+    },
+    {
+      "id": "cat-salary-001",
+      "name": "Зарплата",
+      "type": "income",
+      "isDefault": false,
+      "archived": false,
+      "createdAt": "2025-12-01T08:00:00.000Z",
+      "updatedAt": "2025-12-25T12:00:00.000Z"
+    },
+    {
+      "id": "cat-bonus-001",
+      "name": "Бонусы",
+      "type": "income",
+      "isDefault": false,
+      "archived": false,
+      "createdAt": "2025-12-01T08:00:00.000Z",
+      "updatedAt": "2025-12-25T12:00:00.000Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "txn-001",
+      "accountId": "acc-cash-001",
+      "categoryId": "cat-food-001",
+      "type": "expense",
+      "amountMinor": 50000,
+      "note": "Продукты в магазине",
+      "date": "2025-12-20",
+      "createdAt": "2025-12-20T14:30:00.000Z",
+      "updatedAt": "2025-12-20T14:30:00.000Z"
+    },
+    {
+      "id": "txn-002",
+      "accountId": "acc-card-001",
+      "categoryId": "cat-transport-001",
+      "type": "expense",
+      "amountMinor": 15000,
+      "note": "Такси до офиса",
+      "date": "2025-12-21",
+      "createdAt": "2025-12-21T09:15:00.000Z",
+      "updatedAt": "2025-12-21T09:15:00.000Z"
+    },
+    {
+      "id": "txn-003",
+      "accountId": "acc-cash-001",
+      "categoryId": "cat-entertainment-001",
+      "type": "expense",
+      "amountMinor": 30000,
+      "note": "Кино с друзьями",
+      "date": "2025-12-22",
+      "createdAt": "2025-12-22T20:00:00.000Z",
+      "updatedAt": "2025-12-22T20:00:00.000Z"
+    },
+    {
+      "id": "txn-004",
+      "accountId": "acc-card-001",
+      "categoryId": "cat-salary-001",
+      "type": "income",
+      "amountMinor": 500000,
+      "note": "Зарплата за ноябрь",
+      "date": "2025-12-01",
+      "createdAt": "2025-12-01T10:00:00.000Z",
+      "updatedAt": "2025-12-01T10:00:00.000Z"
+    },
+    {
+      "id": "txn-005",
+      "accountId": "acc-card-001",
+      "categoryId": "cat-food-001",
+      "type": "expense",
+      "amountMinor": 40000,
+      "note": "Обед в ресторане",
+      "date": "2025-12-23",
+      "createdAt": "2025-12-23T13:00:00.000Z",
+      "updatedAt": "2025-12-23T13:00:00.000Z"
+    },
+    {
+      "id": "txn-006",
+      "accountId": "acc-cash-001",
+      "categoryId": "cat-bonus-001",
+      "type": "income",
+      "amountMinor": 50000,
+      "note": "Бонус декабря",
+      "date": "2025-12-24",
+      "createdAt": "2025-12-24T16:00:00.000Z",
+      "updatedAt": "2025-12-24T16:00:00.000Z"
+    }
+  ],
+  "categoryAssignments": []
+}

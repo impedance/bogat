@@ -5,6 +5,7 @@
 ## Current Focus
 - Браузерный MVP завершён (Stages 0–4): Dexie + repositories + Pinia, UI транзакций/счетов/категорий, MoneyInput, dashboard, PWA manifest/Workbox и JSON backup/import работают. `app/repositories/backup.ts` фиксирует контракт: импорт полностью заменяет таблицы Dexie, `/settings` показывает предпросмотр и предупреждение перед восстановлением.
 - Утилиты `useMoney`, Zod schemas, `MoneyInput` и Pinia selectors покрыты Vitest; текущая фокусная зона — Stage 5 (тесты/полировка).
+- UI-тесты начаты: добавлены Playwright конфиг/скрипты, фикстуры, helper импорта и набор smoke + первые снапшоты (dashboard/transactions/form).
 - **Stage 5 / Полировка & тесты:** добавить unit-coverage для `MoneyInput`, stores/репозитория `accounts` и `categories`, расширить валидации, собрать smoke add→filter→export→import, оптимизировать пустые состояния и ключевые a11y-подсказки (фокус, aria, клавиатура).
 - **Device smoke:** прогнать iOS install/offline на iPhone SE Safari (service worker + AddToHomeBanner), задокументировать TTI/Lighthouse и ручной JSON экспорт/импорт с предупреждением/предпросмотром.
 - Keep the guardrails: Clean Architecture-lite, SOLID, repository adapters и CQRS-lite при взаимодействии с Dexie/Pinia/UI.

@@ -1,0 +1,335 @@
+{
+  "version": 2,
+  "exportedAt": "2025-02-10T10:00:00.000Z",
+  "accounts": [
+    {
+      "id": "acc_cash",
+      "name": "Cash",
+      "type": "cash",
+      "currency": "RUB",
+      "createdAt": "2024-12-20T09:00:00.000Z",
+      "updatedAt": "2024-12-20T09:00:00.000Z"
+    },
+    {
+      "id": "acc_card",
+      "name": "Card",
+      "type": "card",
+      "currency": "RUB",
+      "createdAt": "2024-12-20T09:05:00.000Z",
+      "updatedAt": "2024-12-20T09:05:00.000Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat_food",
+      "name": "Food",
+      "type": "expense",
+      "isDefault": true,
+      "createdAt": "2024-12-20T10:00:00.000Z",
+      "updatedAt": "2024-12-20T10:00:00.000Z"
+    },
+    {
+      "id": "cat_transport",
+      "name": "Transport",
+      "type": "expense",
+      "createdAt": "2024-12-20T10:05:00.000Z",
+      "updatedAt": "2024-12-20T10:05:00.000Z"
+    },
+    {
+      "id": "cat_utilities",
+      "name": "Utilities",
+      "type": "expense",
+      "createdAt": "2024-12-20T10:10:00.000Z",
+      "updatedAt": "2024-12-20T10:10:00.000Z"
+    },
+    {
+      "id": "cat_health",
+      "name": "Health",
+      "type": "expense",
+      "createdAt": "2024-12-20T10:15:00.000Z",
+      "updatedAt": "2024-12-20T10:15:00.000Z"
+    },
+    {
+      "id": "cat_salary",
+      "name": "Salary",
+      "type": "income",
+      "isDefault": true,
+      "createdAt": "2024-12-20T10:20:00.000Z",
+      "updatedAt": "2024-12-20T10:20:00.000Z"
+    },
+    {
+      "id": "cat_gifts",
+      "name": "Gifts",
+      "type": "income",
+      "createdAt": "2024-12-20T10:25:00.000Z",
+      "updatedAt": "2024-12-20T10:25:00.000Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "txn_101",
+      "accountId": "acc_card",
+      "categoryId": "cat_salary",
+      "type": "income",
+      "amountMinor": 2200000,
+      "note": "jan salary",
+      "date": "2025-01-05",
+      "createdAt": "2025-01-05T09:00:00.000Z",
+      "updatedAt": "2025-01-05T09:00:00.000Z"
+    },
+    {
+      "id": "txn_102",
+      "accountId": "acc_card",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 45000,
+      "note": "coffee",
+      "date": "2025-01-06",
+      "createdAt": "2025-01-06T08:30:00.000Z",
+      "updatedAt": "2025-01-06T08:30:00.000Z"
+    },
+    {
+      "id": "txn_103",
+      "accountId": "acc_cash",
+      "categoryId": "cat_transport",
+      "type": "expense",
+      "amountMinor": 12000,
+      "note": "metro",
+      "date": "2025-01-06",
+      "createdAt": "2025-01-06T11:15:00.000Z",
+      "updatedAt": "2025-01-06T11:15:00.000Z"
+    },
+    {
+      "id": "txn_104",
+      "accountId": "acc_cash",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 9800,
+      "note": "snack",
+      "date": "2025-01-07",
+      "createdAt": "2025-01-07T12:00:00.000Z",
+      "updatedAt": "2025-01-07T12:00:00.000Z"
+    },
+    {
+      "id": "txn_105",
+      "accountId": "acc_card",
+      "categoryId": "cat_utilities",
+      "type": "expense",
+      "amountMinor": 125000,
+      "note": "internet",
+      "date": "2025-01-08",
+      "createdAt": "2025-01-08T18:00:00.000Z",
+      "updatedAt": "2025-01-08T18:00:00.000Z"
+    },
+    {
+      "id": "txn_106",
+      "accountId": "acc_cash",
+      "categoryId": "cat_health",
+      "type": "expense",
+      "amountMinor": 34000,
+      "note": "pharmacy",
+      "date": "2025-01-09",
+      "createdAt": "2025-01-09T16:20:00.000Z",
+      "updatedAt": "2025-01-09T16:20:00.000Z"
+    },
+    {
+      "id": "txn_107",
+      "accountId": "acc_cash",
+      "categoryId": "cat_gifts",
+      "type": "income",
+      "amountMinor": 150000,
+      "note": "bonus",
+      "date": "2025-01-10",
+      "createdAt": "2025-01-10T10:00:00.000Z",
+      "updatedAt": "2025-01-10T10:00:00.000Z"
+    },
+    {
+      "id": "txn_108",
+      "accountId": "acc_card",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 76000,
+      "note": "groceries",
+      "date": "2025-01-11",
+      "createdAt": "2025-01-11T16:30:00.000Z",
+      "updatedAt": "2025-01-11T16:30:00.000Z"
+    },
+    {
+      "id": "txn_109",
+      "accountId": "acc_cash",
+      "categoryId": "cat_transport",
+      "type": "expense",
+      "amountMinor": 5400,
+      "note": "bus",
+      "date": "2025-01-12",
+      "createdAt": "2025-01-12T08:00:00.000Z",
+      "updatedAt": "2025-01-12T08:00:00.000Z"
+    },
+    {
+      "id": "txn_110",
+      "accountId": "acc_card",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 30000,
+      "note": "lunch",
+      "date": "2025-01-13",
+      "createdAt": "2025-01-13T13:10:00.000Z",
+      "updatedAt": "2025-01-13T13:10:00.000Z"
+    },
+    {
+      "id": "txn_111",
+      "accountId": "acc_cash",
+      "categoryId": "cat_utilities",
+      "type": "expense",
+      "amountMinor": 88000,
+      "note": "water",
+      "date": "2025-01-14",
+      "createdAt": "2025-01-14T08:00:00.000Z",
+      "updatedAt": "2025-01-14T08:00:00.000Z"
+    },
+    {
+      "id": "txn_112",
+      "accountId": "acc_card",
+      "categoryId": "cat_health",
+      "type": "expense",
+      "amountMinor": 21000,
+      "note": "clinic",
+      "date": "2025-01-15",
+      "createdAt": "2025-01-15T15:00:00.000Z",
+      "updatedAt": "2025-01-15T15:00:00.000Z"
+    },
+    {
+      "id": "txn_113",
+      "accountId": "acc_cash",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 15000,
+      "note": "breakfast",
+      "date": "2025-01-16",
+      "createdAt": "2025-01-16T07:40:00.000Z",
+      "updatedAt": "2025-01-16T07:40:00.000Z"
+    },
+    {
+      "id": "txn_114",
+      "accountId": "acc_card",
+      "categoryId": "cat_transport",
+      "type": "expense",
+      "amountMinor": 18000,
+      "note": "taxi",
+      "date": "2025-01-17",
+      "createdAt": "2025-01-17T21:20:00.000Z",
+      "updatedAt": "2025-01-17T21:20:00.000Z"
+    },
+    {
+      "id": "txn_115",
+      "accountId": "acc_cash",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 9200,
+      "note": "tea",
+      "date": "2025-01-18",
+      "createdAt": "2025-01-18T09:25:00.000Z",
+      "updatedAt": "2025-01-18T09:25:00.000Z"
+    },
+    {
+      "id": "txn_116",
+      "accountId": "acc_card",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 61000,
+      "note": "dinner",
+      "date": "2025-01-19",
+      "createdAt": "2025-01-19T19:30:00.000Z",
+      "updatedAt": "2025-01-19T19:30:00.000Z"
+    },
+    {
+      "id": "txn_117",
+      "accountId": "acc_cash",
+      "categoryId": "cat_health",
+      "type": "expense",
+      "amountMinor": 27000,
+      "note": "vitamins",
+      "date": "2025-01-20",
+      "createdAt": "2025-01-20T10:10:00.000Z",
+      "updatedAt": "2025-01-20T10:10:00.000Z"
+    },
+    {
+      "id": "txn_118",
+      "accountId": "acc_card",
+      "categoryId": "cat_utilities",
+      "type": "expense",
+      "amountMinor": 64000,
+      "note": "electric",
+      "date": "2025-01-21",
+      "createdAt": "2025-01-21T08:30:00.000Z",
+      "updatedAt": "2025-01-21T08:30:00.000Z"
+    },
+    {
+      "id": "txn_119",
+      "accountId": "acc_cash",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 13000,
+      "note": "bakery",
+      "date": "2025-01-22",
+      "createdAt": "2025-01-22T08:05:00.000Z",
+      "updatedAt": "2025-01-22T08:05:00.000Z"
+    },
+    {
+      "id": "txn_120",
+      "accountId": "acc_card",
+      "categoryId": "cat_salary",
+      "type": "income",
+      "amountMinor": 2200000,
+      "note": "feb salary",
+      "date": "2025-02-01",
+      "createdAt": "2025-02-01T09:00:00.000Z",
+      "updatedAt": "2025-02-01T09:00:00.000Z"
+    },
+    {
+      "id": "txn_121",
+      "accountId": "acc_cash",
+      "categoryId": "cat_transport",
+      "type": "expense",
+      "amountMinor": 15000,
+      "note": "train",
+      "date": "2025-02-02",
+      "createdAt": "2025-02-02T08:10:00.000Z",
+      "updatedAt": "2025-02-02T08:10:00.000Z"
+    },
+    {
+      "id": "txn_122",
+      "accountId": "acc_card",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 28000,
+      "note": "brunch",
+      "date": "2025-02-03",
+      "createdAt": "2025-02-03T11:30:00.000Z",
+      "updatedAt": "2025-02-03T11:30:00.000Z"
+    },
+    {
+      "id": "txn_123",
+      "accountId": "acc_cash",
+      "categoryId": "cat_health",
+      "type": "expense",
+      "amountMinor": 19000,
+      "note": "checkup",
+      "date": "2025-02-04",
+      "createdAt": "2025-02-04T13:00:00.000Z",
+      "updatedAt": "2025-02-04T13:00:00.000Z"
+    },
+    {
+      "id": "txn_124",
+      "accountId": "acc_card",
+      "categoryId": "cat_food",
+      "type": "expense",
+      "amountMinor": 52000,
+      "note": "dinner",
+      "date": "2025-02-05",
+      "createdAt": "2025-02-05T20:10:00.000Z",
+      "updatedAt": "2025-02-05T20:10:00.000Z"
+    }
+  ],
+  "categoryAssignments": []
+}

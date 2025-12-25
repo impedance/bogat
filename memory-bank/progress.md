@@ -18,6 +18,7 @@
 
 ## In Progress
 - Stage 5 (полировка/тесты): расширение покрытия (MoneyInput/сторы/валидаторы), smoke add→filter→export→import, ручной Device smoke и empty states/a11y.
+- UI-тесты: Playwright конфиг, фикстуры, helper импорта, smoke и первые снапшоты (dashboard/transactions/form) готовы.
 
 ## Next Up
 1. Unit coverage: `MoneyInput`, `accounts`/`categories` stores+repositories, validation layer и backup import flow.
