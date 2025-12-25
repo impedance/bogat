@@ -5,7 +5,6 @@ test.describe('Settings Page - Snapshots', () => {
   test('settings page - mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
-    await page.deviceScaleFactor = 2
     
     // Navigate to settings page
     await navigateToPage(page, 'settings')
@@ -21,7 +20,6 @@ test.describe('Settings Page - Snapshots', () => {
   test('settings page - desktop viewport', async ({ page }) => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1280, height: 800 })
-    await page.deviceScaleFactor = 1
     
     // Navigate to settings page
     await navigateToPage(page, 'settings')
@@ -37,7 +35,6 @@ test.describe('Settings Page - Snapshots', () => {
   test('settings page - export block visible - mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
-    await page.deviceScaleFactor = 2
     
     // Navigate to settings page
     await navigateToPage(page, 'settings')
@@ -56,7 +53,6 @@ test.describe('Settings Page - Snapshots', () => {
   test('settings page - export block visible - desktop viewport', async ({ page }) => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1280, height: 800 })
-    await page.deviceScaleFactor = 1
     
     // Navigate to settings page
     await navigateToPage(page, 'settings')

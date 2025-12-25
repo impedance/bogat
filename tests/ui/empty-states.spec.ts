@@ -5,7 +5,6 @@ test.describe('Empty States - Snapshots', () => {
   test('dashboard empty state - mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
-    await page.deviceScaleFactor = 2
     
     // Navigate to dashboard (should be empty initially)
     await navigateToPage(page, '')
@@ -20,7 +19,6 @@ test.describe('Empty States - Snapshots', () => {
   test('dashboard empty state - desktop viewport', async ({ page }) => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1280, height: 800 })
-    await page.deviceScaleFactor = 1
     
     // Navigate to dashboard (should be empty initially)
     await navigateToPage(page, '')
@@ -35,7 +33,6 @@ test.describe('Empty States - Snapshots', () => {
   test('transactions empty state - mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
-    await page.deviceScaleFactor = 2
     
     // Navigate to transactions (should be empty initially)
     await navigateToPage(page, 'transactions')
@@ -50,7 +47,6 @@ test.describe('Empty States - Snapshots', () => {
   test('transactions empty state - desktop viewport', async ({ page }) => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1280, height: 800 })
-    await page.deviceScaleFactor = 1
     
     // Navigate to transactions (should be empty initially)
     await navigateToPage(page, 'transactions')
@@ -65,7 +61,6 @@ test.describe('Empty States - Snapshots', () => {
   test('accounts empty state - mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
-    await page.deviceScaleFactor = 2
     
     // Navigate to accounts (should be empty initially)
     await navigateToPage(page, 'accounts')
@@ -80,7 +75,6 @@ test.describe('Empty States - Snapshots', () => {
   test('accounts empty state - desktop viewport', async ({ page }) => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1280, height: 800 })
-    await page.deviceScaleFactor = 1
     
     // Navigate to accounts (should be empty initially)
     await navigateToPage(page, 'accounts')

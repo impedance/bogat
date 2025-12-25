@@ -12,7 +12,6 @@ test.describe('Accounts Page - Snapshots', () => {
   test('accounts page - mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
-    await page.deviceScaleFactor = 2
     
     // Navigate to accounts page
     await navigateToPage(page, 'accounts')
@@ -28,7 +27,6 @@ test.describe('Accounts Page - Snapshots', () => {
   test('accounts page - desktop viewport', async ({ page }) => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1280, height: 800 })
-    await page.deviceScaleFactor = 1
     
     // Navigate to accounts page
     await navigateToPage(page, 'accounts')
@@ -48,7 +46,6 @@ test.describe('Accounts Page - Snapshots', () => {
     
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
-    await page.deviceScaleFactor = 2
     
     // Navigate to accounts page
     await navigateToPage(page, 'accounts')
@@ -68,7 +65,6 @@ test.describe('Accounts Page - Snapshots', () => {
     
     // Set desktop viewport
     await page.setViewportSize({ width: 1280, height: 800 })
-    await page.deviceScaleFactor = 1
     
     // Navigate to accounts page
     await navigateToPage(page, 'accounts')
