@@ -4,7 +4,7 @@ This file is the primary entry point for any AI agent working in this repository
 
 ## Required Reference Documents
 
-- `memory-bank/ai-anchors.md` — Defines the AICODE-anchors protocol for in-code memory notes and the expected session workflow around them. Follow it when adding, reading, or updating AICODE comments.
+- `memory-bank/ai-anchors.md` — **main agent comments instructions**. use it for incode comments, read and follow carefully, examples are AICODE-(NOTE/TODO/QUESTION).
 - `Agent's Memory Bank` — Explains how to use the Memory Bank (`memory-bank/` directory) as the persistent context layer between sessions. Read all memory bank files at task start and keep `activeContext.md` / `progress.md` current.
 - `docs/ynab-lite-pwa-plan.md` — Project roadmap and functional specification for the YNAB-lite PWA. Treat it as the authoritative source for scope, stack, and delivery order.
 
@@ -15,11 +15,11 @@ Always consult all three chapters and document before planning or executing work
 1. Read this `AGENTS.md` to refresh the workflow expectations.
 2. Read `Agent's Memory Bank`, then load every file under `memory-bank/` to recover persistent context.
 3. Review `ynab-lite-pwa-plan.md` to align on current priorities, milestones, and technical decisions.
-4. Follow `AICODE-anchors` when scanning code for existing AICODE tags and when recording new knowledge.
+4. Use `memory-bank/ai-anchors.md` to guide how you scan, interpret, add, update, or remove AICODE anchors in code.
 
 ## Memory Bank Expectations
 
-- The `memory-bank/` directory mirrors the structure defined below.md`. Keep `activeContext.md` and `progress.md` synchronized with actual development status.
+- The `memory-bank/` directory mirrors the structure defined below. Keep `activeContext.md` and `progress.md` synchronized with actual development status.
 - When the plan introduces new decisions or shifts priorities, update the relevant memory bank files so future sessions start with accurate guidance.
 - Never remove historical context unless it is superseded; instead, mark items as resolved or archived.
 

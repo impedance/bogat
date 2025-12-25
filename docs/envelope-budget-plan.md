@@ -41,14 +41,13 @@
 
 ### Доступно (available) по категории и месяцу
 - `availableMinor(month, category)` = `carryoverMinor + assignedMinor(month) - spentMinor(month)`
+  - Месяц транзакции определяется как `format(parseISO(transaction.date), 'yyyy-MM')` без учёта часовых поясов; тесты должны покрывать границы месяца.
 
 ### “К распределению” (TBB) по месяцу
-- Вычисляем баланс on‑budget **на конец выбранного месяца**:
-  - `onBudgetBalanceMinor(monthEnd)` = сумма всех транзакций до `monthEnd` включительно: `income - expense`.
-- Затем:
-  - `tbbMinor(month)` = `onBudgetBalanceMinor(monthEnd) - sum(availableMinor(month, expenseCategories))`
-
-Примечание: это намеренно связывает TBB с реальными деньгами на счетах (через транзакции) и с состоянием конвертов (через available).
+- `onBudgetBalanceMinor(monthEnd)` = сумма всех транзакций до `monthEnd` включительно: `income - expense`.
+- `assignedCumulativeMinor(month)` = сумма `assignedMinor` по всем расходным категориям за месяцы `<= month`.
+- **Контракт TBB (не гасит перерасход):** `tbbMinor(month) = onBudgetBalanceMinor(monthEnd) - assignedCumulativeMinor(month)`
+  - Связка: `tbbMinor(month) + sum(availableMinor(month, expenseCategories)) = onBudgetBalanceMinor(monthEnd)`, поэтому любой минус на счетах уменьшает TBB и виден пользователю.
 
 ## 3) Изменения в данных (Zod + Dexie)
 
@@ -74,8 +73,7 @@
   - обновляет timestamps
 - `moveMoney({ month, fromCategoryId, toCategoryId, amountMinor })`:
   - в одной Dexie‑транзакции уменьшить assigned у `from`, увеличить у `to`
-  - валидации: `amountMinor > 0`, категории различны, обе категории типа expense
-  - (опционально v1) запретить перенос больше, чем доступно в `from`
+  - валидации: `amountMinor > 0`, `amountMinor <= available(fromCategoryId, month)`, категории различны, обе категории типа expense
 
 ## 4) Store и селекторы (Pinia)
 
@@ -143,13 +141,12 @@
 ### Unit: backup v2 (обновить существующий тест)
 - snapshot включает `categoryAssignments`
 - import восстанавливает назначения и не ломает старые сущности
+- импорт с `version: 1` даёт понятную ошибку (v2-only стратегия)
 
 ## 8) Совместимость и миграция
 
-- Backup v1 сейчас строго валидируется по `version`, поэтому нужен выбор стратегии:
-  - Вариант A (быстрее): объявить “v2 breaking”, импорт принимает только v2.
-  - Вариант B (лучше UX): поддержать `backupSnapshotSchemaV1` + миграцию V1→V2 (assignments = пусто) и принимать обе версии.
-- Для бюджета v1 достаточно выбрать A или B перед началом реализации (рекомендация: B).
+- Так как приложение ещё не запускалось и данных нет, берём **v2-only** стратегию: `BACKUP_SNAPSHOT_VERSION = 2`, импорт принимает только `version: 2` и выдаёт явную ошибку для v1.
+- Миграции V1→V2 не нужны до появления реальных данных; можно добавить позднее, если потребуется совместимость.
 
 ## 9) Definition of Done (DoD)
 - На странице “Бюджет” для текущего месяца:
@@ -166,4 +163,3 @@
 - Scheduled/recurring транзакции.
 - Более точные правила overspending (перенос/сброс) и настройки “carryover on/off” на категорию.
 - Кредитные карты и “payment category” модель.
-
