@@ -1,8 +1,10 @@
 import { test, expect } from '@playwright/test'
 import { loadFixture, navigateToPage } from './fixtures'
+import { disableAnimations } from './helpers'
 
 test.describe('Accounts Page - Snapshots', () => {
   test.beforeEach(async ({ page }) => {
+    await disableAnimations(page)
     // Navigate to settings to upload fixture
     await navigateToPage(page, 'settings')
     // Load minimal fixture

@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test'
 import { navigateToPage } from './fixtures'
+import { disableAnimations } from './helpers'
 
 test.describe('Empty States - Snapshots', () => {
+  test.beforeEach(async ({ page }) => {
+    await disableAnimations(page)
+  })
+
   test('dashboard empty state - mobile viewport', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })

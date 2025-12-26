@@ -17,6 +17,14 @@
       "currency": "RUB",
       "createdAt": "2024-12-20T09:05:00.000Z",
       "updatedAt": "2024-12-20T09:05:00.000Z"
+    },
+    {
+      "id": "acc_bank",
+      "name": "Bank",
+      "type": "bank",
+      "currency": "RUB",
+      "createdAt": "2024-12-20T09:10:00.000Z",
+      "updatedAt": "2024-12-20T09:10:00.000Z"
     }
   ],
   "categories": [
@@ -63,6 +71,20 @@
       "type": "income",
       "createdAt": "2024-12-20T10:25:00.000Z",
       "updatedAt": "2024-12-20T10:25:00.000Z"
+    },
+    {
+      "id": "cat_housing",
+      "name": "Housing",
+      "type": "expense",
+      "createdAt": "2024-12-20T10:30:00.000Z",
+      "updatedAt": "2024-12-20T10:30:00.000Z"
+    },
+    {
+      "id": "cat_fun",
+      "name": "Entertainment",
+      "type": "expense",
+      "createdAt": "2024-12-20T10:35:00.000Z",
+      "updatedAt": "2024-12-20T10:35:00.000Z"
     }
   ],
   "transactions": [
@@ -329,6 +351,39 @@
       "date": "2025-02-05",
       "createdAt": "2025-02-05T20:10:00.000Z",
       "updatedAt": "2025-02-05T20:10:00.000Z"
+    },
+    {
+      "id": "txn_125",
+      "accountId": "acc_bank",
+      "categoryId": "cat_housing",
+      "type": "expense",
+      "amountMinor": 350000,
+      "note": "mortgage",
+      "date": "2025-01-25",
+      "createdAt": "2025-01-25T07:30:00.000Z",
+      "updatedAt": "2025-01-25T07:30:00.000Z"
+    },
+    {
+      "id": "txn_126",
+      "accountId": "acc_bank",
+      "categoryId": "cat_fun",
+      "type": "expense",
+      "amountMinor": 45000,
+      "note": "concert",
+      "date": "2025-01-26",
+      "createdAt": "2025-01-26T21:00:00.000Z",
+      "updatedAt": "2025-01-26T21:00:00.000Z"
+    },
+    {
+      "id": "txn_127",
+      "accountId": "acc_bank",
+      "categoryId": "cat_salary",
+      "type": "income",
+      "amountMinor": 1800000,
+      "note": "bonus payout",
+      "date": "2025-02-06",
+      "createdAt": "2025-02-06T09:00:00.000Z",
+      "updatedAt": "2025-02-06T09:00:00.000Z"
     }
   ],
   "categoryAssignments": []
