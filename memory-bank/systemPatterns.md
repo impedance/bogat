@@ -37,4 +37,4 @@
 ## Future Evolutions (Not in MVP but planned)
 - Optional backend sync using last-write-wins per `updatedAt` timestamp.
 - Additional tables for budgets, scheduled transactions, and reports once MVP stabilizes.
-- Zero-based budgeting blueprint (`docs/envelope-budget-plan.md`): ввести `monthKey (YYYY-MM)`, таблицу `categoryAssignments` (id=`${month}:${categoryId}`, индексы по month/category), store `budget`, метрики carryover/available/TBB на базе транзакций и назначений. Требует Dexie v2 + backup snapshot v2 и решения по совместимости импорта (v1-only vs миграция v1→v2).
+- Zero-based budgeting blueprint (`docs/envelope-budget-plan.md`): ввести `monthKey (YYYY-MM)`, таблицу `categoryAssignments` (id=`${month}:${categoryId}`, индексы по month/category), store `budget`, метрики carryover/available/TBB на базе транзакций и назначений. Требует Dexie v2 + backup snapshot v2; текущая стратегия импорта — v2-only (v1 снапшоты отклоняются), миграцию v1→v2 добавим при необходимости.

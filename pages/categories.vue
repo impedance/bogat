@@ -226,7 +226,7 @@ onMounted(() => {
               <li
                 v-for="category in expenseCategories"
                 :key="category.id"
-                class="flex items-start justify-between gap-3 py-2"
+                class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 py-3"
               >
                 <div class="space-y-0.5">
                   <div class="flex items-center gap-2">
@@ -272,7 +272,7 @@ onMounted(() => {
               <li
                 v-for="category in incomeCategories"
                 :key="category.id"
-                class="flex items-start justify-between gap-3 py-2"
+                class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 py-3"
               >
                 <div class="space-y-0.5">
                   <div class="flex items-center gap-2">

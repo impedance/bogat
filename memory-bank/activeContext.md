@@ -1,6 +1,6 @@
 # Active Context — YNAB-lite PWA
 
-**Last reviewed:** 2025-12-25
+**Last reviewed:** 2025-12-26
 
 ## Current Focus
 - Браузерный MVP завершён (Stages 0–4): Dexie + repositories + Pinia, UI транзакций/счетов/категорий, MoneyInput, dashboard, PWA manifest/Workbox и JSON backup/import работают. `app/repositories/backup.ts` фиксирует контракт: импорт полностью заменяет таблицы Dexie, `/settings` показывает предпросмотр и предупреждение перед восстановлением.
@@ -10,8 +10,8 @@
 - **Device smoke:** прогнать iOS install/offline на iPhone SE Safari (service worker + AddToHomeBanner), задокументировать TTI/Lighthouse и ручной JSON экспорт/импорт с предупреждением/предпросмотром.
 - Keep the guardrails: Clean Architecture-lite, SOLID, repository adapters и CQRS-lite при взаимодействии с Dexie/Pinia/UI.
 - Дашборд и MoneyInput контракты остаются: `MoneyInput` обещает `v-model string` и quick amounts, дашборд отражает текущие фильтры транзакций.
-- Новый план `docs/envelope-budget-plan.md` описывает упрощённый zero-based budgeting (TBB/assignments, страница бюджета, переносы). Реализация не начата; потребуется Dexie v2 + backup snapshot v2 с таблицей `categoryAssignments` и новым store `budget`. Выбрать стратегию совместимости бэкапов (v1-only vs v1→v2) перед стартом.
-- T1 zero-based budgeting завершён: `monthKeySchema`, `categoryAssignmentSchema`, `BACKUP_SNAPSHOT_VERSION = 2`, и тесты типов добавлены; `backupSnapshotSchema` принимает `categoryAssignments`.
+- Новый план `docs/envelope-budget-plan.md` описывает упрощённый zero-based budgeting (TBB/assignments, страница бюджета, переносы). Реализация UI/store ещё не начата, но база готова: Dexie поднят до v2 с таблицей `categoryAssignments` (проверено через `fake-indexeddb` в `tests/db/client.test.ts`), импорт/экспорт работает по v2-only и включает назначения.
+- Zero-based budgeting groundwork закрыт: `monthKeySchema`, `categoryAssignmentSchema`, `BACKUP_SNAPSHOT_VERSION = 2`, `backupSnapshotSchema` принимает `categoryAssignments`, Dexie schema обновлена до v2, backup репозиторий пишет/читает назначения и отвергает v1 снапшоты.
 - В дереве есть новый unit-тест `tests/repositories/backup.test.ts` (пока не в git), подтверждающий полную замену Dexie при импорте snapshot.
 
 ### Параллельные дорожки
@@ -30,7 +30,6 @@
 
 ## Pending Decisions / Questions
 - Plan validation of PWA install/onboarding copy once primary flows render.
-- Для zero-based budgeting выбрать стратегию импорта: принять только backup v2 или поддержать миграцию v1→v2 (assignments пустые).
 
 ## Coordination Notes
 - Stage 0 scaffold completed (Nuxt + Tailwind + Pinia + PWA) and recorded in `progress.md`.
