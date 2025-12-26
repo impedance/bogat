@@ -3,7 +3,7 @@ import Dexie, { type Table } from 'dexie'
 import type { Account, Category, Transaction, CategoryAssignment } from '~/app/types/budget'
 import { seedDefaults } from './seed'
 
-const DATABASE_NAME = 'ynab-lite'
+export const DATABASE_NAME = 'ynab-lite'
 
 export class BudgetDatabase extends Dexie {
   accounts!: Table<Account>
@@ -11,8 +11,8 @@ export class BudgetDatabase extends Dexie {
   transactions!: Table<Transaction>
   categoryAssignments!: Table<CategoryAssignment>
 
-  constructor() {
-    super(DATABASE_NAME)
+  constructor(dbName: string = DATABASE_NAME) {
+    super(dbName)
 
     this.version(1)
       // AICODE-WHY: Keeping Dexie versioning collocated with the client makes offline migrations explicit in git history and reversible if schema bugs arise. [2025-11-15]

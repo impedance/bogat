@@ -3,9 +3,17 @@
 Цель: добавить в текущий YNAB‑lite PWA минимально‑достаточную версию zero‑based budgeting (“каждый рубль занят”), где **доходы увеличивают “К распределению”**, а пользователь **назначает** деньги по расходным категориям, получает **доступно/потрачено**, и может **перемещать** деньги между категориями.
 
 ## todo tasks
-- [ ] T1 [Параллельно] Определить схемы бюджета и версию бэкапа v2. Контекст: §3/6 задают `monthKey`, `categoryAssignments`, `BACKUP_SNAPSHOT_VERSION = 2`. Действия: добавить в `app/types/budget.ts` `monthKeySchema` (regex `^\\d{4}-\\d{2}$`), `categoryAssignmentSchema` с `assignedMinor`, `createdAt/updatedAt`, экспорт типов; расширить `backupSnapshotSchema` полем `categoryAssignments` и поднять константу версии до 2. Минимальные тесты: Vitest в `tests/types/budget.test.ts` — happy/invalid кейсы для `monthKeySchema` (`2025-12` ок, `2025-1`/`2025-13` нет), `categoryAssignmentSchema` (отрицательные суммы/битые monthKey отклоняются), `backupSnapshotSchema` отвергает `version: 1` и принимает пустые назначения при `version: 2`.
-- [ ] T2 [Параллельно] Подготовить миграцию Dexie v2 под таблицу назначений. Контекст: §3 «Dexie миграция» требует таблицу `categoryAssignments` с индексами `id, month, categoryId`. Действия: обновить `app/db/client.ts` до `version(2)` с новой таблицей, сохранить старые схемы без изменений. Минимальные тесты: Vitest интеграционный кейс в `tests/db/client.test.ts` — БД инициализируется с версией 2, таблица `categoryAssignments` доступна, запись/чтение `id='2025-12:cat_1'` проходит, запрос `where('month').equals('2025-12')` работает.
-- [ ] T3 Поддержать назначения в репозитории бэкапов. Контекст: §6 «Backup/Import» — экспорт/импорт должен включать `categoryAssignments` в одной Dexie-транзакции (clear → bulkAdd). Действия: обновить `app/repositories/backup.ts` для сериализации/восстановления назначений с остальными таблицами. Минимальные тесты: расширить `tests/repositories/backup.test.ts` — снапшот содержит ключ `categoryAssignments` (в том числе пустой), импорт восстанавливает назначения вместе с остальными сущностями, импорт `version: 1` отдаёт ожидаемую ошибку (v2-only стратегия из §8).
+- [x] T1 [Готово] Схемы бюджета и версия бэкапа v2: `monthKeySchema`, `categoryAssignmentSchema`, `BACKUP_SNAPSHOT_VERSION = 2`, `backupSnapshotSchema` принимает `categoryAssignments` (зафиксировано в типах и тестах).
+- [x] T2 [Готово] Подготовить миграцию Dexie v2 под таблицу назначений. Контекст: §3 «Dexie миграция» требует таблицу `categoryAssignments` с индексами `id, month, categoryId`. Действия для джуна:
+  1) В `app/db/client.ts` поднять `version(2)` и добавить в stores строку `categoryAssignments: 'id, month, categoryId'` без изменений старых таблиц.  
+  2) Убедиться, что `populate` из v1 не ломается (оставить как есть).  
+  3) Принять, что dev-БД очистится при смене версии; предупредить в `progress.md`, что импорт v1 теперь не поддерживается.  
+  Минимальные тесты: Vitest интеграционный кейс в `tests/db/client.test.ts` — БД инициализируется с v2, таблица `categoryAssignments` доступна, запись/чтение `id='2025-12:cat_1'` проходит, `where('month').equals('2025-12')` работает (используется `fake-indexeddb`).
+- [x] T3 [Готово] Поддержать назначения в репозитории бэкапов. Контекст: §6 «Backup/Import» — экспорт/импорт должен включать `categoryAssignments` в одной Dexie-транзакции (clear → bulkAdd). Действия: обновить `app/repositories/backup.ts` для сериализации/восстановления назначений с остальными таблицами. Минимальные тесты: расширить `tests/repositories/backup.test.ts` — снапшот содержит ключ `categoryAssignments` (в том числе пустой), импорт восстанавливает назначения вместе с остальными сущностями, импорт `version: 1` отдаёт ожидаемую ошибку (v2-only стратегия из §8).
+- [ ] T4 Реализовать репозиторий назначений (`app/repositories/assignments.ts`): CRUD/упрощённые команды setAssigned/moveMoney с валидациями из §2.3, работающими поверх Dexie v2.
+- [ ] T5 Собрать Pinia store бюджета (`stores/budget.ts`): состояние месяца/назначений/ошибок, действия setMonth/fetchAssignments/setAssigned/moveMoney, геттеры spent/carryover/available/tbb, синхронизация с categories/transactions.
+- [ ] T6 UI “Бюджет” (`pages/budget.vue` + `components/MoveMoneyDialog.vue`): выбор месяца, карточка TBB, таблица категорий (assigned/spent/available), CTA “Перекрыть”, состояния loading/empty/error, навигация в меню.
+- [ ] T7 Юнит-тесты бюджета: математика carryover/available/tbb/move, happy/error paths moveMoney, границы месяцев; расширить backup v2 тесты при интеграции стора/репозитория если понадобится.
 
 ## 1) Scope v1 (что делаем сейчас)
 
@@ -54,7 +62,14 @@
 - **Контракт TBB (не гасит перерасход):** `tbbMinor(month) = onBudgetBalanceMinor(monthEnd) - assignedCumulativeMinor(month)`
   - Связка: `tbbMinor(month) + sum(availableMinor(month, expenseCategories)) = onBudgetBalanceMinor(monthEnd)`, поэтому любой минус на счетах уменьшает TBB и виден пользователю.
 
+### Ограничения/валидации для назначений
+- `assignedMinor` и операции move работают только с неотрицательными значениями; `amountMinor > 0`, иначе ошибка.
+- Категории в move: только `expense`, `from !== to`; при попытке отправить больше, чем доступно в `from`, возвращаем понятную ошибку.
+- Допускаем `assignedMinor = 0`, но не допускаем отрицательные назначения.
+
 ## 3) Изменения в данных (Zod + Dexie)
+
+> Примечание: схемы/версия бэкапа из T1 уже реализованы; блок остаётся как контракт.
 
 ### Новые типы/схемы (`app/types/budget.ts`)
 - `monthKeySchema` (regex `^\\d{4}-\\d{2}$`)
@@ -88,14 +103,15 @@
   - `assignments: CategoryAssignment[]`
   - `isLoading`
 - `actions`:
-  - `setMonth(monthKey)` → fetch assignments
-  - `fetchAssignments(monthKey)`
-  - `setAssigned(categoryId, assignedMinor)`
-  - `moveMoney(fromCategoryId, toCategoryId, amountMinor)`
+  - `setMonth(monthKey)` → fetch assignments для месяца
+  - `fetchAssignments(monthKey)` (подписка на Dexie/репозиторий; кеширование по месяцам опционально)
+  - `setAssigned(categoryId, assignedMinor)` (валидировать `>= 0`, обновлять timestamps)
+  - `moveMoney(fromCategoryId, toCategoryId, amountMinor)` (валидировать правила из §2.3, ловить ошибки)
+  - Обработка ошибок: хранить `error?` и сбрасывать после успешного действия
 - `getters` (производные):
-  - `expenseCategories` (из `stores/categories`)
-  - `spentByCategoryForMonth` (из `stores/transactions` + фильтрация по месяцу)
-  - `carryoverByCategory` (через суммы до месяца)
+  - `expenseCategories` (подписка на `stores/categories`)
+  - `spentByCategoryForMonth` (фильтр транзакций по месяцу из `stores/transactions`)
+  - `carryoverByCategory` (сумма назначено − потрачено до выбранного месяца)
   - `availableByCategory`
   - `tbbMinor`
 
@@ -105,20 +121,21 @@
 
 ### Новая страница `pages/budget.vue`
 - Header:
-  - выбор месяца (минимально: prev/next и отображение `YYYY‑MM`)
-  - карточка “К распределению” + подсказка
-  - CTA “Переместить деньги”
+  - выбор месяца (prev/next) связан с `budgetStore.month`, показывает `YYYY‑MM`
+  - карточка “К распределению” + подсказка о формуле
+  - CTA “Переместить деньги” (открывает модалку)
 - Таблица категорий (расходные):
   - строка категории
   - “Потрачено” (readonly)
-  - “Назначено” (editable через `MoneyInput`)
+  - “Назначено” (editable через `MoneyInput`, сохраняет по blur/enter)
   - “Доступно” (badge, красный если < 0)
-  - CTA “Перекрыть” появляется при `available < 0` и открывает move‑dialog
+  - CTA “Перекрыть” появляется при `available < 0` и открывает move‑dialog с автоподстановкой суммы долга
+  - состояния: loading скелеты, empty (нет расходных категорий), ошибка из store
 
 ### Компоненты (по необходимости)
 - `components/MoveMoneyDialog.vue` (простая модалка):
   - from category, to category, amount (MoneyInput)
-  - submit вызывает `budgetStore.moveMoney`
+  - submit вызывает `budgetStore.moveMoney`, закрывается по успеху, показывает ошибку из store
 
 ### Навигация
 - Добавить пункт «Бюджет» в текущую навигацию (tab‑bar/меню).
@@ -138,10 +155,12 @@
 ## 7) Тесты (Vitest)
 
 ### Unit: расчёты бюджета (новый тестовый файл)
-- `tbbMinor` уменьшается при назначении денег в категорию.
-- `moveMoney` не меняет `tbbMinor`, но переносит `available` между категориями.
-- `available` реагирует на расходную транзакцию в выбранном месяце.
-- `carryover` учитывает суммы назначений/расходов до месяца.
+- `tbbMinor` уменьшается при назначении денег в категорию (фикстура: один доход в январе, назначение в январе).
+- `moveMoney` не меняет `tbbMinor`, но переносит `available` между категориями (фикстура: две категории, назначено 1000 на A, move 300 на B, доступно пересчитано).
+- `available` реагирует на расходную транзакцию в выбранном месяце (фикстура: расход 500 в феврале, available уменьшается).
+- `carryover` учитывает суммы назначений/расходов до месяца (фикстура: назначено 1000 в январе, потрачено 200 в январе, в феврале carryover=800).
+- Ошибки: `moveMoney` с суммой больше доступного/с одинаковой категорией бросает ожидаемую ошибку.
+- Month boundary: транзакция `2025-02-01` не попадает в январский available.
 
 ### Unit: backup v2 (обновить существующий тест)
 - snapshot включает `categoryAssignments`
