@@ -216,7 +216,7 @@ onMounted(() => {
           Пока нет активных категорий. Добавьте хотя бы одну для расходов и доходов.
         </div>
 
-        <div v-else class="grid gap-4 md:grid-cols-2">
+        <div v-else class="grid gap-4 md:grid-cols-2" data-testid="categories-list">
           <div class="space-y-2 rounded border border-slate-800 bg-slate-900/50 p-3">
             <div class="flex items-center justify-between text-sm">
               <p class="font-semibold text-slate-100">Расходы</p>

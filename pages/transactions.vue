@@ -283,7 +283,10 @@ onMounted(() => {
 
     <section class="grid gap-6 lg:grid-cols-[360px,1fr]">
       <div class="space-y-6">
-        <div class="rounded-lg border border-slate-800 bg-surface-subtle/50 p-5">
+        <div
+          class="rounded-lg border border-slate-800 bg-surface-subtle/50 p-5"
+          data-testid="transaction-form-card"
+        >
           <h3 class="text-lg font-semibold">
             {{ isEditing ? 'Редактирование транзакции' : 'Новая транзакция' }}
           </h3>
@@ -400,7 +403,10 @@ onMounted(() => {
           </form>
         </div>
 
-        <div class="rounded-lg border border-slate-800 bg-surface-subtle/50 p-5">
+        <div
+          class="rounded-lg border border-slate-800 bg-surface-subtle/50 p-5"
+          data-testid="transaction-filters-card"
+        >
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-lg font-semibold">Фильтры и поиск</h3>
@@ -499,7 +505,10 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="rounded-lg border border-slate-800 bg-surface-subtle/50 p-5">
+      <div
+        class="rounded-lg border border-slate-800 bg-surface-subtle/50 p-5"
+        data-testid="transaction-list-card"
+      >
         <div class="mb-3 flex items-center justify-between gap-3">
           <div>
             <h3 class="text-lg font-semibold">Лента операций</h3>

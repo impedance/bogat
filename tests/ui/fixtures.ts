@@ -1,9 +1,12 @@
-import { Page } from '@playwright/test'
+import { fileURLToPath } from 'node:url'
+import { expect, Page } from '@playwright/test'
 import * as fs from 'fs'
 import * as path from 'path'
 
+const fixtureDir = path.dirname(fileURLToPath(import.meta.url))
+
 export async function loadFixture(page: Page, fixtureName: 'min' | 'dense'): Promise<void> {
-  const fixtureFile = path.join(__dirname, `../fixtures/backup-${fixtureName}.json`)
+  const fixtureFile = path.join(fixtureDir, `../fixtures/backup-${fixtureName}.json`)
   const fixtureData = JSON.parse(fs.readFileSync(fixtureFile, 'utf-8'))
 
   // Import fixture by simulating the import process
@@ -15,8 +18,9 @@ export async function loadFixture(page: Page, fixtureName: 'min' | 'dense'): Pro
     buffer: Buffer.from(JSON.stringify(fixtureData))
   })
 
-  // Wait for the import to complete
-  await page.waitForTimeout(500)
+  await expect(page.getByText('Готов к импорту')).toBeVisible()
+  await page.getByRole('button', { name: 'Импортировать' }).click()
+  await expect(page.getByRole('button', { name: 'Импорт завершён' })).toBeVisible()
 }
 
 export async function navigateToPage(page: Page, route: string): Promise<void> {

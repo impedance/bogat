@@ -61,7 +61,7 @@ export default defineNuxtConfig({
     },
     workbox: {
       navigateFallback: '/',
-      globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+      globPatterns: process.env.NODE_ENV === 'development' ? [] : ['**/*.{js,css,html,ico,png,svg,webp}'],
       cleanupOutdatedCaches: true,
       runtimeCaching: [
         {
@@ -87,7 +87,8 @@ export default defineNuxtConfig({
     },
     devOptions: {
       enabled: true,
-      navigateFallback: '/'
+      navigateFallback: '/',
+      suppressSWPathWarnings: true
     }
   }
 })

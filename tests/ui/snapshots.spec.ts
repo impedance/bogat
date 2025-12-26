@@ -18,11 +18,9 @@ test('snapshot: transactions list', async ({ page }) => {
   await waitForTransactions(page)
   await page.getByText('coffee').waitFor()
 
-  const listCard = page.locator('div', {
-    has: page.getByRole('heading', { name: 'Лента операций' })
-  })
-
-  await expect(listCard).toHaveScreenshot('transactions-list.png')
+  await expect(page.getByTestId('transaction-list-card')).toHaveScreenshot(
+    'transactions-list.png'
+  )
 })
 
 test('snapshot: transaction form', async ({ page }) => {
@@ -30,9 +28,7 @@ test('snapshot: transaction form', async ({ page }) => {
   await page.goto('/transactions')
   await waitForTransactions(page)
 
-  const formCard = page.locator('div', {
-    has: page.getByRole('heading', { name: 'Новая транзакция' })
-  })
-
-  await expect(formCard).toHaveScreenshot('transaction-form.png')
+  await expect(page.getByTestId('transaction-form-card')).toHaveScreenshot(
+    'transaction-form.png'
+  )
 })

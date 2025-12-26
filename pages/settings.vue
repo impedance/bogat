@@ -159,7 +159,10 @@ async function confirmImport() {
       </p>
     </header>
 
-    <section class="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
+    <section
+      class="rounded-xl border border-slate-800 bg-slate-900/60 p-5"
+      data-testid="settings-export"
+    >
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h3 class="text-lg font-semibold">Экспорт JSON</h3>

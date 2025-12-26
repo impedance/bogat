@@ -14,16 +14,14 @@ test('smoke: import -> navigate -> filter -> export', async ({ page }) => {
   await page.goto('/transactions')
   await waitForTransactions(page)
 
-  const filterCard = page.locator('div', {
-    has: page.getByRole('heading', { name: 'Фильтры и поиск' })
-  })
+  const filterCard = page.getByTestId('transaction-filters-card')
 
-  await filterCard.getByLabel('Счёт').selectOption({ label: 'Card' })
-  await filterCard.getByLabel('Категория').selectOption({ label: 'Food' })
-  await filterCard.getByLabel('Поиск по заметке').fill('coffee')
+  await filterCard.getByLabel('Счёт').selectOption({ label: 'Карта Сбербанк' })
+  await filterCard.getByLabel('Категория').selectOption({ label: 'Еда' })
+  await filterCard.getByLabel('Поиск по заметке').fill('Обед')
   await filterCard.getByRole('button', { name: 'Применить' }).click()
 
-  await expect(page.getByText('coffee')).toBeVisible()
+  await expect(page.getByText('Обед в ресторане')).toBeVisible()
 
   await page.goto('/accounts')
   await page.getByRole('heading', { name: 'Настройка списков и балансов' }).waitFor()

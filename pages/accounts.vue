@@ -217,7 +217,7 @@ onMounted(() => {
           Пока нет счетов. Добавьте первый, чтобы фиксировать транзакции.
         </div>
 
-        <ul v-else class="divide-y divide-slate-800">
+        <ul v-else class="divide-y divide-slate-800" data-testid="accounts-list">
           <li
             v-for="account in activeAccounts"
             :key="account.id"
