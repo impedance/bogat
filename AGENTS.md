@@ -12,11 +12,10 @@ This file is the primary entry point for any AI agent working in this repository
 
 
 ## Обязательные документы
-- `docs/agent/ai-anchors.md` — правила AICODE-якорей (разрешённые префиксы, даты, шаблоны).
+- `docs/aicode-anchors.md` — правила и схема AICODE-якорей (разрешённые префиксы, даты, шаблоны, namespace).
 - `docs/ynab-lite-pwa-plan.md` — продуктовый план/roadmap (источник истины по scope).
 - `docs/context.md` — краткий “скелет контекста” (миссия, стек, архитектурные паттерны, инварианты).
 - `docs/status.md` — текущий фокус и ближайшие шаги.
-- `docs/agent/anchor-scheme.md` — схема тем/нейминга внутри AICODE без новых префиксов.
 
 ## Session Boot Checklist
 
@@ -55,10 +54,10 @@ This file is the primary entry point for any AI agent working in this repository
 ### Как обновлять индекс
 - Не используй номера строк как ссылки.
 - Перед добавлением новых AICODE якорей сделай `rg -n "AICODE-"` и не дублируй существующее.
-- Если навигация без якорей получается “хрупкой” (рефакторинги ломают ориентиры) — добавь минимум AICODE‑якорей в стратегические места, строго по `docs/agent/ai-anchors.md` и `docs/agent/anchor-scheme.md`.
+- Если навигация без якорей получается “хрупкой” (рефакторинги ломают ориентиры) — добавь минимум AICODE‑якорей в стратегические места, строго по `docs/aicode-anchors.md`.
 
 ## Правила AICODE (критично)
-- Якоря: только `AICODE-*` и только разрешённые префиксы из `docs/agent/ai-anchors.md`.
+- Якоря: только `AICODE-*` и только разрешённые префиксы из `docs/aicode-anchors.md`.
 - Перед добавлением новых якорей всегда делай `rg -n "AICODE-"`, чтобы не плодить дубли.
 - Для `TRAP/CONTRACT` обязательна дата `[YYYY-MM-DD]`.
 

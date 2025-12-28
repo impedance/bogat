@@ -75,9 +75,9 @@ npm run lint:aicode
 3. **JSON backup** — strict Zod schema with `version` field for round-trip integrity
 
 ### AICODE Anchor Comments
-- Project uses `AICODE-NOTE:`, `AICODE-TODO:`, `AICODE-QUESTION:` comments for inline memory
+- Project uses `AICODE-NOTE:`, `AICODE-TODO:`, `AICODE-ASK:` comments for inline memory
 - Search for existing anchors: `npm run lint:aicode` or `rg "AICODE-"`
-- Read `docs/agent/ai-anchors.md` for anchor rules and lifecycle management
+- Read `docs/aicode-anchors.md` for anchor rules, scheme, and lifecycle management
 - Update or delete anchors after completing tasks to keep documentation fresh
 
 ## Project Structure
@@ -183,7 +183,7 @@ package.json          # Dependencies and scripts
 - `docs/context.md` — короткий “скелет контекста” (миссия/стек/паттерны/инварианты).
 - `docs/status.md` — живой статус (фокус/next steps/риски).
 - `docs/decisions/*` — ADR (“почему так”).
-- `docs/agent/ai-anchors.md` — правила AICODE-якорей.
+- `docs/aicode-anchors.md` — правила и схема AICODE-якорей.
 
 ## Common Patterns & Decisions
 
@@ -217,7 +217,7 @@ npm run test -- tests/useMoney.test.ts
 
 1. Read `AGENTS.md` and `README.md` (repo map + workflow)
 2. Read `docs/context.md` and `docs/status.md`
-3. Check `AICODE-` anchors: `rg "AICODE-"` (contracts/why/traps)
+3. Check `AICODE-` anchors: `rg "AICODE-"` (contracts/traps/notes)
 4. Understand `app/types/budget.ts` — the entity model
 5. Test locally: `npm run dev`, open http://localhost:3000
 6. Review `components/MoneyInput.vue` if working on money input
