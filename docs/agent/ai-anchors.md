@@ -1,4 +1,4 @@
-# AICODE anchor comments (Inline Memory) — Rules for coding agents
+# AICODE anchor comments (Inline Memory) — Universal rules for coding agents
 
 This document defines **AICODE anchor comments**: short, grep-friendly, in-code notes that encode local “memory” (rationale, invariants, risks, and open questions) for coding agents and humans.
 
@@ -84,7 +84,7 @@ After you finish a task in an area:
 - If a `AICODE-TODO:` is done, delete it or convert it into a `AICODE-NOTE:` if the rationale/invariant remains.
 - If a `AICODE-QUESTION:` is resolved, replace it with a `AICODE-NOTE:` containing the decision and a `ref:` to the source of truth.
 
-## 7) Examples
+## 7) Examples (portable)
 
 ### 7.1 NOTE — record an invariant + source of truth
 ```python
@@ -108,7 +108,7 @@ After you finish a task in an area:
 
 ### 7.5 CONTRACT — API/behavioral invariant with date
 ```typescript
-// AICODE-CONTRACT: Импорт снапшота полностью заменяет таблицы Dexie без слияния; ref: app/repositories/backup.ts; risk: частичный restore сломает балансы [2025-11-18]
+// AICODE-CONTRACT: Import replaces the target store fully (no merge); ref: <path>; risk: partial restore corrupts derived state [2025-01-15]
 ```
 
 ### 7.6 Anti-example (too vague / not actionable)

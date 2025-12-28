@@ -2,144 +2,81 @@
 
 This file is the primary entry point for any AI agent working in this repository. Load it at the beginning of every session to understand the required protocol, project direction, and supporting documentation.
 
-## Required Reference Documents
+## Новая схема навигации (README + AICODE)
 
-- `memory-bank/ai-anchors.md` — **main agent comments instructions**. use it for incode comments (NOTE/TODO/QUESTION/CONTRACT/WHY/FACT/TRAP/HISTORY/LINK); перед изменениями обязательно пробеги `rg -n "AICODE-"`.
-- `Agent's Memory Bank` — Explains how to use the Memory Bank (`memory-bank/` directory) as the persistent context layer between sessions. Read all memory bank files at task start and keep `activeContext.md` / `progress.md` current.
-- `docs/ynab-lite-pwa-plan.md` — Project roadmap and functional specification for the YNAB-lite PWA. Treat it as the authoritative source for scope, stack, and delivery order.
+В этом репозитории документация для агента — это:
+- `README.md` как **индекс‑карта** (пути → точки входа → команды → “как найти через rg”).
+- `AICODE-*` якоря в коде/доках как **стабильные ссылки** для `rg -n "AICODE-"`.
+- `docs/status.md` как **живой контекст** (текущий фокус, next steps, риски).
+- `docs/decisions/*` (ADR) как **“почему так”** и принятые компромиссы.
 
-Always consult all three chapters and document before planning or executing work. They govern how context is captured, recalled, and maintained across sessions, and detail what “done” looks like for the product.
+Memory Bank (`memory-bank/`) считается **legacy** и не является обязательным источником контекста.
+
+## Обязательные документы
+- `docs/agent/ai-anchors.md` — правила AICODE-якорей (разрешённые префиксы, даты, шаблоны).
+- `docs/ynab-lite-pwa-plan.md` — продуктовый план/roadmap (источник истины по scope).
+- `docs/context.md` — краткий “скелет контекста” (миссия, стек, архитектурные паттерны, инварианты).
+- `docs/status.md` — текущий фокус и ближайшие шаги.
+- `docs/agent/anchor-scheme.md` — схема тем/нейминга внутри AICODE без новых префиксов.
 
 ## Session Boot Checklist
 
-1. Read this `AGENTS.md` to refresh the workflow expectations.
-2. Read `Agent's Memory Bank`, then load every file under `memory-bank/` to recover persistent context.
-3. Review `ynab-lite-pwa-plan.md` to align on current priorities, milestones, and technical decisions.
-4. Use `memory-bank/ai-anchors.md` to guide how you scan, interpret, add, update, or remove AICODE anchors in code.
+1) Прочитай этот `AGENTS.md`.
+2) Прочитай `README.md` и используй его как карту репозитория (Repository layout / Entry points / Search cookbook).
+3) Пробеги `rg -n "AICODE-"` (и при необходимости сузь по директории), чтобы найти контракты/ловушки/почему рядом с кодом.
+4) Прочитай `docs/context.md` (миссия/стек/паттерны/инварианты) и `docs/status.md` (текущий фокус/next steps/риски).
+4) Прочитай `docs/ynab-lite-pwa-plan.md` (если задача продуктовая/плановая).
+5) Перед любыми изменениями обязательно пробеги `rg -n "AICODE-"` и найди релевантные якоря.
 
-## Memory Bank Expectations
+## Если навигации нет или она устарела
 
-- The `memory-bank/` directory mirrors the structure defined below. Keep `activeContext.md` and `progress.md` synchronized with actual development status.
-- When the plan introduces new decisions or shifts priorities, update the relevant memory bank files so future sessions start with accurate guidance.
-- Never remove historical context unless it is superseded; instead, mark items as resolved or archived.
+Если в `README.md` отсутствуют секции навигации (Repository layout / Entry points / Search cookbook) или они не соответствуют текущей структуре проекта:
+- обнови/создай навигацию по протоколу ниже;
+- после обновления используй `README.md` + `AICODE-*` как основной интерфейс поиска.
 
-# Agent's Memory Bank
+## README как индекс (протокол)
 
-Agent memory resets completely between sessions. This isn't a limitation - it's what drives agent to maintain perfect documentation. After each reset, agent rely ENTIRELY on Memory Bank to understand the project and continue work effectively. agent MUST read ALL memory bank files at the start of EVERY task - this is not optional.
+Цель: `README.md` должен быть “оглавлением в код” — пути файлов как ссылки + команды `rg`/AICODE как быстрые переходы.
 
-## Memory Bank Structure
+### Что должно быть в `README.md` (минимум)
+1) **Repository layout**
+   - 10–25 пунктов: `` `path/или/file` — назначение; искать: `AICODE-...` или `rg -n "..."` ``
+   - Пункты короткие, без “эссе”.
 
-The Memory Bank consists of core files and optional context files, all in Markdown format. Files build upon each other in a clear hierarchy:
+2) **Entry points**
+   - 3–10 пунктов: ключевые точки входа (Nuxt/PWA config, Dexie schema, репозитории, stores/selectors, backup/import, критические компоненты).
+   - Для каждого: путь + способ найти через `rg`/`AICODE-*`.
 
-flowchart TD
-    PB[projectbrief.md] --> PC[productContext.md]
-    PB --> SP[systemPatterns.md]
-    PB --> TC[techContext.md]
-    
-    PC --> AC[activeContext.md]
-    SP --> AC
-    TC --> AC
-    
-    AC --> P[progress.md]
+3) **Common tasks**
+   - Команды проекта (install/dev/build/preview/test/lint) — только те, что реально существуют в `package.json`/скриптах.
 
-### Core Files (Required)
-1. `projectbrief.md`
-   - Foundation document that shapes all other files
-   - Created at project start if it doesn't exist
-   - Defines core requirements and goals
-   - Source of truth for project scope
+4) **Search cookbook**
+   - 8–15 реальных команд `rg -n ...` для типовых вопросов (схема Dexie, импорт/экспорт, Zod схемы, расчёты балансов, фильтры, PWA и т.п.).
 
-2. `productContext.md`
-   - Why this project exists
-   - Problems it solves
-   - How it should work
-   - User experience goals
+### Как обновлять индекс
+- Не используй номера строк как ссылки.
+- Перед добавлением новых AICODE якорей сделай `rg -n "AICODE-"` и не дублируй существующее.
+- Если навигация без якорей получается “хрупкой” (рефакторинги ломают ориентиры) — добавь минимум AICODE‑якорей в стратегические места, строго по `docs/agent/ai-anchors.md` и `docs/agent/anchor-scheme.md`.
 
-3. `activeContext.md`
-   - Current work focus
-   - Recent changes
-   - Next steps
-   - Active decisions and considerations
-   - Important patterns and preferences
-   - Learnings and project insights
+## Правила AICODE (критично)
+- Якоря: только `AICODE-*` и только разрешённые префиксы из `docs/agent/ai-anchors.md`.
+- Перед добавлением новых якорей всегда делай `rg -n "AICODE-"`, чтобы не плодить дубли.
+- Для `WHY/TRAP/FACT/CONTRACT/HISTORY` обязательна дата `[YYYY-MM-DD]`.
 
-4. `systemPatterns.md`
-   - System architecture
-   - Key technical decisions
-   - Design patterns in use
-   - Component relationships
-   - Critical implementation paths
+## Куда писать контекст (вместо Memory Bank)
 
-5. `techContext.md`
-   - Technologies used
-   - Development setup
-   - Technical constraints
-   - Dependencies
-   - Tool usage patterns
-
-6. `progress.md`
-   - What works
-   - What's left to build
-   - Current status
-   - Known issues
-   - Evolution of project decisions
-
-### Additional Context
-Create additional files/folders within memory-bank/ when they help organize:
-- Complex feature documentation
-- Integration specifications
-- API documentation
-- Testing strategies
-- Deployment procedures
-
-## Core Workflows
-
-### Plan Mode
-flowchart TD
-    Start[Start] --> ReadFiles[Read Memory Bank]
-    ReadFiles --> CheckFiles{Files Complete?}
-    
-    CheckFiles -->|No| Plan[Create Plan]
-    Plan --> Document[Document in Chat]
-    
-    CheckFiles -->|Yes| Verify[Verify Context]
-    Verify --> Strategy[Develop Strategy]
-    Strategy --> Present[Present Approach]
-
-### Act Mode
-flowchart TD
-    Start[Start] --> Context[Check Memory Bank]
-    Context --> Update[Update Documentation]
-    Update --> Execute[Execute Task]
-    Execute --> Document[Document Changes]
-
-## Documentation Updates
-
-Memory Bank updates occur when:
-1. Discovering new project patterns
-2. After implementing significant changes
-3. When user requests with **update memory bank** (MUST review ALL files)
-4. When context needs clarification
-
-flowchart TD
-    Start[Update Process]
-    
-    subgraph Process
-        P1[Review ALL Files]
-        P2[Document Current State]
-        P3[Clarify Next Steps]
-        P4[Document Insights & Patterns]
-        
-        P1 --> P2 --> P3 --> P4
-    end
-    
-    Start --> Process
-
-Note: When triggered by **update memory bank**, agent MUST review every memory bank file, even if some don't require updates. Focus particularly on activeContext.md and progress.md as they track current state.
-
-REMEMBER: After every memory reset, agent begin completely fresh. The Memory Bank is agent only link to previous work. It must be maintained with precision and clarity, as agent effectiveness depends entirely on its accuracy.
+- Навигация и “куда смотреть”: `README.md` (плюс точечные `AICODE-NOTE: NAV/...` рядом с кодом).
+- Текущий фокус / next steps / риски: `docs/status.md` (коротко, списками).
+- Миссия / стек / паттерны / инварианты: `docs/context.md` (редко меняется).
+- “Почему так” и компромиссы: `docs/decisions/*` (ADR), с `ref:` и `AICODE-LINK:` в коде при необходимости.
 
 ## Дополнительные правила взаимодействия
 
 - Всегда отвечайте пользователю на русском языке, даже если исходный вопрос был на другом языке.
 - Всегда запускай тесты после изменений в коде.
+
+## Минимальный “done” для любой задачи
+- Обновлены релевантные `AICODE-*` якоря в затронутых местах (если были изменения поведения/контрактов).
+- Если менялась структура/точки входа — обновлён `README.md` (индекс).
+- Если менялся фокус/план работ — обновлён `docs/status.md` (коротко).
+- Запущены проверки: `npm run lint:aicode` и `npm test` (или эквивалентные команды проекта).
