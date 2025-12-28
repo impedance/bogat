@@ -1,6 +1,6 @@
 # ADR-0001: Навигация через README + AICODE-якоря
 
-<!-- AICODE-NOTE: DECISION/ADR-0001 — README становится “картой” репозитория, а AICODE-якоря дают стабильные точки входа для `rg` и агентов; ref: docs/agent/anchor-scheme.md [2025-12-28] -->
+<!-- AICODE-NOTE: DECISION/ADR-0001 — README становится “картой” репозитория, а AICODE-якоря дают стабильные точки входа для `rg` и агентов; ref: docs/aicode-anchors.md [2025-12-28] -->
 
 ## Контекст
 Нужно, чтобы LLM‑агенты и люди быстро ориентировались в проекте без “длинной” документации и без привязки к номерам строк.
@@ -29,5 +29,5 @@
 
 ## Связанные документы
 - `AGENTS.md`
-- `docs/agent/anchor-scheme.md`
+- `docs/aicode-anchors.md`
 - `docs/status.md`
