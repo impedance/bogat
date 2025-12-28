@@ -26,10 +26,10 @@
 - **Тесты & валидации:** покрыть `components/MoneyInput.vue`, сторы/репозитории `accounts` и `categories`, входящие формы и backup import flow, добавить unit-тесты на ключевые контракты.
 - **Smoke add→filter→export→import:** прогнать сценарий (Vitest или ручной smoke) с реальным snapshot, убедиться, что фильтры/балансы не ломаются, и зафиксировать результат.
 - **Empty states и a11y:** улучшить подсказки/CTA на dashboard/transactions/forms, проверить фокус/aria-описания, удостовериться в клавиатурных маршрутах.
-- **Device smoke:** вручную подтвердить установка/офлайн на iPhone SE (Safari), проверить скрытие `AddToHomeBanner` и работу service worker, записать наблюдения в Memory Bank.
+- **Device smoke:** вручную подтвердить установка/офлайн на iPhone SE (Safari), проверить скрытие `AddToHomeBanner` и работу service worker, записать наблюдения в `docs/status.md`.
 
 ### Параллельные дорожки
-- **Device smoke:** ручное подтверждение iOS install/offline (iPhone SE), Lighthouse check, и запись результатов в Memory Bank.
+- **Device smoke:** ручное подтверждение iOS install/offline (iPhone SE), Lighthouse check, и запись результатов в `docs/status.md`.
 - **JSON backup/import:** функциональность готова, но нужен smoke и подтверждение предупреждения/предпросмотра.
 - **Тесты/полировка:** покрытие MoneyInput/store/репо, smoke add→filter→export→import, empty states и a11y продолжаются.
 
@@ -79,7 +79,7 @@
 ---
 
 ## 3) Технический стек (MVP)
-- **Framework:** Nuxt 3 (Vue 3 + Vite).
+- **Framework:** Nuxt 4 (Vue 3 + Vite).
 - **Стили:** Tailwind CSS (минимальные утилити‑классы).
 - **State:** Pinia.
 - **Локальная БД:** IndexedDB через **Dexie.js**.
@@ -152,18 +152,19 @@ interface Transaction {
 
 ```json
 {
-  "version": 1,
+  "version": 2,
   "exportedAt": "2025-10-21T00:00:00.000Z",
   "accounts": [ { "id": "acc_...", "name": "Кошелёк", "type": "cash", "currency": "RUB", "createdAt": "..." } ],
   "categories": [ { "id": "cat_food", "name": "Еда", "type": "expense", "isDefault": true } ],
-  "transactions": [ { "id": "txn_...", "accountId": "acc_...", "type": "expense", "amountMinor": 15900, "categoryId": "cat_food", "note": "обед", "date": "2025-10-21", "createdAt": "...", "updatedAt": "..." } ]
+  "transactions": [ { "id": "txn_...", "accountId": "acc_...", "type": "expense", "amountMinor": 15900, "categoryId": "cat_food", "note": "обед", "date": "2025-10-21", "createdAt": "...", "updatedAt": "..." } ],
+  "categoryAssignments": [ { "id": "asgn_...", "month": "2025-10", "categoryId": "cat_food", "assignedMinor": 50000, "createdAt": "...", "updatedAt": "..." } ]
 }
 ```
 
 **Правила импорта:**  
 - `version` поддерживается для миграций.  
-- По умолчанию **добавляем как новые** (без авто‑слияния).  
-- (Опция позже) «умное слияние» по `id` с подтверждением конфликтов.
+- Импорт **полностью заменяет** таблицы Dexie (без авто‑слияния), чтобы снапшот точно соответствовал JSON.  
+- «Умное слияние» по `id` с подтверждением конфликтов — потенциальная опция позже.
 
 ---
 
@@ -189,44 +190,28 @@ interface Transaction {
 
 ---
 
-## 9) Структура проекта (Nuxt 3 + Tailwind)
+## 9) Структура проекта (Nuxt 4 + Tailwind)
 
 ```
 /app
-  /components
-    AccountCard.vue
-    TransactionItem.vue
-    MoneyInput.vue
-    EmptyState.vue
+  /assets
   /composables
     useMoney.ts        # форматирование/парсинг
     useFilters.ts
   /db
-    dexie.ts           # схема БД, индексы, миграции
+    client.ts          # схема БД, индексы, миграции
     seed.ts
-  /pages
-    index.vue          # Дашборд
-    accounts.vue
-    categories.vue
-    transactions.vue
-    settings.vue
-    transactions/new.vue
-    transactions/[id].vue
-  /stores
-    accounts.ts
-    categories.ts
-    transactions.ts
-    ui.ts
-  /utils
-    dates.ts
-    ids.ts             # nanoid
-  /public
-    icon.png
-  /pwa
-    manifest.webmanifest
-    sw.ts
-  tailwind.config.ts
-  nuxt.config.ts
+  /repositories
+  /types
+/components
+/layouts
+/pages
+/public
+/stores
+/tests
+app.vue
+nuxt.config.ts
+tailwind.config.ts
 ```
 
 ---
@@ -337,7 +322,7 @@ export function fromMinor(minor: number): string {
 ```
 
 ```ts
-// dexie.ts (эскиз)
+// client.ts (эскиз)
 import Dexie, { Table } from 'dexie';
 
 export interface DBSchema extends Dexie {

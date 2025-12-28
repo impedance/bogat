@@ -13,7 +13,7 @@
 - Быстрый ввод транзакции, быстрый взгляд на балансы, предсказуемые фильтры/поиск.
 
 ## Стек
-- Nuxt 3/4 (Vue 3 + Vite), TypeScript.
+- Nuxt 4 (Vue 3 + Vite), TypeScript.
 - Pinia (stores + селекторы).
 - Dexie (IndexedDB) как system of record.
 - Zod для валидации форм/DTO/backup snapshot.
@@ -41,4 +41,3 @@
 - Stage 0–4 завершены (CRUD + PWA + JSON backup/import).
 - Stage 5 в работе: тесты/полировка/a11y + smoke add→filter→export→import + ручной iOS install/offline.
 - Zero‑based budgeting groundwork: схема Dexie v2 + snapshot v2 подготовлены, UI/стор бюджета ещё не начаты (см. `docs/envelope-budget-plan.md`).
-
