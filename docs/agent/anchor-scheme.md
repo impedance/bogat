@@ -15,7 +15,7 @@
 ```ts
 // AICODE-NOTE: NAV/REPO-LAYOUT — краткая карта ключевых путей; ref: README.md; risk: агент будет блуждать
 // AICODE-NOTE: STATUS/FOCUS — текущий фокус и next steps; ref: docs/status.md
-// AICODE-NOTE: DECISION/ADR-0001 — почему выбрали AICODE+README вместо Memory Bank; ref: docs/decisions/ADR-0001-anchor-navigation.md
+// AICODE-NOTE: DECISION/ADR-0001 — почему выбрали AICODE+README как главный навигационный слой; ref: docs/decisions/ADR-0001-anchor-navigation.md
 ```
 
 ### Namespace внутри текста (после `:`)

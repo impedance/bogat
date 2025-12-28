@@ -7,7 +7,7 @@
 
 1. Открой `AGENTS.md` (протокол работы в репо).
 2. Используй этот `README.md` как карту репозитория, затем прочитай `docs/context.md` и `docs/status.md`.
-3. Перед изменениями выполни `rg -n "AICODE-"` и следуй якорям (контракты/ловушки/почему).
+3. Перед изменениями выполни `rg -n "AICODE-"` и следуй якорям (контракты/ловушки/заметки).
 4. Если индекс в README устарел или в проекте появились новые точки входа — обнови его по протоколу из `AGENTS.md` и соблюдай `docs/agent/anchor-scheme.md`.
 
 ## Repository layout
@@ -21,7 +21,7 @@
 - `components/MoneyInput.vue` — денежный инпут/маска; искать: `rg -n "MoneyInput" components/MoneyInput.vue`
 - `components/OfflineIndicator.vue` — индикатор офлайна; искать: `rg -n "OfflineIndicator" components`
 - `components/AddToHomeBanner.vue` — iOS install подсказка; искать: `rg -n "AddToHomeBanner" components`
-- `pages/index.vue` — дашборд/балансы; искать: `rg -n "AICODE-WHY" pages/index.vue`
+- `pages/index.vue` — дашборд/балансы; искать: `rg -n "AICODE-NOTE" pages/index.vue`
 - `pages/transactions.vue` — список и фильтры; искать: `rg -n "filters|search" pages/transactions.vue`
 - `pages/settings.vue` — UI backup/import; искать: `rg -n "backup|import|export" pages/settings.vue`
 - `stores/transactions.ts` — селекторы/агрегации; искать: `rg -n "defineStore\\('transactions'" stores`
@@ -39,7 +39,7 @@
 - `app/repositories/backup.ts` — контракт импорта снапшота; искать: `rg -n "importBackupSnapshot" app/repositories/backup.ts`
 - `app/types/budget.ts` — Zod-валидации и snapshot version; искать: `rg -n "backupSnapshotSchema|BACKUP_SNAPSHOT_VERSION" app/types/budget.ts`
 - `components/MoneyInput.vue` — ключевой UI ввода денег; искать: `rg -n "MoneyInput" components/MoneyInput.vue`
-- `pages/index.vue` — дашборд с агрегатами; искать: `rg -n "AICODE-WHY" pages/index.vue`
+- `pages/index.vue` — дашборд с агрегатами; искать: `rg -n "AICODE-NOTE" pages/index.vue`
 - `stores/transactions.ts` — селекторы балансов и фильтры; искать: `rg -n "defineStore\\('transactions'" stores/transactions.ts`
 
 ## Что уже сделано
