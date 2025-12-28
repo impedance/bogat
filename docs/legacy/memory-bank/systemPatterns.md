@@ -1,3 +1,4 @@
+<!-- LEGACY: архивировано из memory-bank/systemPatterns.md; новая схема: README + AICODE + docs/context.md + docs/status.md -->
 # System Patterns — YNAB-lite PWA
 
 ## Architecture Overview

@@ -1,3 +1,4 @@
+<!-- LEGACY: архивировано из memory-bank/progress.md; новая схема: README + AICODE + docs/context.md + docs/status.md -->
 # Progress — YNAB-lite PWA
 
 **Last updated:** 2025-12-26

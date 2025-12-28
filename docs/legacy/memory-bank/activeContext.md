@@ -1,3 +1,4 @@
+<!-- LEGACY: архивировано из memory-bank/activeContext.md; новая схема: README + AICODE + docs/context.md + docs/status.md -->
 # Active Context — YNAB-lite PWA
 
 **Last reviewed:** 2025-12-26

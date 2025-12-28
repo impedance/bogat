@@ -1,3 +1,4 @@
+<!-- LEGACY: архивировано из memory-bank/techContext.md; новая схема: README + AICODE + docs/context.md + docs/status.md -->
 # Tech Context — YNAB-lite PWA
 
 ## Core Stack

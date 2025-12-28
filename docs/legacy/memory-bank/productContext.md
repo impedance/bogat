@@ -1,3 +1,4 @@
+<!-- LEGACY: архивировано из memory-bank/productContext.md; новая схема: README + AICODE + docs/context.md + docs/status.md -->
 # Product Context — YNAB-lite PWA
 
 ## Target Users

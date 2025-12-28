@@ -1,3 +1,4 @@
+<!-- LEGACY: архивировано из memory-bank/projectbrief.md; новая схема: README + AICODE + docs/context.md + docs/status.md -->
 # Project Brief — YNAB-lite PWA
 
 **Version:** 1.0 (plan dated 2025-10-21)
