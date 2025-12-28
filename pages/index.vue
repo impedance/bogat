@@ -25,7 +25,7 @@ const {
 
 const money = useMoney({ currency: 'RUB' })
 
-// AICODE-WHY: Дашборд опирается на селекторы Pinia, чтобы цифры всегда совпадали с текущими фильтрами транзакций. [2025-11-18]
+// AICODE-NOTE: Дашборд опирается на селекторы Pinia, чтобы цифры всегда совпадали с текущими фильтрами транзакций. [2025-11-18]
 const hasAccounts = computed(() => activeAccounts.value.length > 0)
 const hasCategories = computed(() => activeCategories.value.length > 0)
 const hasTransactions = computed(() => transactions.value.length > 0)

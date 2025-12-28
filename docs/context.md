@@ -1,7 +1,7 @@
 # Контекст проекта (кратко, для агентов)
 
 <!-- AICODE-NOTE: CONTEXT/BOOT — начни с README (индекс), затем STATUS, затем `rg -n "AICODE-"`; ref: AGENTS.md -->
-<!-- AICODE-FACT: CONTEXT/MONEY — все деньги хранятся как integer minor units (копейки) в `amountMinor`; risk: float-ошибки и рассинхрон балансов [2025-12-28] -->
+<!-- AICODE-CONTRACT: CONTEXT/MONEY — все деньги хранятся как integer minor units (копейки) в `amountMinor`; risk: float-ошибки и рассинхрон балансов [2025-12-28] -->
 <!-- AICODE-CONTRACT: CONTEXT/BACKUP-IMPORT — импорт снапшота полностью заменяет таблицы Dexie (без merge); ref: app/repositories/backup.ts; risk: частичный restore сломает балансы [2025-12-28] -->
 
 ## Миссия и MVP

@@ -19,6 +19,5 @@
 
 ## Как быстро сориентироваться (поиск)
 - Все якоря: `rg -n "AICODE-"`
-- Только контракты/ловушки: `rg -n "AICODE-(CONTRACT|TRAP|WHY|FACT|HISTORY):"`
+- Только контракты/ловушки: `rg -n "AICODE-(CONTRACT|TRAP):"`
 - Импорт/экспорт: `rg -n "backup|snapshot|import|export" app docs pages components stores`
-
