@@ -229,27 +229,10 @@ tailwind.config.ts
 
 ---
 
-## 11) Команды установки/настройки (под JS/TS)
+## 11) Команды проекта (источник истины)
 
-```bash
-# 1) Проект
-npx nuxi init ynab-lite
-cd ynab-lite
-pnpm i
-
-# 2) Пакеты
-pnpm add pinia dexie date-fns nanoid zod
-pnpm add -D @vite-pwa/nuxt @nuxtjs/tailwind typescript vue-tsc
-
-# 3) Включить модули в nuxt.config.ts
-# modules: ['@vite-pwa/nuxt', '@nuxtjs/tailwind']
-
-# 4) Инициализировать TS (опционально)
-pnpm dlx tsc --init
-```
-
-**Tailwind:** базовая типографика, без кастомных тем.  
-**PWA:** иконки 512/192 px, `display: standalone`, `start_url: "/"`.
+Команды dev/build/test/lint берём из `package.json` и `README.md` (секция Common tasks),
+чтобы не дублировать и не устаревать.
 
 ---
 

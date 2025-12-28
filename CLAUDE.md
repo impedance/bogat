@@ -77,7 +77,7 @@ npm run lint:aicode
 ### AICODE Anchor Comments
 - Project uses `AICODE-NOTE:`, `AICODE-TODO:`, `AICODE-QUESTION:` comments for inline memory
 - Search for existing anchors: `npm run lint:aicode` or `rg "AICODE-"`
-- Read `memory-bank/ai-anchors.md` for anchor rules and lifecycle management
+- Read `docs/agent/ai-anchors.md` for anchor rules and lifecycle management
 - Update or delete anchors after completing tasks to keep documentation fresh
 
 ## Project Structure
@@ -115,7 +115,6 @@ npm run lint:aicode
 /public               # Static assets (PWA icons, favicon)
 /tests                # Vitest unit + smoke tests
 /docs                 # Development plans, comparisons, architecture notes
-/memory-bank          # Agent memory (projectbrief, productContext, activeContext, progress, etc.)
 
 nuxt.config.ts        # Nuxt + PWA manifest + Workbox config
 tailwind.config.ts    # Tailwind extensions (surface/accent colors)
@@ -177,17 +176,14 @@ package.json          # Dependencies and scripts
 - **Layer 3 (Smoke/E2E):** Single workflow: add transaction → filter → export → import
 - **Device smoke:** Manual iOS PWA install/offline test on iPhone SE (Safari)
 
-## Memory Bank
+## Agent docs (navigation-first)
 
-This project maintains persistent context across sessions in `/memory-bank/`:
-- `projectbrief.md` — mission, MVP outcomes, success criteria
-- `productContext.md` — user personas, jobs-to-be-done, experience goals
-- `activeContext.md` — current work focus, decisions, learnings
-- `systemPatterns.md` — architecture, design patterns, component relationships
-- `progress.md` — what's complete, what remains, known issues
-- `ai-anchors.md` — rules for AICODE inline comments
-
-**Before starting a task**, read these files to understand project direction and completed work. **After significant changes**, update `activeContext.md` and `progress.md` so future sessions can resume seamlessly.
+- `AGENTS.md` — правила работы агента в репо и boot-sequence.
+- `README.md` — навигационный индекс (пути + entry points + search cookbook).
+- `docs/context.md` — короткий “скелет контекста” (миссия/стек/паттерны/инварианты).
+- `docs/status.md` — живой статус (фокус/next steps/риски).
+- `docs/decisions/*` — ADR (“почему так”).
+- `docs/agent/ai-anchors.md` — правила AICODE-якорей.
 
 ## Common Patterns & Decisions
 
@@ -219,10 +215,10 @@ npm run test -- tests/useMoney.test.ts
 
 ## Quick Onboarding Checklist
 
-1. Read `docs/ynab-lite-pwa-plan.md` for full context
-2. Read `/memory-bank/` files (especially `activeContext.md` and `progress.md`)
-3. Understand `app/types/budget.ts` — the entity model
-4. Check `AICODE-` anchors: `rg "AICODE-"` to find existing rationale/TODOs
+1. Read `AGENTS.md` and `README.md` (repo map + workflow)
+2. Read `docs/context.md` and `docs/status.md`
+3. Check `AICODE-` anchors: `rg "AICODE-"` (contracts/why/traps)
+4. Understand `app/types/budget.ts` — the entity model
 5. Test locally: `npm run dev`, open http://localhost:3000
 6. Review `components/MoneyInput.vue` if working on money input
 7. Review `app/repositories/backup.ts` if working on export/import
@@ -231,4 +227,4 @@ npm run test -- tests/useMoney.test.ts
 
 **Last updated:** 2025-12-25
 **Repository:** https://github.com/anthropics/claude-code (or local)
-**Agent Memory:** Maintains context via `/memory-bank/` across sessions
+**Agent docs:** navigation-first (README + AICODE + status/decisions)
