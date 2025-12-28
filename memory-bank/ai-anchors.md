@@ -16,6 +16,8 @@ The goal is operational: an agent should be able to start with `rg "AICODE-"`, q
 Before reading code deeply:
 - MUST search for existing anchors in the repo: `rg -n "AICODE-"`.
 - SHOULD narrow to the relevant module: `rg -n "AICODE-" src/md2pdf`.
+- Allowed tags: `AICODE-NOTE`, `AICODE-TODO`, `AICODE-QUESTION`, `AICODE-CONTRACT`, `AICODE-WHY`, `AICODE-FACT`, `AICODE-TRAP`, `AICODE-HISTORY`, `AICODE-LINK`, `AICODE-ASK`.
+- Long-lived tags (`WHY/FACT/TRAP/CONTRACT/HISTORY`) MUST carry a date `[YYYY-MM-DD]` on the same line.
 
 After completing any task:
 - MUST update anchors in touched areas (refresh, resolve, delete if done).
@@ -35,15 +37,15 @@ Anchors are **mandatory** when:
 ## 3) Allowed anchor types (use exactly one)
 
 Use one of the following prefixes (no custom variants):
-- `AICODE-NOTE:` — rationale/invariant/constraint (the “why” and “must not break”).
-- `AICODE-TODO:` — an intentional follow-up **outside current scope** (local tech debt, missing test, cleanup).
-- `AICODE-QUESTION:` — uncertainty requiring a human decision or explicit product/architecture confirmation.
+- **Long-lived knowledge (require date):** `AICODE-WHY:`, `AICODE-TRAP:`, `AICODE-FACT:`, `AICODE-CONTRACT:`, `AICODE-HISTORY:`.
+- **Cross-links:** `AICODE-LINK:` (related files/docs/tests; date not required).
+- **Session-oriented:** `AICODE-NOTE:` (rationale/invariant/constraint), `AICODE-TODO:` (follow-up outside current scope), `AICODE-QUESTION:` (uncertainty requiring a decision), `AICODE-ASK:` (вопрос к людям/команде).
 
 ## 4) Format rules (to keep anchors grep-friendly)
 
 ### 4.1 Syntax
 - MUST use the language-appropriate comment token (`#`, `//`, `/* */`, …).
-- MUST start the first line with the exact prefix: `AICODE-NOTE:`, `AICODE-TODO:`, or `AICODE-QUESTION:`.
+- MUST start the first line with the exact prefix from the allowed list (see §3).
 - MUST keep the first line **self-contained**: it should be useful in `rg` output without reading surrounding code.
 
 ### 4.2 Content rubric (what to include)
@@ -104,7 +106,12 @@ After you finish a task in an area:
 # AICODE-QUESTION: should missing assets fail the pipeline or be replaced by a placeholder by default? impact: pipeline.validate_images
 ```
 
-### 7.5 Anti-example (too vague / not actionable)
+### 7.5 CONTRACT — API/behavioral invariant with date
+```typescript
+// AICODE-CONTRACT: Импорт снапшота полностью заменяет таблицы Dexie без слияния; ref: app/repositories/backup.ts; risk: частичный restore сломает балансы [2025-11-18]
+```
+
+### 7.6 Anti-example (too vague / not actionable)
 ```python
 # AICODE-NOTE: this is tricky, be careful
 ```
@@ -112,4 +119,4 @@ After you finish a task in an area:
 ## 8) How to find anchors
 
 - All anchors: `rg -n "AICODE-"`.
-- Only canonical prefixes: `rg -n "AICODE-(NOTE|TODO|QUESTION):"`.
+- Only canonical prefixes: `rg -n "AICODE-(NOTE|TODO|QUESTION|CONTRACT|WHY|FACT|TRAP|HISTORY|LINK|ASK):"`.
