@@ -4,7 +4,7 @@ This file is the primary entry point for any AI agent working in this repository
 
 ## Required Reference Documents
 
-- `memory-bank/ai-anchors.md` — **main agent comments instructions**. use it for incode comments, read and follow carefully, examples are AICODE-(NOTE/TODO/QUESTION).
+- `memory-bank/ai-anchors.md` — **main agent comments instructions**. use it for incode comments (NOTE/TODO/QUESTION/CONTRACT/WHY/FACT/TRAP/HISTORY/LINK); перед изменениями обязательно пробеги `rg -n "AICODE-"`.
 - `Agent's Memory Bank` — Explains how to use the Memory Bank (`memory-bank/` directory) as the persistent context layer between sessions. Read all memory bank files at task start and keep `activeContext.md` / `progress.md` current.
 - `docs/ynab-lite-pwa-plan.md` — Project roadmap and functional specification for the YNAB-lite PWA. Treat it as the authoritative source for scope, stack, and delivery order.
 
