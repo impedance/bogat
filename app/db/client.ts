@@ -15,7 +15,7 @@ export class BudgetDatabase extends Dexie {
     super(dbName)
 
     this.version(1)
-      // AICODE-WHY: Keeping Dexie versioning collocated with the client makes offline migrations explicit in git history and reversible if schema bugs arise. [2025-11-15]
+      // AICODE-NOTE: Keeping Dexie versioning collocated with the client makes offline migrations explicit in git history and reversible if schema bugs arise. [2025-11-15]
       .stores({
         accounts: 'id, type, archived',
         categories: 'id, type, archived',
