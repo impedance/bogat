@@ -1,33 +1,33 @@
-# ADR-0001: Навигация через README + AICODE-якоря
+# ADR-0001: Navigation via README + AICODE anchors
 
-<!-- AICODE-NOTE: DECISION/ADR-0001 — README становится “картой” репозитория, а AICODE-якоря дают стабильные точки входа для `rg` и агентов; ref: docs/aicode-anchors.md [2025-12-28] -->
+<!-- AICODE-NOTE: DECISION/ADR-0001 - README becomes the repository map, and AICODE anchors provide stable entry points for `rg` and agents; ref: docs/aicode-anchors.md [2025-12-28] -->
 
-## Контекст
-Нужно, чтобы LLM‑агенты и люди быстро ориентировались в проекте без “длинной” документации и без привязки к номерам строк.
+## Context
+We need LLM agents and humans to orient quickly in the project without long-form documentation and without line-number links.
 
-## Решение
-- Держать `README.md` как навигационный индекс (Repository layout / Entry points / Common tasks / Search cookbook).
-- Использовать `AICODE-*` якоря рядом с кодом для:
-  - инвариантов и контрактов,
-  - причин неочевидных решений,
-  - ссылок на тесты/доки.
-- Вынести “живой статус” в `docs/status.md`, а редкие архитектурные решения — в `docs/decisions/*`.
+## Decision
+- Keep `README.md` as a navigation index (Repository layout / Entry points / Common tasks / Search cookbook).
+- Use `AICODE-*` anchors near code for:
+  - invariants and contracts,
+  - rationale for non-obvious decisions,
+  - links to tests/docs.
+- Move the living status to `docs/status.md`, and rare architectural decisions to `docs/decisions/*`.
 
-## Почему так
-- Пути файлов и `rg` — самый быстрый навигационный интерфейс и для человека, и для агента.
-- Якоря устойчивы к перемещению файлов и рефакторингам (в отличие от “ссылок на строки”).
-- README‑индекс снижает стоимость входа в код, а ADR фиксируют “почему” без разрастания inline‑комментариев.
+## Rationale
+- File paths and `rg` are the fastest navigation interface for both humans and agents.
+- Anchors are stable across file moves and refactors (unlike line links).
+- The README index lowers entry cost, while ADRs capture the "why" without bloating inline comments.
 
-## Последствия
-Плюсы:
-- Быстрый старт: `README.md` → `rg -n "AICODE-"` → точка входа в код.
-- Контракты/ловушки живут рядом с местом, где их легко нарушить.
+## Consequences
+Pros:
+- Fast start: `README.md` -> `rg -n "AICODE-"` -> entry point in code.
+- Contracts/traps live next to the places where they can be violated.
 
-Минусы/риски:
-- Требуется дисциплина: обновлять README‑индекс при структурных изменениях.
-- Якоря могут “разрастись”, если не удалять завершённые `AICODE-TODO`.
+Cons/risks:
+- Requires discipline: update the README index on structural changes.
+- Anchors can bloat if completed `AICODE-TODO` items are not removed.
 
-## Связанные документы
+## Related documents
 - `AGENTS.md`
 - `docs/aicode-anchors.md`
 - `docs/status.md`

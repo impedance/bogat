@@ -1,23 +1,23 @@
-# Статус проекта (коротко)
+# Project status (short)
 
-<!-- AICODE-NOTE: STATUS/FOCUS — “живой” текущий фокус и next steps вместо длинного дневника; ref: README.md; risk: агент будет делать не то -->
-<!-- AICODE-NOTE: STATUS/ENTRY — начни чтение с README, затем ищи якоря: rg -n "AICODE-" -->
+<!-- AICODE-NOTE: STATUS/FOCUS - living current focus and next steps instead of a long diary; ref: README.md; risk: agent works on the wrong thing -->
+<!-- AICODE-NOTE: STATUS/ENTRY - start reading with README, then search anchors: rg -n "AICODE-" -->
 
-## Сейчас в фокусе
-- Stage 5: тесты/полировка/a11y, smoke add→filter→export→import, ручной iOS install/offline.
+## Current focus
+- Stage 5: tests/polish/a11y, smoke add->filter->export->import, manual iOS install/offline.
 
-## Следующие шаги (top 5)
-1) Покрыть unit‑тестами `components/MoneyInput.vue` и ключевые сторы/репозитории.
-2) Смоук add→filter→export→import (Vitest/Playwright/ручной прогон) и фиксация результатов.
-3) Пустые состояния и базовая a11y (фокус, aria, клавиатура).
-4) Ручная проверка iOS (iPhone SE): install/offline + AddToHomeBanner + SW.
-5) Локальная проверка “контрактов” (AICODE) перед рефакторингами.
+## Next steps (top 5)
+1) Add unit tests for `components/MoneyInput.vue` and key stores/repositories.
+2) Smoke add->filter->export->import (Vitest/Playwright/manual) and record results.
+3) Empty states and baseline a11y (focus, aria, keyboard).
+4) Manual iOS check (iPhone SE): install/offline + AddToHomeBanner + SW.
+5) Local contract checks (AICODE) before refactors.
 
-## Известные риски
-- Регрессии в расчётах балансов/фильтров при оптимизациях UI/сторов.
-- “Тихие” поломки backup/import при изменениях схем/версий Dexie.
+## Known risks
+- Regressions in balance/filter calculations during UI/store optimization.
+- Silent backup/import breakage when schema/version changes in Dexie.
 
-## Как быстро сориентироваться (поиск)
-- Все якоря: `rg -n "AICODE-"`
-- Только контракты/ловушки: `rg -n "AICODE-(CONTRACT|TRAP):"`
-- Импорт/экспорт: `rg -n "backup|snapshot|import|export" app docs pages components stores`
+## Fast orientation (search)
+- All anchors: `rg -n "AICODE-"`
+- Only contracts/traps: `rg -n "AICODE-(CONTRACT|TRAP):"`
+- Import/export: `rg -n "backup|snapshot|import|export" app docs pages components stores`

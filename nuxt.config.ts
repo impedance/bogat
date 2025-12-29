@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   ],
   css: ['~/app/assets/css/main.css'],
   pwa: {
-    // AICODE-NOTE: Manifest и Workbox задаются здесь, чтобы офлайн-шелл и установка через @vite-pwa/nuxt оставались воспроизводимыми между релизами. [2025-11-18]
+    // AICODE-NOTE: Manifest and Workbox live here so the offline shell and install via @vite-pwa/nuxt remain reproducible across releases. [2025-11-18]
     registerType: 'autoUpdate',
     includeAssets: [
       'favicon.ico',

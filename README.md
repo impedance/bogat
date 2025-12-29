@@ -1,95 +1,95 @@
 # YNAB-lite PWA
 
-Локальный PWA-бюджет, собранный на Nuxt 4 + Tailwind и ориентированный на iPhone SE 2022.  
-Приложение управляет счетами/категориями/транзакциями, показывает дашборд с балансами, работает офлайн и умеет экспортировать/импортировать весь набор данных в валидированный JSON. Dexie выступает системой записи, Pinia — реактивным слоем, а `@vite-pwa/nuxt` поддерживает установку и сервис-воркер.
+Local PWA budget app built with Nuxt 4 + Tailwind and tuned for iPhone SE 2022.
+It manages accounts/categories/transactions, shows a balances dashboard, works offline, and supports full JSON export/import with validation. Dexie is the system of record, Pinia is the reactive layer, and `@vite-pwa/nuxt` handles installability and service worker.
 
-## Для coding-агентов (прочитай первым)
+## For coding agents (read first)
 
-1. Открой `AGENTS.md` (протокол работы в репо).
-2. Используй этот `README.md` как карту репозитория, затем прочитай `docs/context.md` и `docs/status.md`.
-3. Перед изменениями выполни `rg -n "AICODE-"` и следуй якорям (контракты/ловушки/заметки).
-4. Если индекс в README устарел или в проекте появились новые точки входа — обнови его по протоколу из `AGENTS.md` и соблюдай `docs/agent/anchor-scheme.md`.
+1. Open `AGENTS.md` (repo protocol).
+2. Use this `README.md` as the repo map, then read `docs/context.md` and `docs/status.md`.
+3. Before changes run `rg -n "AICODE-"` and follow anchors (contracts/traps/notes).
+4. If the index in README is stale or new entry points appeared, update it using the protocol in `AGENTS.md` and follow `docs/aicode-anchors.md`.
 
 ## Repository layout
 
-- `app/composables/useMoney.ts` — парсинг/формат денег; искать: `rg -n "toMinor|fromMinor|formatMoney" app/composables`
-- `app/db/client.ts` — Dexie схема/версии; искать: `rg -n "version\\(" app/db/client.ts`
-- `app/db/seed.ts` — дефолтные сиды; искать: `rg -n "seedDefaults" app/db/seed.ts`
-- `app/repositories/backup.ts` — экспорт/импорт снапшота; искать: `rg -n "importBackupSnapshot|createBackupSnapshot" app/repositories/backup.ts`
-- `app/repositories/` — доступ к Dexie с Zod-валидацией; искать: `rg -n "zod|parse" app/repositories`
-- `app/types/budget.ts` — Zod схемы и snapshot version; искать: `rg -n "BACKUP_SNAPSHOT_VERSION|backupSnapshotSchema" app/types/budget.ts`
-- `components/MoneyInput.vue` — денежный инпут/маска; искать: `rg -n "MoneyInput" components/MoneyInput.vue`
-- `components/OfflineIndicator.vue` — индикатор офлайна; искать: `rg -n "OfflineIndicator" components`
-- `components/AddToHomeBanner.vue` — iOS install подсказка; искать: `rg -n "AddToHomeBanner" components`
-- `pages/index.vue` — дашборд/балансы; искать: `rg -n "AICODE-NOTE" pages/index.vue`
-- `pages/transactions.vue` — список и фильтры; искать: `rg -n "filters|search" pages/transactions.vue`
-- `pages/settings.vue` — UI backup/import; искать: `rg -n "backup|import|export" pages/settings.vue`
-- `stores/transactions.ts` — селекторы/агрегации; искать: `rg -n "defineStore\\('transactions'" stores`
-- `stores/accounts.ts` — стор счетов; искать: `rg -n "defineStore\\('accounts'" stores`
-- `stores/categories.ts` — стор категорий; искать: `rg -n "defineStore\\('categories'" stores`
-- `nuxt.config.ts` — PWA manifest/Workbox; искать: `rg -n "pwa:|workbox|manifest" nuxt.config.ts`
-- `app/assets/css/main.css` — глобальные стили; искать: `rg -n "tailwind|@layer" app/assets/css/main.css`
-- `tests/` — unit/smoke тесты; искать: `rg -n "describe\\(" tests`
-- `scripts/lint-aicode.sh` — валидация AICODE; искать: `rg -n "AICODE-" scripts/lint-aicode.sh`
+- `app/composables/useMoney.ts` - money parsing/formatting; search: `rg -n "toMinor|fromMinor|formatMoney" app/composables`
+- `app/db/client.ts` - Dexie schema/versions; search: `rg -n "version\\(" app/db/client.ts`
+- `app/db/seed.ts` - default seeds; search: `rg -n "seedDefaults" app/db/seed.ts`
+- `app/repositories/backup.ts` - snapshot export/import; search: `rg -n "importBackupSnapshot|createBackupSnapshot" app/repositories/backup.ts`
+- `app/repositories/` - Dexie access with Zod validation; search: `rg -n "zod|parse" app/repositories`
+- `app/types/budget.ts` - Zod schemas and snapshot version; search: `rg -n "BACKUP_SNAPSHOT_VERSION|backupSnapshotSchema" app/types/budget.ts`
+- `components/MoneyInput.vue` - money input/mask; search: `rg -n "MoneyInput" components/MoneyInput.vue`
+- `components/OfflineIndicator.vue` - offline indicator; search: `rg -n "OfflineIndicator" components`
+- `components/AddToHomeBanner.vue` - iOS install hint; search: `rg -n "AddToHomeBanner" components`
+- `pages/index.vue` - dashboard/balances; search: `rg -n "AICODE-NOTE" pages/index.vue`
+- `pages/transactions.vue` - list and filters; search: `rg -n "filters|search" pages/transactions.vue`
+- `pages/settings.vue` - backup/import UI; search: `rg -n "backup|import|export" pages/settings.vue`
+- `stores/transactions.ts` - selectors/aggregations; search: `rg -n "defineStore\\('transactions'" stores`
+- `stores/accounts.ts` - accounts store; search: `rg -n "defineStore\\('accounts'" stores`
+- `stores/categories.ts` - categories store; search: `rg -n "defineStore\\('categories'" stores`
+- `nuxt.config.ts` - PWA manifest/Workbox; search: `rg -n "pwa:|workbox|manifest" nuxt.config.ts`
+- `app/assets/css/main.css` - global styles; search: `rg -n "tailwind|@layer" app/assets/css/main.css`
+- `tests/` - unit/smoke tests; search: `rg -n "describe\\(" tests`
+- `scripts/lint-aicode.sh` - AICODE validation; search: `rg -n "AICODE-" scripts/lint-aicode.sh`
 
 ## Entry points
 
-- `nuxt.config.ts` — конфигурация PWA и сборки; искать: `rg -n "pwa:|workbox" nuxt.config.ts`
-- `app/db/client.ts` — схема/версии Dexie; искать: `rg -n "version\\(" app/db/client.ts`
-- `app/repositories/backup.ts` — контракт импорта снапшота; искать: `rg -n "importBackupSnapshot" app/repositories/backup.ts`
-- `app/types/budget.ts` — Zod-валидации и snapshot version; искать: `rg -n "backupSnapshotSchema|BACKUP_SNAPSHOT_VERSION" app/types/budget.ts`
-- `components/MoneyInput.vue` — ключевой UI ввода денег; искать: `rg -n "MoneyInput" components/MoneyInput.vue`
-- `pages/index.vue` — дашборд с агрегатами; искать: `rg -n "AICODE-NOTE" pages/index.vue`
-- `stores/transactions.ts` — селекторы балансов и фильтры; искать: `rg -n "defineStore\\('transactions'" stores/transactions.ts`
+- `nuxt.config.ts` - PWA/build config; search: `rg -n "pwa:|workbox" nuxt.config.ts`
+- `app/db/client.ts` - Dexie schema/versions; search: `rg -n "version\\(" app/db/client.ts`
+- `app/repositories/backup.ts` - snapshot import contract; search: `rg -n "importBackupSnapshot" app/repositories/backup.ts`
+- `app/types/budget.ts` - Zod validation and snapshot version; search: `rg -n "backupSnapshotSchema|BACKUP_SNAPSHOT_VERSION" app/types/budget.ts`
+- `components/MoneyInput.vue` - key money input UI; search: `rg -n "MoneyInput" components/MoneyInput.vue`
+- `pages/index.vue` - dashboard with aggregates; search: `rg -n "AICODE-NOTE" pages/index.vue`
+- `stores/transactions.ts` - balance selectors and filters; search: `rg -n "defineStore\\('transactions'" stores/transactions.ts`
 
-## Что уже сделано
+## What is done
 
-- Stage 0–2: scaffold Nuxt+Pinia, модели/репозитории, формы транзакций/счетов/категорий и `MoneyInput` с маской и быстрыми суммами.
-- Stage 3: PWA manifest/Workbox, OfflineIndicator, AddToHomeBanner и конфигурация `nuxt.config.ts` для installable офлайн-режима.
-- Stage 4: JSON backup/import через `backupSnapshotSchema`, `app/repositories/backup.ts` и UI на `/settings` с предпросмотром и подтверждением полной замены Dexie данных.
-- Текущий фокус: Stage 5 — полировка (тесты, empty-states, a11y) + ручные смоуки add→filter→export→import и валидация на iOS-устройстве.
+- Stage 0-2: Nuxt+Pinia scaffold, models/repositories, account/category/transaction forms, and MoneyInput with mask + quick amounts.
+- Stage 3: PWA manifest/Workbox, OfflineIndicator, AddToHomeBanner and `nuxt.config.ts` for installable offline mode.
+- Stage 4: JSON backup/import via `backupSnapshotSchema`, `app/repositories/backup.ts`, and `/settings` UI with preview and full-replace confirmation.
+- Current focus: Stage 5 - polish (tests, empty states, a11y) + manual smoke add->filter->export->import and validation on iOS devices.
 
-## Стек
+## Stack
 
-- Nuxt 4 (Vite + Vue 3)  
-- Pinia + Dexie (IndexedDB)  
-- Tailwind CSS  
-- Zod для схем и формы  
-- date-fns для форматирования дат  
-- nanoid для id сущностей  
-- `@vite-pwa/nuxt` для манифеста + Workbox  
-- Vitest для unit/smoke тестов
+- Nuxt 4 (Vite + Vue 3)
+- Pinia + Dexie (IndexedDB)
+- Tailwind CSS
+- Zod for schemas and forms
+- date-fns for date formatting
+- nanoid for entity ids
+- `@vite-pwa/nuxt` for manifest + Workbox
+- Vitest for unit/smoke tests
 
 ## Common tasks
 
 ```bash
-# установить зависимости (npm или pnpm)
+# install dependencies (npm or pnpm)
 npm install
 
-# режим разработки
+# dev mode
 npm run dev
 
-# сборка и предпросмотр
+# build and preview
 npm run build
 npm run preview
 
-# локальные тесты (useMoney, Pinia selectors, backup repository)
+# local tests (useMoney, Pinia selectors, backup repository)
 npm run test
 
-# валидация AICODE-комментариев
+# AICODE comment validation
 npm run lint:aicode
 
-# UI тесты (Playwright)
+# UI tests (Playwright)
 npm run test:ui
 ```
 
-## Особенности
+## Notes
 
-- Денежные значения хранятся как `amountMinor` (копейки); `useMoney` предоставляет `toMinor`, `fromMinor`, `formatMoney` и валидатор.
-- `MoneyInput` предлагает цифровую клавиатуру, маску и кнопки быстрых сумм — его API нельзя ломать (v-model строка, quick amounts добавляют значение).
-- `transactions`, `accounts`, `categories` хранятся в Pinia и обновляются через репозитории (`app/repositories/*`) с Zod-валидацией.
-- JSON backup snapshot `{ version, exportedAt, accounts, categories, transactions, categoryAssignments }` валидируется схемой; импорт **перезаписывает** таблицы Dexie (см. `pages/settings.vue` предупреждения и `app/repositories/backup.ts` контракт).
-- PWA-манифест хранится в `nuxt.config.ts`; service worker кеширует шрифт Google и прочие ассеты, а `AddToHomeBanner` подсказывает пользовательские действия на iOS.
+- Money values are stored as `amountMinor` (minor units); `useMoney` provides `toMinor`, `fromMinor`, `formatMoney`, and a validator.
+- `MoneyInput` offers numeric keyboard, mask, and quick-amount buttons - do not break its API (v-model string, quick amounts add to the value).
+- `transactions`, `accounts`, `categories` live in Pinia and are updated through repositories (`app/repositories/*`) with Zod validation.
+- JSON backup snapshot `{ version, exportedAt, accounts, categories, transactions, categoryAssignments }` is validated by schema; import fully replaces Dexie tables (see `pages/settings.vue` warnings and `app/repositories/backup.ts` contract).
+- PWA manifest is in `nuxt.config.ts`; service worker caches Google font and other assets, and `AddToHomeBanner` guides iOS install steps.
 
 ## Search cookbook
 
@@ -105,15 +105,15 @@ npm run test:ui
 - `rg -n "transactionFiltersSchema|dateRangeFilterSchema" app/types/budget.ts`
 - `rg -n "backup|import|export" pages/settings.vue app/repositories`
 
-## Что проверить вручную
+## Manual checks
 
-1. Скриншоты/сценарии `add→filter→export→import` в браузере (Vitest smoke/ручной прогон).  
-2. Установка/офлайн на iPhone SE (Safari) — service worker должен работать, `AddToHomeBanner` исчезать, логика фильтров не ломаться.  
-3. JSON экспорт/импорт с полной заменой Dexie и предпросмотром перед импорта.  
-4. Lighthouse PWA (installable + offline ready + TTI < 2.5 с warm start).
+1. Screenshot/scenarios add->filter->export->import in browser (Vitest smoke/manual run).
+2. Install/offline on iPhone SE (Safari) - service worker should work, `AddToHomeBanner` should disappear, filters should not regress.
+3. JSON export/import with full Dexie replacement and preview before import.
+4. Lighthouse PWA (installable + offline ready + TTI < 2.5 on warm start).
 
-## Что дальше
+## Next steps
 
-1. Полировка tests: добавить unit для `MoneyInput`, сторов/реп про `accounts` и `categories`, а также сценарий smoke add→filter→export→import.  
-2. Запомнить результаты ручных проверок (iOS install/offline, JSON import warning) в `docs/status.md` (и при необходимости добавить AICODE-якорь рядом с кодом).  
-3. Улучшить пустые состояния и базовую a11y, чтобы формы транзакций/категорий были удобны на клавиатуре и для фокус-режима.
+1. Polish tests: add unit tests for `MoneyInput`, stores/repos for `accounts` and `categories`, plus smoke add->filter->export->import.
+2. Record manual checks (iOS install/offline, JSON import warning) in `docs/status.md` (and add AICODE anchor near code if needed).
+3. Improve empty states and baseline a11y so transaction/category forms work well with keyboard and focus modes.

@@ -178,12 +178,12 @@ package.json          # Dependencies and scripts
 
 ## Agent docs (navigation-first)
 
-- `AGENTS.md` — правила работы агента в репо и boot-sequence.
-- `README.md` — навигационный индекс (пути + entry points + search cookbook).
-- `docs/context.md` — короткий “скелет контекста” (миссия/стек/паттерны/инварианты).
-- `docs/status.md` — живой статус (фокус/next steps/риски).
-- `docs/decisions/*` — ADR (“почему так”).
-- `docs/aicode-anchors.md` — правила и схема AICODE-якорей.
+- `AGENTS.md` - agent workflow rules and boot sequence.
+- `README.md` - navigation index (paths + entry points + search cookbook).
+- `docs/context.md` - concise context skeleton (mission/stack/patterns/invariants).
+- `docs/status.md` - living status (focus/next steps/risks).
+- `docs/decisions/*` - ADRs (the \"why\").
+- `docs/aicode-anchors.md` - AICODE anchor rules and schema.
 
 ## Common Patterns & Decisions
 

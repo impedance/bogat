@@ -1,43 +1,43 @@
-# Контекст проекта (кратко, для агентов)
+# Project context (concise, for agents)
 
-<!-- AICODE-NOTE: CONTEXT/BOOT — начни с README (индекс), затем STATUS, затем `rg -n "AICODE-"`; ref: AGENTS.md -->
-<!-- AICODE-CONTRACT: CONTEXT/MONEY — все деньги хранятся как integer minor units (копейки) в `amountMinor`; risk: float-ошибки и рассинхрон балансов [2025-12-28] -->
-<!-- AICODE-CONTRACT: CONTEXT/BACKUP-IMPORT — импорт снапшота полностью заменяет таблицы Dexie (без merge); ref: app/repositories/backup.ts; risk: частичный restore сломает балансы [2025-12-28] -->
+<!-- AICODE-NOTE: CONTEXT/BOOT - start with README (index), then STATUS, then `rg -n "AICODE-"`; ref: AGENTS.md -->
+<!-- AICODE-CONTRACT: CONTEXT/MONEY - all money is stored as integer minor units in `amountMinor`; risk: float errors and balance drift [2025-12-28] -->
+<!-- AICODE-CONTRACT: CONTEXT/BACKUP-IMPORT - snapshot import fully replaces Dexie tables (no merge); ref: app/repositories/backup.ts; risk: partial restore breaks balances [2025-12-28] -->
 
-## Миссия и MVP
-- Offline‑capable PWA для учёта личных финансов в стиле YNAB‑lite, оптимизированный под iPhone SE 2022.
-- MVP: счета/категории/транзакции, балансы, фильтры/поиск, JSON export/import, installable PWA, работа полностью офлайн (без бэкенда).
+## Mission and MVP
+- Offline-capable PWA for personal finance tracking (YNAB-lite style), optimized for iPhone SE 2022.
+- MVP: accounts/categories/transactions, balances, filters/search, JSON export/import, installable PWA, fully offline (no backend).
 
-## Пользователи и UX‑цели
-- Privacy‑friendly: всё хранится локально.
-- Быстрый ввод транзакции, быстрый взгляд на балансы, предсказуемые фильтры/поиск.
+## Users and UX goals
+- Privacy-friendly: everything stored locally.
+- Fast transaction entry, quick balance view, predictable filters/search.
 
-## Стек
+## Stack
 - Nuxt 4 (Vue 3 + Vite), TypeScript.
-- Pinia (stores + селекторы).
-- Dexie (IndexedDB) как system of record.
-- Zod для валидации форм/DTO/backup snapshot.
+- Pinia (stores + selectors).
+- Dexie (IndexedDB) as system of record.
+- Zod for form/DTO/backup snapshot validation.
 - Tailwind CSS.
-- PWA через `@vite-pwa/nuxt` (manifest + Workbox).
-- Тесты: Vitest + (частично) Playwright.
+- PWA via `@vite-pwa/nuxt` (manifest + Workbox).
+- Tests: Vitest + (partial) Playwright.
 
-## Архитектурные паттерны (что важно не сломать)
-- Local‑first: IndexedDB/Dexie — единственный источник данных в MVP.
-- Clean Architecture‑lite: UI → stores/selectors → repositories → Dexie (не наоборот).
-- CQRS‑lite: actions = команды, getters/selectors = запросы/агрегаты.
-- Functional core: money/date/агрегации — чистые функции, покрываемые тестами.
+## Architecture patterns (do not break)
+- Local-first: IndexedDB/Dexie is the only data source in MVP.
+- Clean Architecture-lite: UI -> stores/selectors -> repositories -> Dexie (not reversed).
+- CQRS-lite: actions = commands, getters/selectors = queries/aggregations.
+- Functional core: money/date/aggregations are pure functions with tests.
 
-## Где что искать (первые точки входа)
-- План и scope: `docs/ynab-lite-pwa-plan.md`
-- Живой фокус: `docs/status.md`
-- Конфиг PWA/manifest: `nuxt.config.ts`
+## Where to look first (entry points)
+- Plan and scope: `docs/ynab-lite-pwa-plan.md`
+- Living focus: `docs/status.md`
+- PWA/manifest config: `nuxt.config.ts`
 - Dexie schema/versioning: `app/db/client.ts`
-- Репозитории (Dexie access + Zod): `app/repositories/*`
-- Сторы/селекторы: `stores/*`
-- Money helpers + форматирование: `app/composables/useMoney.ts` (см. тесты `tests/useMoney.test.ts`)
+- Repositories (Dexie access + Zod): `app/repositories/*`
+- Stores/selectors: `stores/*`
+- Money helpers + formatting: `app/composables/useMoney.ts` (see tests in `tests/useMoney.test.ts`)
 - UI: `pages/*`, `components/*`
 
-## Прогресс (крупно)
-- Stage 0–4 завершены (CRUD + PWA + JSON backup/import).
-- Stage 5 в работе: тесты/полировка/a11y + smoke add→filter→export→import + ручной iOS install/offline.
-- Zero‑based budgeting groundwork: схема Dexie v2 + snapshot v2 подготовлены, UI/стор бюджета ещё не начаты (см. `docs/envelope-budget-plan.md`).
+## Progress (high level)
+- Stage 0-4 complete (CRUD + PWA + JSON backup/import).
+- Stage 5 in progress: tests/polish/a11y + smoke add->filter->export->import + manual iOS install/offline.
+- Zero-based budgeting groundwork: Dexie v2 schema + snapshot v2 prepared, budget UI/store not started (see `docs/envelope-budget-plan.md`).

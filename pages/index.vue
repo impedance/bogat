@@ -25,7 +25,7 @@ const {
 
 const money = useMoney({ currency: 'RUB' })
 
-// AICODE-NOTE: Дашборд опирается на селекторы Pinia, чтобы цифры всегда совпадали с текущими фильтрами транзакций. [2025-11-18]
+// AICODE-NOTE: Dashboard relies on Pinia selectors so numbers always match current transaction filters. [2025-11-18]
 const hasAccounts = computed(() => activeAccounts.value.length > 0)
 const hasCategories = computed(() => activeCategories.value.length > 0)
 const hasTransactions = computed(() => transactions.value.length > 0)

@@ -32,7 +32,7 @@ export async function createBackupSnapshot(): Promise<BackupSnapshot> {
   return snapshot
 }
 
-// AICODE-CONTRACT: Импорт снапшота полностью заменяет таблицы Dexie, чтобы восстановление точно соответствовало JSON без попытки слияния. [2025-11-18]
+// AICODE-CONTRACT: Snapshot import fully replaces Dexie tables so restore matches JSON without any merge. [2025-11-18]
 export async function importBackupSnapshot(input: unknown): Promise<BackupSnapshot> {
   const snapshot = backupSnapshotSchema.parse(input)
 

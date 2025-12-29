@@ -1,196 +1,196 @@
-# AICODE-якоря — правила и схема (универсально, переносимо между репозиториями)
+# AICODE anchors - rules and schema (portable across repositories)
 
-Этот документ объединяет:
-- **нормативные правила** AICODE-якорей (разрешённые префиксы, формат, lifecycle);
-- **схему тем/неймспейсов** внутри текста якорей;
-- **примеры** и рекомендации по размещению.
+This document combines:
+- normative rules for AICODE anchors (allowed prefixes, format, lifecycle);
+- a schema for topics and namespaces inside anchor text;
+- examples and placement guidance.
 
-Если требования кажутся противоречивыми, приоритет у **нормативных правил** из этого документа.
+If requirements conflict, the normative rules in this document take priority.
 
-Цель: большая часть контекста живёт **рядом с кодом** и находится через `rg -n "AICODE-"`.
+Goal: most context lives next to code and is discoverable via `rg -n "AICODE-"`.
 
 ---
 
-## 0) Принципы (что значит “хорошо”)
+## 0) Principles (what "good" means)
 
-- Якоря **находимы**: всегда ищутся через `rg`.
-- Якоря **действующие**: поясняют, что нельзя ломать, почему, где источник истины.
-- Якоря **поддерживаются**: устаревшие удаляются или конвертируются.
-- Якоря **локальны**: ставятся рядом с кодом, не заменяют общий дневник проекта.
+- Anchors are discoverable: always found via `rg`.
+- Anchors are actionable: explain what cannot be broken, why, and where the source of truth lives.
+- Anchors are maintained: outdated ones are removed or converted.
+- Anchors are local: placed next to code, not a replacement for a project diary.
 
-## 1) Быстрый старт (обязательный)
+## 1) Quick start (mandatory)
 
-Перед тем как глубоко читать код:
-- MUST искать существующие якоря в репозитории: `rg -n "AICODE-"`.
-- SHOULD сузить поиск до модуля: `rg -n "AICODE-" app/repositories`.
-- Разрешённые теги: `AICODE-NOTE`, `AICODE-TODO`, `AICODE-CONTRACT`, `AICODE-TRAP`, `AICODE-LINK`, `AICODE-ASK`.
-- Долгоживущие теги (`CONTRACT/TRAP`) MUST иметь дату `[YYYY-MM-DD]` в той же строке.
+Before reading code deeply:
+- MUST search for existing anchors in the repo: `rg -n "AICODE-"`.
+- SHOULD narrow to a module: `rg -n "AICODE-" app/repositories`.
+- Allowed tags: `AICODE-NOTE`, `AICODE-TODO`, `AICODE-CONTRACT`, `AICODE-TRAP`, `AICODE-LINK`, `AICODE-ASK`.
+- Long-lived tags (`CONTRACT/TRAP`) MUST include a date `[YYYY-MM-DD]` on the same line.
 
-После выполнения задачи:
-- MUST обновить/удалить якоря в затронутых местах.
+After completing a task:
+- MUST update or remove anchors in affected areas.
 
-## 2) Когда добавлять или обновлять якорь
+## 2) When to add or update an anchor
 
-Добавляй/обновляй `AICODE-*:` если код:
-- **неочевидный** (инвариант не выводится из кода “с ходу”);
-- **важный** (ядро бизнес-логики/пайплайна);
-- **хрупкий** (сложные крайние случаи, порядок шагов, условия).
+Add or update `AICODE-*:` if the code is:
+- non-obvious (the invariant is not obvious at a glance);
+- important (core business logic or pipeline);
+- fragile (edge cases, step ordering, conditions).
 
-Якоря **обязательны**, если:
-- кто-то может “упростить” код и сломать требование;
-- логика повторяет легаси/патч;
-- зона известна регрессиями или имеет большой blast radius.
+Anchors are mandatory if:
+- someone might "simplify" the code and break a requirement;
+- logic repeats a legacy or a patch;
+- the area is known for regressions or has high blast radius.
 
-## 3) Разрешённые типы якорей (только один на строку)
+## 3) Allowed anchor types (one per line)
 
-- **Долгоживущие (обязательна дата):** `AICODE-TRAP:`, `AICODE-CONTRACT:`.
-- **Склейки/ссылки:** `AICODE-LINK:` (доки/тесты/смежные файлы; дата не нужна).
-- **Сессионные:** `AICODE-NOTE:` (рационал/инвариант), `AICODE-TODO:` (локальная очередь), `AICODE-ASK:` (вопрос к команде).
+- Long-lived (date required): `AICODE-TRAP:`, `AICODE-CONTRACT:`.
+- Glue/links: `AICODE-LINK:` (docs/tests/related files; date not needed).
+- Session: `AICODE-NOTE:` (rationale/invariant), `AICODE-TODO:` (local queue), `AICODE-ASK:` (question to the team).
 
-## 4) Правила формата (grep-friendly)
+## 4) Format rules (grep-friendly)
 
-### 4.1 Синтаксис
-- Используй корректный комментарий языка (`#`, `//`, `/* */`, …).
-- Первая строка **должна начинаться** с разрешённого префикса из §3.
-- Первая строка **самодостаточна**: понятна прямо из `rg` без контекста.
+### 4.1 Syntax
+- Use a valid comment for the language (`#`, `//`, `/* */`, ...).
+- The first line must start with an allowed prefix from section 3.
+- The first line is self-contained: it should make sense in `rg` output without context.
 
-### 4.2 Содержание (что полезно указать)
+### 4.2 Content (what to include)
 
-Хороший якорь отвечает хотя бы на 1–2 вопроса:
-- **Почему** так сделано? (рационал/компромисс)
-- **Какой инвариант** нельзя менять? (порядок, маппинг, “must not change”)
-- **Какие edge cases** критичны?
-- **Где источник истины?** (док/тест/спека)
+A good anchor answers at least 1-2 questions:
+- Why is it done this way? (rationale/tradeoff)
+- Which invariant must not change? (ordering, mapping, "must not change")
+- Which edge cases are critical?
+- Where is the source of truth? (doc/test/spec)
 
-Рекомендуемые поля (кратко):
-- `ref:` файл/док/тест
-- `scope:` компонент/функция
-- `risk:` что сломается
-- `test:` что покрыть/обновить
-- `decision:` принятое решение
-- `owner:` кто должен решать (если применимо)
+Recommended fields (short):
+- `ref:` file/doc/test
+- `scope:` component/function
+- `risk:` what breaks
+- `test:` what to cover/update
+- `decision:` chosen decision
+- `owner:` who decides (if applicable)
 
-Шаблоны:
+Templates:
 - `AICODE-NOTE: <invariant or why>; ref: <path>; risk: <impact>`
 - `AICODE-TODO: <follow-up>; why: <reason>; scope: <component>; test: <test>`
 - `AICODE-ASK: <question?>; decision: <what is needed>; impact: <what changes>`
 
-## 5) Схема тем внутри текста (namespace)
+## 5) Topic schema inside the text (namespace)
 
-Принцип: **префикс фиксирован, тема внутри текста**. Мы **не** вводим новые префиксы типа `AICODE-STATUS:`.
+Principle: prefix is fixed, topic is inside the text. We do not introduce new prefixes like `AICODE-STATUS:`.
 
-Пример:
+Example:
 ```ts
-// AICODE-NOTE: NAV/REPO-LAYOUT — краткая карта ключевых путей; ref: README.md; risk: агент будет блуждать
-// AICODE-NOTE: STATUS/FOCUS — текущий фокус и next steps; ref: docs/status.md
-// AICODE-NOTE: DECISION/ADR-0001 — почему выбрали AICODE+README как навигационный слой; ref: docs/decisions/ADR-0001-anchor-navigation.md
+// AICODE-NOTE: NAV/REPO-LAYOUT - short map of key paths; ref: README.md; risk: agent will get lost
+// AICODE-NOTE: STATUS/FOCUS - current focus and next steps; ref: docs/status.md
+// AICODE-NOTE: DECISION/ADR-0001 - why we chose AICODE+README for navigation; ref: docs/decisions/ADR-0001-anchor-navigation.md
 ```
 
-### Namespace после `:`
-- `NAV/<slug>` — навигационные якоря (точки входа, ключевые места).
-- `CONTRACT/<slug>` — поведенческие инварианты (используй с `AICODE-CONTRACT:`).
-- `TRAP/<slug>` — острые углы/регрессии (используй с `AICODE-TRAP:`).
-- `DECISION/<id>` — архитектурные решения (ADR).
-- `STATUS/<slug>` — операционный статус (используй только в `docs/status.md`).
-- `TEST/<slug>` — где проверять/какие тесты.
+### Namespace after `:`
+- `NAV/<slug>` - navigation anchors (entry points, key places).
+- `CONTRACT/<slug>` - behavior invariants (use with `AICODE-CONTRACT:`).
+- `TRAP/<slug>` - sharp edges/regressions (use with `AICODE-TRAP:`).
+- `DECISION/<id>` - architectural decisions (ADR).
+- `STATUS/<slug>` - operational status (use only in `docs/status.md`).
+- `TEST/<slug>` - where to test/which tests.
 
-Стилизация `slug`:
-- `kebab-case` или `SCREAMING_SNAKE`;
-- важна стабильность и уникальность.
+Slug style:
+- `kebab-case` or `SCREAMING_SNAKE`.
+- stability and uniqueness matter.
 
-### Маппинг “тип знания” → AICODE-префикс
+### Mapping "knowledge type" -> AICODE prefix
 
-- Контракт/инвариант: `AICODE-CONTRACT: CONTRACT/<slug> — ... [YYYY-MM-DD]`
-- Ловушка/регрессия: `AICODE-TRAP: TRAP/<slug> — ... [YYYY-MM-DD]`
-- Навигация/заметка: `AICODE-NOTE: NAV/<slug> — ...`
-- Склейки: `AICODE-LINK: ...`
-- Очередь работы: `AICODE-TODO: ...` (удалять/конвертировать после выполнения)
-- Вопрос: `AICODE-ASK: <question?>; decision: <что нужно>; impact: <что меняется>`
+- Contract/invariant: `AICODE-CONTRACT: CONTRACT/<slug> - ... [YYYY-MM-DD]`
+- Trap/regression: `AICODE-TRAP: TRAP/<slug> - ... [YYYY-MM-DD]`
+- Navigation/note: `AICODE-NOTE: NAV/<slug> - ...`
+- Glue: `AICODE-LINK: ...`
+- Work queue: `AICODE-TODO: ...` (remove/convert after done)
+- Question: `AICODE-ASK: <question?>; decision: <what is needed>; impact: <what changes>`
 
-## 6) Где ставить якоря (приоритеты)
+## 6) Where to place anchors (priority)
 
-1) **Entry points**
+1) Entry points
    - main/bootstrap/config
-   - инициализация хранилища/миграции/схема
+   - storage init/migrations/schema
    - data access (repositories/adapters/clients)
-   - состояние/селекторы/агрегации (stores/selectors)
-   - критичные UI-компоненты/handlers
+   - state/selectors/aggregations (stores/selectors)
+   - critical UI components/handlers
 
-2) **Инварианты данных**
-   - деньги в minor units
-   - правила импорта/экспорта snapshot
-   - индексы/версия Dexie
+2) Data invariants
+   - money in minor units
+   - import/export snapshot rules
+   - Dexie indices/versioning
 
-3) **Острые углы**
-   - iOS/PWA особенности
-   - tricky edge cases в фильтрах/селекторах
+3) Sharp edges
+   - iOS/PWA specifics
+   - tricky edge cases in filters/selectors
 
-4) **Ссылки**
-   - `AICODE-LINK:` на тесты/доки/смежные файлы
+4) Links
+   - `AICODE-LINK:` to tests/docs/related files
 
-## 7) Как не разрастаться
+## 7) How to avoid bloat
 
-- На одну “зону” кода обычно достаточно 1–3 якорей.
-- Если `rg -n "AICODE-" <директория>` даёт десятки совпадений — сгруппируй: оставь 1 якорь‑индекс + `AICODE-LINK:`.
-- Решённые `AICODE-TODO` удаляй или конвертируй в `AICODE-NOTE`.
-- Закрытые `AICODE-ASK` конвертируй в `AICODE-NOTE` с `decision:` и `ref:`.
+- For one code area, 1-3 anchors are usually enough.
+- If `rg -n "AICODE-" <dir>` returns dozens of matches, group them: keep 1 index anchor + `AICODE-LINK:`.
+- Resolved `AICODE-TODO` should be removed or converted to `AICODE-NOTE`.
+- Closed `AICODE-ASK` should be converted to `AICODE-NOTE` with `decision:` and `ref:`.
 
-## 8) Lifecycle (чтобы якоря не устаревали)
+## 8) Lifecycle (keep anchors fresh)
 
-- MUST обновить или удалить якоря после изменения поведения.
-- `AICODE-TODO` → удалить или конвертировать в `AICODE-NOTE`.
-- `AICODE-ASK` → заменить на `AICODE-NOTE` с решением и `ref:`.
+- MUST update or remove anchors after behavior changes.
+- `AICODE-TODO` -> remove or convert to `AICODE-NOTE`.
+- `AICODE-ASK` -> replace with `AICODE-NOTE` with decision and `ref:`.
 
-## 9) Анти-паттерны (чего нельзя делать)
+## 9) Anti-patterns (do not do)
 
-- Не повторяй очевидное (“increment i”, “sort list”).
-- Не пиши эссе или логи — якорь должен быть коротким.
-- Не размещай секреты/токены/чувствительные данные.
-- Не используй `AICODE-TODO:` как замену трекингу задач (для этого `docs/todo.md`).
-- Не оставляй двусмысленность (“maybe”, “probably”), если это не `AICODE-ASK:`.
+- Do not repeat the obvious ("increment i", "sort list").
+- Do not write essays or logs - the anchor must be short.
+- Do not put secrets/tokens/sensitive data.
+- Do not use `AICODE-TODO:` as a task tracker (use `docs/todo.md`).
+- Do not leave ambiguity ("maybe", "probably"), unless it is `AICODE-ASK:`.
 
-## 10) Примеры
+## 10) Examples
 
-### NOTE — инвариант + источник истины
+### NOTE - invariant + source of truth
 ```python
-# AICODE-NOTE: traversal order is index → numeric → alpha (recursive); ref: docs/hierarchy-analysis.md; risk: TOC/section order regressions
+# AICODE-NOTE: traversal order is index -> numeric -> alpha (recursive); ref: docs/hierarchy-analysis.md; risk: TOC/section order regressions
 ```
 
-### NOTE — ссылка на тесты/спеку
+### NOTE - link to tests/spec
 ```python
 # AICODE-NOTE: image path mapping strips numeric prefixes and targets /images/<slug>/...; ref: tests/test_images.py; risk: broken asset links in bundle.md
 ```
 
-### TODO — локальный follow-up
+### TODO - local follow-up
 ```python
 # AICODE-TODO: add a unit test for the tagged-PDF fallback branch; scope: pandoc_runner.render; test: tests/test_pandoc_runner.py
 ```
 
-### ASK — требует решения
+### ASK - needs decision
 ```python
 # AICODE-ASK: should missing assets fail the pipeline or be replaced by a placeholder by default? impact: pipeline.validate_images
 ```
 
-### CONTRACT — инвариант поведения с датой
+### CONTRACT - behavior invariant with date
 ```typescript
 // AICODE-CONTRACT: Import replaces the target store fully (no merge); ref: <path>; risk: partial restore corrupts derived state [2025-01-15]
 ```
 
-### Anti-example (слишком расплывчато)
+### Anti-example (too vague)
 ```python
 # AICODE-NOTE: this is tricky, be careful
 ```
 
-## 11) Как искать якоря
+## 11) How to search anchors
 
-- Все якоря: `rg -n "AICODE-"`.
-- Только каноничные префиксы: `rg -n "AICODE-(NOTE|TODO|CONTRACT|TRAP|LINK|ASK):"`.
+- All anchors: `rg -n "AICODE-"`.
+- Only canonical prefixes: `rg -n "AICODE-(NOTE|TODO|CONTRACT|TRAP|LINK|ASK):"`.
 
-## 12) Рекомендуемые “якоря‑индексы” для этого репозитория
+## 12) Recommended index anchors for this repository
 
-Эти якоря полезно иметь (если их ещё нет) как стабильные точки входа:
-- `AICODE-NOTE: NAV/README-INDEX — README как карта репозитория; ref: README.md`
-- `AICODE-NOTE: NAV/ENTRYPOINT — основная точка входа; ref: <path>`
-- `AICODE-NOTE: NAV/STORAGE-SCHEMA — схема/миграции хранилища; ref: <path>`
-- `AICODE-NOTE: NAV/CORE-FLOW — основной бизнес-поток; ref: <path>`
-- `AICODE-NOTE: NAV/TESTS — где проверять ключевые контракты; ref: <path>`
+These are useful stable entry points (if they do not exist yet):
+- `AICODE-NOTE: NAV/README-INDEX - README as repository map; ref: README.md`
+- `AICODE-NOTE: NAV/ENTRYPOINT - primary entry point; ref: <path>`
+- `AICODE-NOTE: NAV/STORAGE-SCHEMA - storage schema/migrations; ref: <path>`
+- `AICODE-NOTE: NAV/CORE-FLOW - core business flow; ref: <path>`
+- `AICODE-NOTE: NAV/TESTS - where to test key contracts; ref: <path>`
